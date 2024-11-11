@@ -1,0 +1,78 @@
+[
+    {
+        "model": "Tienda.categoriaproducto",
+        "pk": 1,
+        "fields": {
+            "nombre": "Velas",
+            "descripcion": "Velas aromáticas"
+        }
+    },
+    {
+        "model": "Tienda.categoriaproducto",
+        "pk": 2,
+        "fields": {
+            "nombre": "Cristales",
+            "descripcion": "Cristales de sanación"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 1,
+        "fields": {
+            "nombre": "Vela de Lavanda",
+            "descripcion": "Relajante",
+            "precio": "5.99",
+            "categoria": 1,
+            "stock": 100
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 2,
+        "fields": {
+            "nombre": "Cristal de Cuarzo",
+            "descripcion": "Cristal de sanación",
+            "precio": "15.99",
+            "categoria": 2,
+            "stock": 50
+        }
+    },
+    {
+        "model": "Tienda.pedido",
+        "pk": 1,
+        "fields": {
+            "usuario": 1,
+            "fecha": "2024-11-10T10:00:00Z",
+            "total": "27.97"
+        }
+    },
+    {
+        "model": "Tienda.lineafactura",
+        "pk": 1,
+        "fields": {
+            "pedido": 1,
+            "producto": 1,
+            "cantidad": 2,
+            "precio_unitario": "5.99"
+        }
+    },
+    {
+        "model": "Tienda.lineafactura",
+        "pk": 2,
+        "fields": {
+            "pedido": 1,
+            "producto": 2,
+            "cantidad": 1,
+            "precio_unitario": "15.99"
+        }
+    },
+    {
+        "model": "Tienda.factura",
+        "pk": 1,
+        "fields": {
+            "pedido": 1,
+            "fecha_emision": "2024-11-10T10:05:00Z",
+            "numero_factura": "F12345"
+        }
+    }
+]
