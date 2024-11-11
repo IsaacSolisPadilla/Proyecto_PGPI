@@ -1,0 +1,6 @@
+<h1>Lista de Categorías</h1>
+<ul>
+    {% for categoria in categorias %}
+        <li>{{ categoria.nombre }} - {{ categoria.descripcion }}</li>
+    {% endfor %}
+</ul>
