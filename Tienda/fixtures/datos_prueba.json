@@ -1,10 +1,20 @@
 [
     {
+        "model": "Tienda.datosempresa",
+        "pk": 1,
+        "fields": {
+            "nombre": "Tienda Esotérica",
+            "direccion": "Calle de los Misterios, 45",
+            "telefono": "+34 600 123 456",
+            "email": "contacto@tiendaesoterica.com"
+        }
+    },
+    {
         "model": "Tienda.categoriaproducto",
         "pk": 1,
         "fields": {
             "nombre": "Velas",
-            "descripcion": "Velas aromáticas"
+            "descripcion": "Velas aromáticas para meditación y relajación"
         }
     },
     {
@@ -12,7 +22,7 @@
         "pk": 2,
         "fields": {
             "nombre": "Cristales",
-            "descripcion": "Cristales de sanación"
+            "descripcion": "Cristales y piedras para energía y sanación"
         }
     },
     {
@@ -20,10 +30,11 @@
         "pk": 1,
         "fields": {
             "nombre": "Vela de Lavanda",
-            "descripcion": "Relajante",
-            "precio": "5.99",
             "categoria": 1,
-            "stock": 100
+            "precio": "5.99",
+            "stock": 100,
+            "descripcion": "Vela de lavanda para calmar el espíritu",
+            "fotografia": "productos/vela_lavanda.jpg"
         }
     },
     {
@@ -31,10 +42,11 @@
         "pk": 2,
         "fields": {
             "nombre": "Cristal de Cuarzo",
-            "descripcion": "Cristal de sanación",
-            "precio": "15.99",
             "categoria": 2,
-            "stock": 50
+            "precio": "15.99",
+            "stock": 50,
+            "descripcion": "Cristal de cuarzo para sanación espiritual",
+            "fotografia": "productos/cristal_cuarzo.jpg"
         }
     },
     {
@@ -42,37 +54,77 @@
         "pk": 1,
         "fields": {
             "usuario": 1,
-            "fecha": "2024-11-10T10:00:00Z",
-            "total": "27.97"
+            "fecha_pedido": "2024-11-10T10:00:00Z",
+            "fecha_salida": "2024-11-12T10:00:00Z",
+            "fecha_entrega": "2024-11-15T10:00:00Z",
+            "direccion": "Calle Falsa 123, Ciudad Esotérica",
+            "estado": "Pendiente",
+            "metodo_de_pago": "Pasarela",
+            "coste_envio": "4.99"
         }
     },
     {
-        "model": "Tienda.lineafactura",
-        "pk": 1,
-        "fields": {
-            "pedido": 1,
-            "producto": 1,
-            "cantidad": 2,
-            "precio_unitario": "5.99"
-        }
-    },
-    {
-        "model": "Tienda.lineafactura",
+        "model": "Tienda.pedido",
         "pk": 2,
         "fields": {
-            "pedido": 1,
-            "producto": 2,
-            "cantidad": 1,
-            "precio_unitario": "15.99"
+            "usuario": 2,
+            "fecha_pedido": "2024-11-11T11:00:00Z",
+            "fecha_salida": "2024-11-13T10:00:00Z",
+            "fecha_entrega": "2024-11-16T10:00:00Z",
+            "direccion": "Avenida Siempreviva 742, Ciudad Espiritual",
+            "estado": "Enviado",
+            "metodo_de_pago": "Contrareembolso",
+            "coste_envio": "3.99"
         }
     },
     {
         "model": "Tienda.factura",
         "pk": 1,
         "fields": {
-            "pedido": 1,
-            "fecha_emision": "2024-11-10T10:05:00Z",
-            "numero_factura": "F12345"
+            "pedido": 1
+        }
+    },
+    {
+        "model": "Tienda.factura",
+        "pk": 2,
+        "fields": {
+            "pedido": 2
+        }
+    },
+    {
+        "model": "Tienda.lineafactura",
+        "pk": 1,
+        "fields": {
+            "factura": 1,
+            "producto": 1,
+            "cantidad": 3
+        }
+    },
+    {
+        "model": "Tienda.lineafactura",
+        "pk": 2,
+        "fields": {
+            "factura": 1,
+            "producto": 2,
+            "cantidad": 2
+        }
+    },
+    {
+        "model": "Tienda.lineafactura",
+        "pk": 3,
+        "fields": {
+            "factura": 2,
+            "producto": 1,
+            "cantidad": 1
+        }
+    },
+    {
+        "model": "Tienda.lineafactura",
+        "pk": 4,
+        "fields": {
+            "factura": 2,
+            "producto": 2,
+            "cantidad": 4
         }
     }
 ]
