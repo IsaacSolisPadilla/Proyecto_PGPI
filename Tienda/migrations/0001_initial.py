@@ -54,6 +54,7 @@ class Migration(migrations.Migration):
             name='Pedido',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('numero_pedido'), models.CharField()
                 ('fecha_pedido', models.DateTimeField(auto_now_add=True)),
                 ('fecha_salida', models.DateTimeField()),
                 ('fecha_entrega', models.DateTimeField()),

@@ -54,6 +54,7 @@
         "pk": 1,
         "fields": {
             "usuario": 1,
+            "numero_pedido": "dfddsgdfhvvr",
             "fecha_pedido": "2024-11-10T10:00:00Z",
             "fecha_salida": "2024-11-12T10:00:00Z",
             "fecha_entrega": "2024-11-15T10:00:00Z",
@@ -68,6 +69,7 @@
         "pk": 2,
         "fields": {
             "usuario": 2,
+            "numero_pedido": "dfddsgdfhfer",
             "fecha_pedido": "2024-11-11T11:00:00Z",
             "fecha_salida": "2024-11-13T10:00:00Z",
             "fecha_entrega": "2024-11-16T10:00:00Z",
