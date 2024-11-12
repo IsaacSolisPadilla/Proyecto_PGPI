@@ -4,8 +4,6 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 
-class CustomUser(User):
-    direccion = models.CharField(max_length=100)
 
 class DatosEmpresa(models.Model):
     nombre = models.CharField(max_length=100)

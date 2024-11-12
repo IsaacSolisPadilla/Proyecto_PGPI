@@ -1,12 +1,112 @@
 [
     {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "username": "juanperez",
+            "first_name": "Juan",
+            "last_name": "Perez",
+            "email": "juan.perez@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "last_login": "2024-11-10T12:34:56Z",
+            "date_joined": "2024-01-01T09:00:00Z",
+            "password": "pbkdf2_sha256$260000$abcdef$..."
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "username": "mariagomez",
+            "first_name": "Maria",
+            "last_name": "Gomez",
+            "email": "maria.gomez@example.com",
+            "is_staff": true,
+            "is_active": true,
+            "is_superuser": true,
+            "last_login": "2024-11-11T15:30:00Z",
+            "date_joined": "2023-12-20T10:00:00Z",
+            "password": "pbkdf2_sha256$260000$abcdef$..."
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 3,
+        "fields": {
+            "username": "lucia_hernandez",
+            "first_name": "Lucía",
+            "last_name": "Hernandez",
+            "email": "lucia.hernandez@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "last_login": "2024-11-12T10:00:00Z",
+            "date_joined": "2024-02-01T12:00:00Z",
+            "password": "pbkdf2_sha256$260000$abcdef$..."
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 4,
+        "fields": {
+            "username": "carlos_ramos",
+            "first_name": "Carlos",
+            "last_name": "Ramos",
+            "email": "carlos.ramos@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "last_login": "2024-10-05T18:00:00Z",
+            "date_joined": "2024-03-12T10:30:00Z",
+            "password": "pbkdf2_sha256$260000$abcdef$..."
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 5,
+        "fields": {
+            "username": "fernando_diaz",
+            "first_name": "Fernando",
+            "last_name": "Díaz",
+            "email": "fernando.diaz@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "last_login": "2024-11-01T08:30:00Z",
+            "date_joined": "2024-04-10T16:30:00Z",
+            "password": "pbkdf2_sha256$260000$abcdef$..."
+        }
+    },
+    {
         "model": "Tienda.datosempresa",
         "pk": 1,
         "fields": {
-            "nombre": "Tienda Esotérica",
+            "nombre": "Tienda Esotérica A",
             "direccion": "Calle de los Misterios, 45",
             "telefono": "+34 600 123 456",
-            "email": "contacto@tiendaesoterica.com"
+            "email": "contacto@tiendaA.com"
+        }
+    },
+    {
+        "model": "Tienda.datosempresa",
+        "pk": 2,
+        "fields": {
+            "nombre": "Tienda Esotérica B",
+            "direccion": "Avenida de la Magia, 88",
+            "telefono": "+34 600 789 012",
+            "email": "contacto@tiendaB.com"
+        }
+    },
+    {
+        "model": "Tienda.datosempresa",
+        "pk": 3,
+        "fields": {
+            "nombre": "Tienda Esotérica C",
+            "direccion": "Calle Sanación, 67",
+            "telefono": "+34 600 345 678",
+            "email": "contacto@tiendaC.com"
         }
     },
     {
@@ -23,6 +123,14 @@
         "fields": {
             "nombre": "Cristales",
             "descripcion": "Cristales y piedras para energía y sanación"
+        }
+    },
+    {
+        "model": "Tienda.categoriaproducto",
+        "pk": 3,
+        "fields": {
+            "nombre": "Inciensos",
+            "descripcion": "Inciensos para purificación y meditación"
         }
     },
     {
@@ -50,11 +158,23 @@
         }
     },
     {
+        "model": "Tienda.producto",
+        "pk": 3,
+        "fields": {
+            "nombre": "Incienso de Sándalo",
+            "categoria": 3,
+            "precio": "3.99",
+            "stock": 75,
+            "descripcion": "Incienso de sándalo para relajación y paz",
+            "fotografia": "productos/incienso_sandalo.jpg"
+        }
+    },
+    {
         "model": "Tienda.pedido",
         "pk": 1,
         "fields": {
             "usuario": 1,
-            "numero_pedido": "dfddsgdfhvvr",
+            "numero_pedido": "ORD12345",
             "fecha_pedido": "2024-11-10T10:00:00Z",
             "fecha_salida": "2024-11-12T10:00:00Z",
             "fecha_entrega": "2024-11-15T10:00:00Z",
@@ -69,7 +189,7 @@
         "pk": 2,
         "fields": {
             "usuario": 2,
-            "numero_pedido": "dfddsgdfhfer",
+            "numero_pedido": "ORD12346",
             "fecha_pedido": "2024-11-11T11:00:00Z",
             "fecha_salida": "2024-11-13T10:00:00Z",
             "fecha_entrega": "2024-11-16T10:00:00Z",
@@ -125,8 +245,8 @@
         "pk": 4,
         "fields": {
             "factura": 2,
-            "producto": 2,
-            "cantidad": 4
+            "producto": 3,
+            "cantidad": 5
         }
     }
 ]
