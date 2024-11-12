@@ -2,6 +2,7 @@ from django.db import models
 
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
 
 class CustomUser(User):
     direccion = models.CharField(max_length=100)
@@ -35,6 +36,7 @@ class Producto(models.Model):
 
 class Pedido(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    numero_pedido = models.CharField()
     fecha_pedido = models.DateTimeField(auto_now_add=True)
     fecha_salida = models.DateTimeField()
     fecha_entrega = models.DateTimeField()
@@ -51,6 +53,11 @@ class Pedido(models.Model):
 
     def __str__(self):
         return f"Pedido {self.id} de {self.usuario.username}"
+
+    def save(self, *args, **kwargs):
+        if not self.numero_pedido:
+            self.numero_pedido = str(uuid.uuid4())
+        super().save(*args, **kwargs)
     
 class Factura(models.Model):
     pedido = models.OneToOneField(Pedido, on_delete=models.CASCADE)
