@@ -20,3 +20,35 @@ def lista_usuarios(request):
     usuarios = User.objects.all()
     return render(request, 'lista_usuarios.html', {'usuarios': usuarios})
 
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')  # Redirige a la página principal o la que prefieras
+        else:
+            messages.error(request, 'Nombre de usuario o contraseña incorrectos')
+    return render(request, 'login/login.html')
+
+def register_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password != confirm_password:
+            messages.error(request, 'Las contraseñas no coinciden')
+            return redirect('register')
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'El nombre de usuario ya está en uso')
+            return redirect('register')
+        user = User.objects.create_user(username=username, password=password)
+        user.save()
+        login(request, user)
+
+        messages.success(request, 'Usuario registrado exitosamente')
+        return redirect('/')
+
+    return render(request, 'login/register.html')  # Ruta de la plantilla

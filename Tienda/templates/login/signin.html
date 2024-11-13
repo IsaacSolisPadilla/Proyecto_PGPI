@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <form class="form">
+       <p class="title">Iniciar Sesión</p>
+        <div class="input-container">
+          <input placeholder="Introduce correo" type="email">
+          <span>
+            <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+            </svg>
+          </span>
+      </div>
+      <div class="input-container">
+          <input placeholder="Contraseña" type="password">
+
+          <span>
+            <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+              <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+            </svg>
+          </span>
+        </div>
+         <button class="submit" type="submit">
+        Inicar sesión
+      </button>
+
+      <p class="signin">
+        ¿No tienes cuenta?
+        <a href="/c:/Users/marin/Desktop/4º/1º Cuatri/PGPI/Proyecto/Proyecto_PGPI/Tienda/templates/login/registro_sesion.html">Registrate</a>
+      </p>
+   </form>
+
+</html>
+
+<style>
+    .title {
+    font-size: 28px;
+    color: royalblue;
+    font-weight: 600;
+    letter-spacing: -1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    }
+
+    .title::before,.title::after {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    left: 0px;
+    background-color: royalblue;
+    }
+
+    .title::before {
+    width: 18px;
+    height: 18px;
+    background-color: royalblue;
+    }
+
+    .form {
+    background-color: #fff;
+    display: block;
+    padding: 1rem;
+    max-width: 350px;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .input-container {
+    position: relative;
+    }
+
+    .input-container input, .form button {
+    outline: none;
+    border: 1px solid #e5e7eb;
+    margin: 8px 0;
+    }
+
+    .input-container input {
+    background-color: #fff;
+    padding: 1rem;
+    padding-right: 3rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    width: 300px;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .input-container span {
+    display: grid;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    place-content: center;
+    }
+
+    .input-container span svg {
+    color: #9CA3AF;
+    width: 1rem;
+    height: 1rem;
+    }
+
+    .submit {
+    border: none;
+    outline: none;
+    background-color: royalblue;
+    padding: 10px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    transform: .3s ease;
+    }
+
+    .message, .signin {
+    color: rgba(88, 87, 87, 0.822);
+    font-size: 14px;
+    }
+
+    .signin {
+    text-align: center;
+    }
+
+    .signin a {
+    color: royalblue;
+    }
+
+    .signin a:hover {
+    text-decoration: underline royalblue;
+    }
+
+    @keyframes pulse {
+    from {
+        transform: scale(0.9);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+    }
+</style>
+ 
