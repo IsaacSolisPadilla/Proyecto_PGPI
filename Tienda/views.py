@@ -4,6 +4,8 @@ from django.shortcuts import render
 from .models import CategoriaProducto, Producto, Pedido
 from django.contrib.auth.models import User
 
+def pagina_principal(request):
+    return render(request, 'pagina_principal.html')
 def lista_categorias(request):
     categorias = CategoriaProducto.objects.all()
     return render(request, 'lista_categorias.html', {'categorias': categorias})

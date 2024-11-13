@@ -21,10 +21,9 @@ from Tienda import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('categorias/', views.lista_categorias, name='lista_categorias'),
-    path('', views.lista_productos, name='lista_productos'),
+    path('', views.pagina_principal, name='pagina_principal'),
     path('pedidos/', views.lista_pedidos, name='lista_pedidos'),
     path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register')
 ]
-

@@ -36,8 +36,39 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        background-color: #f0f0f0;
+        width: 100%;
+        height: 100%;
+        background: #006e6f; /* Fallback for browsers that don't support gradients */
+        background: linear-gradient(
+            135deg,
+            #006e6f 25%,
+            #008c8e 25%,
+            #008c8e 50%,
+            #006e6f 50%,
+            #006e6f 75%,
+            #008c8e 75%,
+            #008c8e
+        );
+        background-size: 40px 40px;
+        animation: move 4s linear infinite;
+    }
+
+    .container1 {
+        /* Basic dimensions and centering */
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        padding: 20px;
+        
+    }
+
+    @keyframes move {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 40px 40px;
+        }
     }
 
     .form {
@@ -53,7 +84,7 @@
 
     .title {
         font-size: 28px;
-        color: royalblue;
+        color: #006e6f;
         font-weight: 600;
         letter-spacing: -1px;
         position: relative;
@@ -69,13 +100,13 @@
         width: 16px;
         border-radius: 50%;
         left: 0px;
-        background-color: royalblue;
+        background-color: #006e6f;
     }
 
     .title::before {
         width: 18px;
         height: 18px;
-        background-color: royalblue;
+        background-color: #006e6f;
     }
 
     .title::after {
@@ -94,11 +125,11 @@
     }
 
     .signin a {
-        color: royalblue;
+        color: #006e6f;
     }
 
     .signin a:hover {
-        text-decoration: underline royalblue;
+        text-decoration: underline #006e6f;
     }
 
     .flex {
@@ -147,7 +178,7 @@
     .submit {
         border: none;
         outline: none;
-        background-color: royalblue;
+        background-color: #006e6f;
         padding: 10px;
         border-radius: 10px;
         color: #fff;
@@ -156,7 +187,7 @@
     }
 
     .submit:hover {
-        background-color: rgb(56, 90, 194);
+        background-color: #006e6f;
     }
 
     @keyframes pulse {
@@ -169,5 +200,30 @@
             transform: scale(1.8);
             opacity: 0;
         }
+    }
+
+    header {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+    font-size: 36px;
+    color: #333;
+    }
+
+    header p {
+    font-size: 18px;
+    color: #555;
+    }
+    body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f3e7e9, #e3eeff);
+    color: #333;
     }
 </style>
