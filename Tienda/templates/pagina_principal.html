@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<div class="container">
+<html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Página de Perfumes</title>
+        </head>
+
+        <body>
+        
+        <header>
+            <a href="{% url 'login' %}" class="cta" style="right: 0%; text-decoration: none;">
+                <span>Iniciar Sesión</span>
+                <svg width="15px" height="10px" viewBox="0 0 13 10">
+                    <path d="M1,5 L11,5"></path>
+                    <polyline points="8 1 12 5 8 9"></polyline>
+                </svg>
+            </a>
+            <h1>Perfumería de Lujo</h1>
+            
+            <p>Encuentra tu fragancia perfecta</p>
+            
+            
+
+
+        </header>
+        
+
+
+        <section class="hero">
+            <h2>Descubre Nuestros Aromas Exclusivos</h2>
+        </section>
+
+        <section class="featured-products" id="productos">
+            <h2>Productos Destacados</h2>
+            <div class="product-grid">
+            <div class="product">
+                <img src="https://via.placeholder.com/300x300?text=Perfume+1" alt="Perfume 1">
+                <h3>Perfume Esencia Floral</h3>
+                <p>$70.00</p>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/300x300?text=Perfume+2" alt="Perfume 2">
+                <h3>Perfume Cítrico Fresco</h3>
+                <p>$80.00</p>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/300x300?text=Perfume+3" alt="Perfume 3">
+                <h3>Perfume Amaderado Intenso</h3>
+                <p>$90.00</p>
+            </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Perfumería de Lujo. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
+        </footer>
+
+        </body>
+
+</html>
+</div>   
+
+<style>
+    .cta {
+    position: absolute;
+    margin: auto;
+    padding: 12px 18px;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    cursor: pointer;
+    }
+
+    .cta:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    border-radius: 50px;
+    background: #008c8e;
+    width: 45px;
+    height: 45px;
+    transition: all 0.3s ease;
+    }
+
+    .cta span {
+    position: relative;
+    font-family: "Ubuntu", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #006e6f;
+    }
+
+    .cta svg {
+    position: relative;
+    top: 0;
+    margin-left: 10px;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: #008c8e;
+    stroke-width: 2;
+    transform: translateX(-5px);
+    transition: all 0.3s ease;
+    }
+
+    .cta:hover:before {
+    width: 100%;
+    background: #b1dae7;
+    }
+
+    .cta:hover svg {
+    transform: translateX(0);
+    }
+
+    .cta:active {
+    transform: scale(0.95);
+    }
+
+    .container {
+    /* Basic dimensions and centering */
+    width: 100%;
+    height: 100%;
+
+    /* Dark mode colors and gradient */
+    background: #006e6f; /* Fallback for browsers that don't support gradients */
+    background: linear-gradient(
+        135deg,
+        #006e6f 25%,
+        #008c8e 25%,
+        #008c8e 50%,
+        #006e6f 50%,
+        #006e6f 75%,
+        #008c8e 75%,
+        #008c8e
+    );
+    background-size: 40px 40px;
+
+    /* Animation */
+    animation: move 4s linear infinite;
+    }
+
+    @keyframes move {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 40px 40px;
+    }
+    }
+
+    body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f3e7e9, #e3eeff);
+    color: #333;
+    }
+
+    header {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+    font-size: 36px;
+    color: #333;
+    }
+
+    header p {
+    font-size: 18px;
+    color: #555;
+    }
+
+    .nav-bar {
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-bar a {
+    text-decoration: none;
+    color: #555;
+    font-weight: bold;
+    transition: color 0.3s;
+    }
+
+    .nav-bar a:hover {
+    color: royalblue;
+    }
+
+    .hero {
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+    }
+
+    .hero h2 {
+    font-size: 48px;
+    margin-bottom: 10px;
+    }
+
+    .hero p {
+    font-size: 20px;
+    }
+
+    .featured-products {
+    padding: 50px 20px;
+    text-align: center;
+    }
+
+    .featured-products h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #333;
+    }
+
+    .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    }
+
+    .product {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    }
+
+    .product img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    }
+
+    .product h3 {
+    font-size: 20px;
+    margin: 10px 0;
+    color: #333;
+    }
+
+    .product p {
+    color: #777;
+    font-size: 16px;
+    }
+
+    footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+    }
+
+    footer p {
+    font-size: 14px;
+    }
+
+    footer a {
+    color: royalblue;
+    text-decoration: none;
+    }
+
+    footer a:hover {
+    text-decoration: underline;
+    }
+</style>
