@@ -22,6 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('categorias/', views.lista_categorias, name='lista_categorias'),
     path('', views.lista_productos, name='lista_productos'),
-    path('pedidos/', views.lista_pedidos, name='lista_pedidos'),
+    path('facturas/', views.lista_facturas, name='lista_facturas'),
     path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
+    path('facturas/crear', views.crear_factura, name='crear_pedido'),
+    path('factura', views.obtener_factura)
 ]

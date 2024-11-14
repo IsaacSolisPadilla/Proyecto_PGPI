@@ -142,7 +142,7 @@
             "precio": "5.99",
             "stock": 100,
             "descripcion": "Vela de lavanda para calmar el espíritu",
-            "fotografia": "productos/vela_lavanda.jpg"
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqEQodYBjharjn0WNLonSiN0tr9zk8YY6aw&s"
         }
     },
     {
@@ -154,7 +154,7 @@
             "precio": "15.99",
             "stock": 50,
             "descripcion": "Cristal de cuarzo para sanación espiritual",
-            "fotografia": "productos/cristal_cuarzo.jpg"
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvf-KTR-7XikaYaovP7q9pXR8YLpWzBn-NeA&s"
         }
     },
     {
@@ -166,15 +166,15 @@
             "precio": "3.99",
             "stock": 75,
             "descripcion": "Incienso de sándalo para relajación y paz",
-            "fotografia": "productos/incienso_sandalo.jpg"
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
         }
     },
     {
-        "model": "Tienda.pedido",
+        "model": "Tienda.factura",
         "pk": 1,
         "fields": {
             "usuario": 1,
-            "numero_pedido": "ORD12345",
+            "numero_factura": "ORD12345",
             "fecha_pedido": "2024-11-10T10:00:00Z",
             "fecha_salida": "2024-11-12T10:00:00Z",
             "fecha_entrega": "2024-11-15T10:00:00Z",
@@ -185,11 +185,11 @@
         }
     },
     {
-        "model": "Tienda.pedido",
+        "model": "Tienda.factura",
         "pk": 2,
         "fields": {
             "usuario": 2,
-            "numero_pedido": "ORD12346",
+            "numero_factura": "ORD12346",
             "fecha_pedido": "2024-11-11T11:00:00Z",
             "fecha_salida": "2024-11-13T10:00:00Z",
             "fecha_entrega": "2024-11-16T10:00:00Z",
@@ -197,20 +197,6 @@
             "estado": "Enviado",
             "metodo_de_pago": "Contrareembolso",
             "coste_envio": "3.99"
-        }
-    },
-    {
-        "model": "Tienda.factura",
-        "pk": 1,
-        "fields": {
-            "pedido": 1
-        }
-    },
-    {
-        "model": "Tienda.factura",
-        "pk": 2,
-        "fields": {
-            "pedido": 2
         }
     },
     {

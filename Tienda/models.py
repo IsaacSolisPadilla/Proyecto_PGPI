@@ -20,6 +20,12 @@ class CategoriaProducto(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+    def to_dict(self):
+        return {
+            "nombre": self.nombre,
+            "descripcion": self.descripcion
+        }
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
@@ -31,10 +37,20 @@ class Producto(models.Model):
 
     def str(self):
         return self.nombre
-
-class Pedido(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    numero_pedido = models.CharField(unique=True, max_length=12)
+    
+    def to_dict(self):
+        return {
+            "nombre": self.nombre, 
+            "categoria": self.categoria.to_dict(),
+            "precio": self.precio,
+            "stock": self.stock,
+            "descripcion": self.descripcion,
+            "fotografia": str(self.fotografia)
+        }
+    
+class Factura(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="facturas")
+    numero_factura = models.CharField(unique=True, max_length=12)
     fecha_pedido = models.DateTimeField(auto_now_add=True)
     fecha_salida = models.DateTimeField()
     fecha_entrega = models.DateTimeField()
@@ -48,23 +64,31 @@ class Pedido(models.Model):
         choices=[("Contrareembolso", "Contrareembolso"), ("Pasarela","Pasarela de pago")]
     )
     coste_envio = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def __str__(self):
-        return f"Pedido {self.id} de {self.usuario.username}"
-
+    
     def save(self, *args, **kwargs):
-        if not self.numero_pedido:
-            self.numero_pedido = str(uuid.uuid4())
+        if not self.numero_factura:
+            self.numero_factura = str(uuid.uuid4())
         super().save(*args, **kwargs)
     
-class Factura(models.Model):
-    pedido = models.OneToOneField(Pedido, on_delete=models.CASCADE)
-
     def precio_total(self):
         return sum(map(lambda linea: linea.precio_linea() ,LineaFactura.objects.filter(factura=self).all()))
     
     def __str__(self):
-        return f"Factura {self.id} para Pedido {self.pedido.id}"
+        return f"Factura {self.id}"
+    
+    def to_dict(self):
+        return {
+            "numero_factura": self.numero_factura, 
+            "fecha_pedido": self.fecha_pedido,
+            "fecha_salida": self.fecha_salida,
+            "fecha_entrega": self.fecha_entrega,
+            "direccion": self.direccion,
+            "estado": self.estado,
+            "metodo_de_pago": self.metodo_de_pago,
+            "coste_envio": self.coste_envio,
+            "precio_total": self.precio_total()
+        }
+
 
 class LineaFactura(models.Model):
     
@@ -76,6 +100,13 @@ class LineaFactura(models.Model):
         return self.producto.precio * self.cantidad
 
     def __str__(self):
-        return f"{self.cantidad} de {self.producto.nombre} en Pedido {self.factura.pedido.id}"
+        return f"{self.cantidad} de {self.producto.nombre} en Factura {self.factura.id}"
+    
+    def to_dict(self):
+        return {
+            "factura": self.factura.to_dict(), 
+            "producto": self.producto.to_dict(),
+            "cantidad": self.cantidad
+        }
 
 
