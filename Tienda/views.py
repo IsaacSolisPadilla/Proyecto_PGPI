@@ -25,7 +25,6 @@ def lista_usuarios(request):
     usuarios = User.objects.all()
     return render(request, 'lista_usuarios.html', {'usuarios': usuarios})
 
-<<<<<<< HEAD
 def obtener_factura(request):
     factura = Factura.objects.get(id=1)
     ls = {i:value for i, value in enumerate(map(lambda x: x.to_dict(), list(factura.lineas_factura.all())))}
@@ -45,7 +44,6 @@ def crear_factura(request):
         {'lineas': factura.lineas_factura.all() }
     )
 
-=======
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -78,4 +76,3 @@ def register_view(request):
         return redirect('/')
 
     return render(request, 'login/register.html')  # Ruta de la plantilla
->>>>>>> 2dba9742b518d137b77806a125b58c3e1ff5566c

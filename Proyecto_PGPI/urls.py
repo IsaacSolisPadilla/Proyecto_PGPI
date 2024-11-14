@@ -21,17 +21,11 @@ from Tienda import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('categorias/', views.lista_categorias, name='lista_categorias'),
-<<<<<<< HEAD
-    path('', views.lista_productos, name='lista_productos'),
     path('facturas/', views.lista_facturas, name='lista_facturas'),
     path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
     path('facturas/crear', views.crear_factura, name='crear_pedido'),
-    path('factura', views.obtener_factura)
-=======
+    path('factura', views.obtener_factura),
     path('', views.pagina_principal, name='pagina_principal'),
-    path('pedidos/', views.lista_pedidos, name='lista_pedidos'),
-    path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register')
->>>>>>> 2dba9742b518d137b77806a125b58c3e1ff5566c
 ]
