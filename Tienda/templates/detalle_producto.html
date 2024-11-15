@@ -4,50 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Perfumes</title>
+    <title>Detalle de Producto</title>
 </head>
 
 <body>
 <header>
-    <a href="{% url 'login' %}" class="cta" style="right: 0%; text-decoration: none;">
-        <span>Iniciar Sesión</span>
+    <h1>{{ producto.nombre }}</h1>
+    <a href="{% url 'pagina_principal' %}" class="cta" style="right: 0%; text-decoration: none;">
+        <span>Volver</span>
         <svg width="15px" height="10px" viewBox="0 0 13 10">
             <path d="M1,5 L11,5"></path>
             <polyline points="8 1 12 5 8 9"></polyline>
         </svg>
     </a>
-    <h1>Perfumería de Lujo</h1>
-    <p>Encuentra tu fragancia perfecta</p>
 </header>
 
 <section class="hero">
-    <h2>Descubre Nuestros Aromas Exclusivos</h2>
+    <h2>Detalles del Producto</h2>
 </section>
 
-<section class="featured-products" id="productos">
-    <h2>Productos Destacados</h2>
-    <!-- Botón de Crear Producto -->
-    <div class="create-button-container">
-        <a href="{% url 'crear_producto' %}" class="create-button">
-            Crear Producto
-        </a>
+<section class="product-details">
+    <div class="product">
+        {% if producto.fotografia %}
+        <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image';">
+        {% else %}
+        <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+        {% endif %}
+        <h3>{{ producto.nombre }}</h3>
+        <p><strong>Precio:</strong> ${{ producto.precio }}</p>
+        <p><strong>Stock:</strong> {{ producto.stock }}</p>
+        <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
+        <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
     </div>
-    <div class="product-grid">
-        {% for producto in productos %}
-        <div class="product">
-            <a href="{% url 'detalle_producto' producto.id %}">
-                {% if producto.fotografia %}
-                <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}">
-                {% else %}
-                <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
-                {% endif %}
-                <h3>{{ producto.nombre }}</h3>
-                <p>${{ producto.precio }}</p>
-            </a>
-        </div>
-        {% empty %}
-        <p>No hay productos disponibles en este momento.</p>
-        {% endfor %}
+    <div>
+        <!-- Botón para eliminar producto -->
+        <form action="{% url 'eliminar_producto' producto.id %}" method="post" style="margin-top: 20px;">
+            {% csrf_token %}
+            <button type="submit" class="delete-button">Eliminar Producto</button>
+        </form>
     </div>
 </section>
 
@@ -173,24 +167,12 @@
         margin-bottom: 10px;
     }
 
-    .featured-products {
+    .product-details {
         padding: 50px 20px;
         text-align: center;
     }
 
-    .featured-products h2 {
-        font-size: 32px;
-        margin-bottom: 20px;
-        color: #333;
-    }
-
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
-
-    .product {
+    .product-details .product {
         background-color: rgba(255, 255, 255, 0.9);
         padding: 20px;
         border-radius: 10px;
@@ -198,21 +180,22 @@
         text-align: center;
     }
 
-    .product img {
-        width: 100%;
+    .product-details .product img {
+        width: 300px;
         height: auto;
         border-radius: 10px;
+        margin-bottom: 20px;
     }
 
-    .product h3 {
-        font-size: 20px;
-        margin: 10px 0;
+    .product-details .product h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
         color: #333;
     }
 
-    .product p {
+    .product-details .product p {
         color: #777;
-        font-size: 16px;
+        font-size: 18px;
     }
 
     footer {
@@ -234,56 +217,5 @@
 
     footer a:hover {
         text-decoration: underline;
-    }
-    .create-button-container {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .create-button {
-        background-color: #008c8e;
-        color: white;
-        text-decoration: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-        display: inline-block;
-    }
-
-    .create-button:hover {
-        background-color: #006e6f;
-    }
-
-    /* Ajustes de la cuadrícula de productos */
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
-
-    .product {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
-
-    .product img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-    }
-
-    .product h3 {
-        font-size: 20px;
-        margin: 10px 0;
-        color: #333;
-    }
-
-    .product p {
-        color: #777;
-        font-size: 16px;
     }
 </style>

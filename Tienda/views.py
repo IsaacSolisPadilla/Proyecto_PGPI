@@ -1,10 +1,13 @@
 import json
+from pyexpat.errors import messages
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from django.shortcuts import render
 from .models import CategoriaProducto, Producto, Factura, LineaFactura
 from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
+from .Producto.service import ProductoService
 # from .forms import PedidoCreateForm
 
 def pagina_principal(request):
@@ -76,3 +79,30 @@ def register_view(request):
         return redirect('/')
 
     return render(request, 'login/register.html')  # Ruta de la plantilla
+
+def listar_productos(request):
+    productos = ProductoService.listar_productos()
+    print(productos)
+    return render(request, 'pagina_principal.html', {'productos': productos})
+
+def crear_producto(request):
+    if request.method == 'POST':
+        data = request.POST
+        fotografia = request.FILES.get('fotografia')
+        producto = ProductoService.crear_producto(data, fotografia)
+        return redirect('/')
+    else:
+        categorias = CategoriaProducto.objects.all()
+        return render(request, 'crear_producto.html', {'categorias': categorias})
+
+def eliminar_producto(request, producto_id):
+    ProductoService.eliminar_producto(producto_id)
+    return redirect('pagina_principal')
+
+def pagina_principal(request):
+    productos = Producto.objects.all()
+    return render(request, 'pagina_principal.html', {'productos': productos})
+
+def detalle_producto(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    return render(request, 'detalle_producto.html', {'producto': producto})
