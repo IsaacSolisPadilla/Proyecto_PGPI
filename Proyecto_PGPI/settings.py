@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-v8-ec*es737c)7he1=y+j_dqtdt&&2p7&_wp8q7ywk9j8_)x+2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -118,7 +118,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/'  # Redirige a la página principal
 STATIC_URL = 'static/'
 
 # Media files (uploaded images, etc.)

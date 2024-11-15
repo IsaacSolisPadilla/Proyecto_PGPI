@@ -1,8 +1,9 @@
 import json
-from pyexpat.errors import messages
+from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django.shortcuts import redirect, render
+from django.contrib.auth import login
 from django.shortcuts import render
 from .models import CategoriaProducto, Producto, Factura, LineaFactura
 from django.contrib.auth.models import User
@@ -49,36 +50,74 @@ def crear_factura(request):
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        try:
+            # Buscar usuario por correo electrónico
+            user = User.objects.get(email=email)
+            username = user.username  # Obtenemos el username asociado al email
+        except User.DoesNotExist:
+            messages.error(request, 'El correo electrónico no está registrado.')
+            return redirect('login')
+
+        # Autenticar usuario
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/')  # Redirige a la página principal o la que prefieras
+            messages.success(request, 'Inicio de sesión exitoso.')
+            return redirect('/')  # Redirige a la página principal
         else:
-            messages.error(request, 'Nombre de usuario o contraseña incorrectos')
+            messages.error(request, 'Correo electrónico o contraseña incorrectos.')
+
     return render(request, 'login/login.html')
 
 def register_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
 
-        if password != confirm_password:
-            messages.error(request, 'Las contraseñas no coinciden')
+        # Validar campos vacíos
+        if not first_name or not last_name or not email or not username or not password or not confirm_password:
+            messages.error(request, 'Todos los campos son obligatorios.')
             return redirect('register')
+
+        # Validar si el correo electrónico ya existe
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'El correo electrónico ya está en uso.')
+            return redirect('register')
+
+        # Validar si el nombre de usuario ya existe
         if User.objects.filter(username=username).exists():
-            messages.error(request, 'El nombre de usuario ya está en uso')
+            messages.error(request, 'El nombre de usuario ya está en uso.')
             return redirect('register')
-        user = User.objects.create_user(username=username, password=password)
+
+        # Validar contraseñas
+        if password != confirm_password:
+            messages.error(request, 'Las contraseñas no coinciden.')
+            return redirect('register')
+
+        # Crear usuario
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=email,
+            first_name=first_name,
+            last_name=last_name
+        )
         user.save()
+
+        # Iniciar sesión automáticamente después del registro
         login(request, user)
 
-        messages.success(request, 'Usuario registrado exitosamente')
+        messages.success(request, 'Usuario registrado exitosamente.')
         return redirect('/')
 
-    return render(request, 'login/register.html')  # Ruta de la plantilla
+    return render(request, 'login/register.html')
 
 def listar_productos(request):
     productos = ProductoService.listar_productos()

@@ -7,15 +7,34 @@
     <title>Página de Perfumes</title>
 </head>
 
-<body>
 <header>
-    <a href="{% url 'login' %}" class="cta" style="right: 0%; text-decoration: none;">
-        <span>Iniciar Sesión</span>
-        <svg width="15px" height="10px" viewBox="0 0 13 10">
-            <path d="M1,5 L11,5"></path>
-            <polyline points="8 1 12 5 8 9"></polyline>
-        </svg>
-    </a>
+    <div class="header-content">
+        {% if user.is_authenticated %}
+            <div class="user-info">
+                <button class="dropdown-button">
+                    Hola, {{ user.username }}
+                    <svg width="15px" height="10px" viewBox="0 0 13 10">
+                        <path d="M1,5 L11,5"></path>
+                        <polyline points="8 1 12 5 8 9"></polyline>
+                    </svg>
+                </button>
+                <div class="dropdown-menu">
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <a href="{% url 'login' %}" class="cta">
+                <span>Iniciar Sesión</span>
+                <svg width="15px" height="10px" viewBox="0 0 13 10">
+                    <path d="M1,5 L11,5"></path>
+                    <polyline points="8 1 12 5 8 9"></polyline>
+                </svg>
+            </a>
+        {% endif %}
+    </div>
     <h1>Perfumería de Lujo</h1>
     <p>Encuentra tu fragancia perfecta</p>
 </header>
@@ -285,5 +304,53 @@
     .product p {
         color: #777;
         font-size: 16px;
+    }
+    .dropdown-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #006e6f;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    }
+
+    .dropdown-button:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    /* Menú dropdown */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+    }
+
+    .dropdown-menu .dropdown-item {
+        display: block;
+        padding: 10px 15px;
+        color: #006e6f;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: rgba(0, 140, 142, 0.1);
+    }
+
+    /* Mostrar menú al hacer hover */
+    .user-info:hover .dropdown-menu {
+        display: block;
     }
 </style>

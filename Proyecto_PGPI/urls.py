@@ -3,6 +3,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from Tienda import views
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -13,6 +14,7 @@ urlpatterns = [
     path('factura', views.obtener_factura),
     path('', views.pagina_principal, name='pagina_principal'),
     path('login/', views.login_view, name='login'),
+    path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('register/', views.register_view, name='register'),
     path('productos/<int:producto_id>/', views.detalle_producto, name='detalle_producto'),
     path('productos/crear/', views.crear_producto, name='crear_producto'),
