@@ -18,5 +18,6 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     path('productos/<int:producto_id>/', views.detalle_producto, name='detalle_producto'),
     path('productos/crear/', views.crear_producto, name='crear_producto'),
+    path('producto/<int:producto_id>/editar/', views.actualizar_producto, name='actualizar_producto'),
     path('productos/<int:producto_id>/eliminar/', views.eliminar_producto, name='eliminar_producto'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

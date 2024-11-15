@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Producto</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f3e7e9, #e3eeff);
+            color: #333;
+        }
+
+        header {
+            background-color: #008c8e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        header nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #006e6f;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, textarea, select, button {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #008c8e;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #006e6f;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        footer a {
+            color: #4ecdc4;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Actualizar Producto</h1>
+        <nav>
+            <a href="{% url 'pagina_principal' %}">Inicio</a>
+            <a href="{% url 'crear_producto' %}">Crear Producto</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Formulario de Actualización</h2>
+        <form method="POST" action="{% url 'actualizar_producto' producto.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" id="nombre" value="{{ producto.nombre }}" required>
+
+            <label for="precio">Precio:</label>
+            <input type="number" name="precio" id="precio" value="{{ producto.precio }}" required>
+
+            <label for="stock">Stock:</label>
+            <input type="number" name="stock" id="stock" value="{{ producto.stock }}" required>
+
+            <label for="descripcion">Descripción:</label>
+            <textarea name="descripcion" id="descripcion">{{ producto.descripcion }}</textarea>
+
+            <label for="fotografia">Fotografía:</label>
+            <input type="file" name="fotografia" id="fotografia">
+
+            <label for="categoria">Categoría:</label>
+            <select name="categoria" id="categoria">
+                {% for categoria in categorias %}
+                <option value="{{ categoria.id }}" {% if categoria.id == producto.categoria.id %}selected{% endif %}>
+                    {{ categoria.nombre }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Actualizar Producto</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Perfumería de Lujo. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
+    </footer>
+</body>
+</html>

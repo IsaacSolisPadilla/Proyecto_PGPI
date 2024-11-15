@@ -37,8 +37,11 @@
         <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
     </div>
     <div>
+        <!-- Botón para actualizar producto -->
+        <a href="{% url 'actualizar_producto' producto.id %}" class="update-button" style="margin-right: 10px;">Actualizar Producto</a>
+        
         <!-- Botón para eliminar producto -->
-        <form action="{% url 'eliminar_producto' producto.id %}" method="post" style="margin-top: 20px;">
+        <form action="{% url 'eliminar_producto' producto.id %}" method="post" style="display: inline;">
             {% csrf_token %}
             <button type="submit" class="delete-button">Eliminar Producto</button>
         </form>
@@ -217,5 +220,33 @@
 
     footer a:hover {
         text-decoration: underline;
+    }
+    .update-button {
+        background-color: #006e6f;
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+    }
+
+    .update-button:hover {
+        background-color: #008c8e;
+    }
+
+    .delete-button {
+        background-color: #d9534f;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .delete-button:hover {
+        background-color: #c9302c;
     }
 </style>
