@@ -120,4 +120,3 @@ def register_view(request):
 def pagina_principal(request):
     productos = Producto.objects.all()
     return render(request, 'pagina_principal.html', {'productos': productos})
-
