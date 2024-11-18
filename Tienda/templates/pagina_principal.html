@@ -4,13 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Perfumes</title>
+    <title>Aromas del Mundo</title>
 </head>
 
 <header>
     <div class="header-content">
+        
+            
+    </div>
+    <h1>Aromas del Mundo</h1>
+    <p>Enciende tus sentidos, descubre la magia de lo exótico.</p>
+</header>
+
+<nav class="navbar">
+    <ul class="navbar-menu">
         {% if user.is_authenticated %}
-            <div class="user-info">
+            <li class="navbar-item" style="position: absolute; left: 1%;">
                 <button class="dropdown-button">
                     Hola, {{ user.username }}
                     <svg width="15px" height="10px" viewBox="0 0 13 10">
@@ -24,20 +33,42 @@
                         <button type="submit" class="dropdown-item">Cerrar Sesión</button>
                     </form>
                 </div>
-            </div>
+            </li>
         {% else %}
-            <a href="{% url 'login' %}" class="cta">
-                <span>Iniciar Sesión</span>
-                <svg width="15px" height="10px" viewBox="0 0 13 10">
-                    <path d="M1,5 L11,5"></path>
-                    <polyline points="8 1 12 5 8 9"></polyline>
-                </svg>
-            </a>
+        <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
+            <span>Iniciar Sesión</span>
+            <svg width="15px" height="10px" viewBox="0 0 13 10">
+                <path d="M1,5 L11,5"></path>
+                <polyline points="8 1 12 5 8 9"></polyline>
+            </svg>
+        </a>
         {% endif %}
-    </div>
-    <h1>Perfumería de Lujo</h1>
-    <p>Encuentra tu fragancia perfecta</p>
-</header>
+        <li class="navbar-item">
+            <button class="navbar-link">Categorías</button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Perfumes</a></li>
+                <li><a href="#">Colonias</a></li>
+                <li><a href="#">Sets de Regalo</a></li>
+            </ul>
+        </li>
+        <li class="navbar-item">
+            <button class="navbar-link">Productos</button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Chanel</a></li>
+                <li><a href="#">Dior</a></li>
+                <li><a href="#">Gucci</a></li>
+            </ul>
+        </li>
+        <li class="navbar-item">
+            <button class="navbar-link">Ofertas</button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Descuentos</a></li>
+                <li><a href="#">Promociones</a></li>
+                <li><a href="#">Novedades</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
 
 <section class="hero">
     <h2>Descubre Nuestros Aromas Exclusivos</h2>
@@ -107,7 +138,7 @@
         font-size: 18px;
         font-weight: 700;
         letter-spacing: 0.05em;
-        color: #006e6f;
+        color: #ffffff;
     }
 
     .cta svg {
@@ -117,7 +148,7 @@
         fill: none;
         stroke-linecap: round;
         stroke-linejoin: round;
-        stroke: #008c8e;
+        stroke: #ffffff;
         stroke-width: 2;
         transform: translateX(-5px);
         transition: all 0.3s ease;
@@ -125,7 +156,7 @@
 
     .cta:hover:before {
         width: 100%;
-        background: #b1dae7;
+        background: #008c8e;
     }
 
     .cta:hover svg {
@@ -141,16 +172,6 @@
         height: 100%;
         background: linear-gradient(135deg, #006e6f 25%, #008c8e 25%, #008c8e 50%, #006e6f 50%, #006e6f 75%, #008c8e 75%, #008c8e);
         background-size: 40px 40px;
-        animation: move 4s linear infinite;
-    }
-
-    @keyframes move {
-        0% {
-            background-position: 0 0;
-        }
-        100% {
-            background-position: 40px 40px;
-        }
     }
 
     body {
@@ -311,7 +332,7 @@
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
-    color: #006e6f;
+    color: #ffffff;
     display: inline-flex;
     align-items: center;
     padding: 10px;
@@ -320,7 +341,7 @@
     }
 
     .dropdown-button:hover {
-        background-color: rgba(0, 0, 0, 0.05);
+        background-color: rgba(255, 255, 255, 0.05);
     }
 
     /* Menú dropdown */
@@ -352,5 +373,88 @@
     /* Mostrar menú al hacer hover */
     .user-info:hover .dropdown-menu {
         display: block;
+    }
+
+    .navbar {
+        background-color: #006e6f;
+;
+        padding: 10px 20px;
+    }
+
+    .navbar-menu {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .navbar-item {
+        position: relative;
+        margin: 0 15px;
+    }
+
+    .navbar-link {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .navbar-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+        width: 132px;
+    }
+
+    .dropdown-menu li {
+        list-style: none;
+    }
+
+    .dropdown-menu a {
+        display: block;
+        padding: 10px 15px;
+        color: #333;
+        text-decoration: none;
+       
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: rgba(0, 140, 142, 0.1);
+    }
+
+    .navbar-item:hover .dropdown-menu {
+        display: block;
+    }
+
+    .navbar-item {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
     }
 </style>

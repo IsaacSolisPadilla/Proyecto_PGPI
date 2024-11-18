@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<div class="container">
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Producto</title>
+</head>
+
+<body>
+<header>
+    <h1>{{ producto.nombre }}</h1>
+    <a href="{% url 'pagina_principal' %}" class="cta" style="right: 0%; text-decoration: none;">
+        <span>Volver</span>
+        <svg width="15px" height="10px" viewBox="0 0 13 10">
+            <path d="M1,5 L11,5"></path>
+            <polyline points="8 1 12 5 8 9"></polyline>
+        </svg>
+    </a>
+</header>
+
+<section class="hero">
+    <h2>Detalles del Producto</h2>
+</section>
+
+<section class="product-details">
+    <div class="product">
+        {% if producto.fotografia %}
+        <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image';">
+        {% else %}
+        <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+        {% endif %}
+        <h3>{{ producto.nombre }}</h3>
+        <p><strong>Precio:</strong> ${{ producto.precio }}</p>
+        <p><strong>Stock:</strong> {{ producto.stock }}</p>
+        <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
+        <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
+    </div>
+    <div>
+        <!-- Botón para eliminar producto -->
+        <form action="{% url 'crear_sesion_pago' producto.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="buy-button">Comprar Producto</button>
+        </form>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2024 Perfumería de Lujo. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
+</footer>
+</body>
+</html>
+</div>
+
+<style>
+    .cta {
+        position: absolute;
+        margin: auto;
+        padding: 12px 18px;
+        transition: all 0.2s ease;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+    .cta:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        border-radius: 50px;
+        background: #008c8e;
+        width: 45px;
+        height: 45px;
+        transition: all 0.3s ease;
+    }
+
+    .cta span {
+        position: relative;
+        font-family: "Ubuntu", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        color: #006e6f;
+    }
+
+    .cta svg {
+        position: relative;
+        top: 0;
+        margin-left: 10px;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke: #008c8e;
+        stroke-width: 2;
+        transform: translateX(-5px);
+        transition: all 0.3s ease;
+    }
+
+    .cta:hover:before {
+        width: 100%;
+        background: #b1dae7;
+    }
+
+    .cta:hover svg {
+        transform: translateX(0);
+    }
+
+    .cta:active {
+        transform: scale(0.95);
+    }
+
+    .container {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #006e6f 25%, #008c8e 25%, #008c8e 50%, #006e6f 50%, #006e6f 75%, #008c8e 75%, #008c8e);
+        background-size: 40px 40px;
+        animation: move 4s linear infinite;
+    }
+
+    @keyframes move {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: 40px 40px;
+        }
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #f3e7e9, #e3eeff);
+        color: #333;
+    }
+
+    header {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        text-align: center;
+        border-bottom: 2px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+        font-size: 36px;
+        color: #333;
+    }
+
+    header p {
+        font-size: 18px;
+        color: #555;
+    }
+
+    .hero {
+        background-size: cover;
+        background-position: center;
+        color: white;
+        text-align: center;
+        padding: 100px 20px;
+    }
+
+    .hero h2 {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+
+    .product-details {
+        padding: 50px 20px;
+        text-align: center;
+    }
+
+    .product-details .product {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .product-details .product img {
+        width: 300px;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .product-details .product h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .product-details .product p {
+        color: #777;
+        font-size: 18px;
+    }
+
+    footer {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+        margin-top: 50px;
+    }
+
+    footer p {
+        font-size: 14px;
+    }
+
+    footer a {
+        color: royalblue;
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+    .update-button {
+        background-color: #006e6f;
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+    }
+
+    .update-button:hover {
+        background-color: #008c8e;
+    }
+
+    .buy-button {
+        background-color: #4fd958;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .delete-button:hover {
+        background-color: #c9302c;
+    }
+</style>

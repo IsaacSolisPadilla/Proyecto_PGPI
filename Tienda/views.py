@@ -24,7 +24,7 @@ def lista_categorias(request):
 
 def lista_productos(request):
     productos = Producto.objects.all()
-    return render(request, 'lista_productos.html', {'productos': productos})
+    return render(request, 'Productos/lista_productos.html', {'productos': productos})
 
 def lista_facturas(request):
     facturas = Factura.objects.all()
@@ -107,40 +107,6 @@ def register_view(request):
 
     return render(request, 'login/register.html')
 
-def listar_productos(request):
-    productos = ProductoService.listar_productos()
-    print(productos)
-    return render(request, 'pagina_principal.html', {'productos': productos})
-
-def crear_producto(request):
-    if request.method == 'POST':
-        data = request.POST
-        fotografia = request.FILES.get('fotografia')
-        producto = ProductoService.crear_producto(data, fotografia)
-        return redirect('/')
-    else:
-        categorias = CategoriaProducto.objects.all()
-        return render(request, 'crear_producto.html', {'categorias': categorias})
-
-def eliminar_producto(request, producto_id):
-    ProductoService.eliminar_producto(producto_id)
-    return redirect('pagina_principal')
-
-def actualizar_producto(request, producto_id):
-    producto = get_object_or_404(Producto, id=producto_id)
-    categorias = CategoriaProducto.objects.all()
-
-    if request.method == 'POST':
-        data = request.POST
-        fotografia = request.FILES.get('fotografia')
-        ProductoService.actualizar_producto(producto_id, data, fotografia)
-        return redirect('detalle_producto', producto_id=producto.id)  # Cambia la redirección según tu necesidad
-
-    return render(request, 'actualizar_producto.html', {'producto': producto, 'categorias': categorias})
 def pagina_principal(request):
     productos = Producto.objects.all()
     return render(request, 'pagina_principal.html', {'productos': productos})
-
-def detalle_producto(request, producto_id):
-    producto = get_object_or_404(Producto, id=producto_id)
-    return render(request, 'detalle_producto.html', {'producto': producto})

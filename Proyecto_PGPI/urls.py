@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from Tienda import views
 from Tienda.Factura import views as viewsFactura
+from Tienda.Producto import views as producto_views
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
@@ -19,8 +20,12 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('register/', views.register_view, name='register'),
-    path('productos/<int:producto_id>/', views.detalle_producto, name='detalle_producto'),
-    path('productos/crear/', views.crear_producto, name='crear_producto'),
-    path('producto/<int:producto_id>/editar/', views.actualizar_producto, name='actualizar_producto'),
-    path('productos/<int:producto_id>/eliminar/', views.eliminar_producto, name='eliminar_producto'),
+    path('productos/<int:producto_id>/', producto_views.detalle_producto, name='detalle_producto'),
+    path('carro/<int:producto_id>/', producto_views.detalle_carro_pago, name='carro_producto'),
+    path('crear-sesion-pago/<int:producto_id>/', producto_views.crear_sesion_pago, name='crear_sesion_pago'),
+    path('success/', producto_views.success_view, name='success'),
+    path('cancel/', producto_views.cancel_view, name='cancel'),
+    path('productos/crear/', producto_views.crear_producto, name='crear_producto'),
+    path('producto/<int:producto_id>/editar/', producto_views.actualizar_producto, name='actualizar_producto'),
+    path('productos/<int:producto_id>/eliminar/', producto_views.eliminar_producto, name='eliminar_producto'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
