@@ -13,7 +13,7 @@ class ProductoService:
         producto = Producto(
             nombre=data.get('nombre'),
             categoria=categoria,
-            precio=data.get('precio'),
+            precio=float(data.get('precio')),
             stock=data.get('stock'),
             descripcion=data.get('descripcion'),
             fotografia=fotografia
