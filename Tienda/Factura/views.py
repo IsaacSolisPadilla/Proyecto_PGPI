@@ -1,10 +1,10 @@
 import json
 from typing import List
-
+import stripe
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
-
-from Tienda.models import LineaFactura
+from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponseRedirect
+from Tienda.models import LineaFactura, Producto
 
 
 def actualizar_factura(request):
@@ -54,3 +54,29 @@ def confirmar_factura(request):
         'crear_factura.html',
         {'lineas': factura.lineas_factura.all() if factura != None else [], "precio_total": factura.precio_total() }
     )
+
+def crear_sesion_pago(request):
+    factura = request.user.facturas.filter(estado="Pendiente").first()
+    coste = factura.precio_total()
+    stripe.api_key = 'sk_test_51Q2XBLRr6L8GxbwMtP9iKtu8hChihr12m1xHEGoTlGRQSZYCHR8APCuH2T2vA454IoYMwRBMEit7V9MxfSpOZouT00Re1Yl42n'
+
+    # Crea la sesión de Stripe Checkout
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+            'price_data': {
+                'currency': 'eur',
+                'product_data': {
+                    'name': "Productos",
+                },
+                'unit_amount': int(coste * 100),  # Convertir a céntimos
+            },
+            'quantity': 1,
+        }],
+        mode='payment',
+        success_url=request.build_absolute_uri('/'),  # URL de éxito
+        cancel_url=request.build_absolute_uri('/'),  # URL de cancelación
+    )
+
+    # Redirige al usuario a la URL de la sesión de Stripe Checkout
+    return HttpResponseRedirect(session.url)

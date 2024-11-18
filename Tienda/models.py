@@ -72,7 +72,7 @@ class Factura(models.Model):
         super().save(*args, **kwargs)
     
     def precio_total(self):
-        return sum(map(lambda linea: linea.precio_linea() ,LineaFactura.objects.filter(factura=self).all()))
+        return sum(map(lambda linea: linea.precio_linea() ,self.lineas_factura.all()))
     
     def __str__(self):
         return f"Factura {self.id}"
