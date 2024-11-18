@@ -2,7 +2,7 @@ import json
 from typing import List
 
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from Tienda.models import LineaFactura
 
@@ -47,7 +47,8 @@ def confirmar_factura(request):
         return None
     
     factura = request.user.facturas.filter(estado="Pendiente").first()
-
+    if factura == None:
+        return redirect("/")
     return render(
         request,
         'crear_factura.html',
