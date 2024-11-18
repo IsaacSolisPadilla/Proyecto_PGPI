@@ -40,6 +40,7 @@ class Producto(models.Model):
     
     def to_dict(self):
         return {
+            "id": self.id,
             "nombre": self.nombre, 
             "categoria": self.categoria.to_dict(),
             "precio": self.precio,
@@ -96,6 +97,11 @@ class LineaFactura(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1)
 
+    def __ini__(self, factura, producto, cantidad):
+        self.factura = factura
+        self.producto = producto
+        self.cantidad = cantidad
+        
     def precio_linea(self):
         return self.producto.precio * self.cantidad
 

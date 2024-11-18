@@ -1,4 +1,5 @@
 import json
+from typing import List
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -13,6 +14,10 @@ from .Producto.service import ProductoService
 
 def pagina_principal(request):
     return render(request, 'pagina_principal.html')
+
+def ver_carrito(request):
+    return render(request, 'carrito.html')
+
 def lista_categorias(request):
     categorias = CategoriaProducto.objects.all()
     return render(request, 'lista_categorias.html', {'categorias': categorias})
@@ -29,24 +34,7 @@ def lista_usuarios(request):
     usuarios = User.objects.all()
     return render(request, 'lista_usuarios.html', {'usuarios': usuarios})
 
-def obtener_factura(request):
-    factura = Factura.objects.get(id=1)
-    ls = {i:value for i, value in enumerate(map(lambda x: x.to_dict(), list(factura.lineas_factura.all())))}
-    return  JsonResponse(ls)
- 
-def crear_factura(request):
-    if(request.method == "POST"):
-        body = request.body
-        print("\033[44m")
-        print(body)
-        print("\033[0m")
-        return None
-    factura = Factura.objects.get(id=1)
-    return render(
-        request,
-        'crear_factura.html',
-        {'lineas': factura.lineas_factura.all() }
-    )
+
 
 def login_view(request):
     if request.method == 'POST':
