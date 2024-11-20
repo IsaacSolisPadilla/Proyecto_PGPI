@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aromas del Mundo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
 
 <header>
@@ -67,6 +68,15 @@
                 <li><a href="#">Novedades</a></li>
             </ul>
         </li>
+        {% if user.is_authenticated and not user.is_staff %}
+        
+        <li style="display: flex; align-items: center;">
+            <a href="/carrito">
+                <i class="fas fa-shopping-cart" style="color: white;"></i>
+            </a>
+            
+        </li>
+        {% endif %}
     </ul>
 </nav>
 
