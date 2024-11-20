@@ -10,8 +10,10 @@ from Tienda.models import CategoriaProducto, Producto, Factura, LineaFactura
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from Tienda.Producto.service import ProductoService
+from django.contrib.auth.decorators import user_passes_test
 import stripe
 
+@user_passes_test(lambda u: u.is_superuser)
 def crear_producto(request):
     if request.method == 'POST':
         data = request.POST
@@ -22,10 +24,12 @@ def crear_producto(request):
         categorias = CategoriaProducto.objects.all()
         return render(request, 'Productos/crear_producto.html', {'categorias': categorias})
 
+@user_passes_test(lambda u: u.is_superuser)
 def eliminar_producto(request, producto_id):
     ProductoService.eliminar_producto(producto_id)
     return redirect('pagina_principal')
 
+@user_passes_test(lambda u: u.is_superuser)
 def actualizar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     categorias = CategoriaProducto.objects.all()

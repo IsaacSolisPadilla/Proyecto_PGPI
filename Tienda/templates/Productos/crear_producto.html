@@ -10,7 +10,62 @@
 <body>
 <header>
     <h1>Crear Producto</h1>
+    <a href="{% url 'pagina_principal' %}" class="back-button">Volver</a>
 </header>
+
+<nav class="navbar">
+    <ul class="navbar-menu">
+        {% if user.is_authenticated %}
+            <li class="navbar-item" style="position: absolute; left: 1%;">
+                <button class="dropdown-button">
+                    Hola, {{ user.username }}
+                    <svg width="15px" height="10px" viewBox="0 0 13 10">
+                        <path d="M1,5 L11,5"></path>
+                        <polyline points="8 1 12 5 8 9"></polyline>
+                    </svg>
+                </button>
+                <div class="dropdown-menu">
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                    </form>
+                </div>
+            </li>
+        {% else %}
+        <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
+            <span>Iniciar Sesión</span>
+            <svg width="15px" height="10px" viewBox="0 0 13 10">
+                <path d="M1,5 L11,5"></path>
+                <polyline points="8 1 12 5 8 9"></polyline>
+            </svg>
+        </a>
+        {% endif %}
+        <li class="navbar-item">
+            <button class="navbar-link">Categorías</button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Cristales</a></li>
+                <li><a href="#">Incienso</a></li>
+                <li><a href="#">Velas</a></li>
+            </ul>
+        </li>
+        <li class="navbar-item">
+            <button class="navbar-link">Productos</button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Chanel</a></li>
+                <li><a href="#">Dior</a></li>
+                <li><a href="#">Gucci</a></li>
+            </ul>
+        </li>
+        <li class="navbar-item">
+            <button class="navbar-link">Ofertas</button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Descuentos</a></li>
+                <li><a href="#">Promociones</a></li>
+                <li><a href="#">Novedades</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
 
 <section class="form-section">
     <div class="form-container">
@@ -43,7 +98,11 @@
                 <img id="previewImage" src="" alt="Vista previa de la imagen">
             </div>
 
-            <button type="submit" class="submit-button">Crear Producto</button>
+            <div style="display: flex; justify-content: space-between;">
+                <button type="submit" class="submit-button" style="flex: 1; margin-right: 10px; padding: 10px 0;">Crear Producto</button>
+                <a href="{% url 'pagina_principal' %}" class="cancel-button" style="flex: 1; text-align: center; padding: 10px 0; text-decoration: none;">Cancelar</a>
+
+            </div>
         </form>
     </div>
 </section>
@@ -56,22 +115,180 @@
 </div>
 
 <style>
-    /* Estilos generales de la página */
+
+    .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #006e6f;
+    color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    }
+
+    .back-button:hover {
+        background-color: #ffffff;
+        color: #005a5b;
+    }
+    .dropdown-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    }
+
+    .dropdown-button:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Menú dropdown */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+    }
+
+    .dropdown-menu .dropdown-item {
+        display: block;
+        padding: 10px 15px;
+        color: #006e6f;
+        background-color: #ffffff;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: rgba(0, 140, 142, 0.1);
+    }
+
+    /* Mostrar menú al hacer hover */
+    .user-info:hover .dropdown-menu {
+        display: block;
+    }
+
+    .navbar {
+        background-color: #006e6f;
+        padding: 10px 20px;
+    }
+
+    .navbar-menu {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .navbar-item {
+        position: relative;
+        margin: 0 15px;
+    }
+
+    .navbar-link {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .navbar-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+        width: 132px;
+    }
+
+    .dropdown-menu li {
+        list-style: none;
+    }
+
+    .dropdown-menu a {
+        display: block;
+        padding: 10px 15px;
+        color: #333;
+        text-decoration: none;
+       
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: rgba(0, 140, 142, 0.1);
+    }
+
+    .navbar-item:hover .dropdown-menu {
+        display: block;
+    }
+
+    .navbar-item {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+    }
+
+    footer {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+        margin-top: 50px;
+    }
+
+    footer p {
+        font-size: 14px;
+    }
+
+    footer a {
+        color: royalblue;
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
     .container {
         width: 100%;
         height: 100%;
         background: linear-gradient(135deg, #006e6f 25%, #008c8e 25%, #008c8e 50%, #006e6f 50%, #006e6f 75%, #008c8e 75%, #008c8e);
         background-size: 40px 40px;
-        animation: move 4s linear infinite;
-    }
-
-    @keyframes move {
-        0% {
-            background-position: 0 0;
-        }
-        100% {
-            background-position: 40px 40px;
-        }
     }
 
     body {
@@ -156,6 +373,27 @@
     }
 
     .submit-button:active {
+        background-color: #005557;
+    }
+
+    .cancel-button {
+        background-color: #bd1313;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .cancel-button:hover {
+        background-color: #cc1f1f;
+    }
+
+    .cancel-button:active {
         background-color: #005557;
     }
 
