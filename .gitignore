@@ -1,3 +1,4 @@
-Tienda/__pycache__
 Tienda/migrations
-Proyecto_PGPI/__pycache__
+*/__pycache__/*
+db.sqlite3
+myvenv/

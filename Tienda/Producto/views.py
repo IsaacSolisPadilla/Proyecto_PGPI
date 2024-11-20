@@ -1,7 +1,7 @@
 
 import json
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.shortcuts import redirect, render
 from django.contrib.auth import login
@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from Tienda.Producto.service import ProductoService
 from django.contrib.auth.decorators import user_passes_test
+import stripe
 
 @user_passes_test(lambda u: u.is_superuser)
 def crear_producto(request):
@@ -44,3 +45,7 @@ def actualizar_producto(request, producto_id):
 def detalle_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     return render(request, 'Productos/detalle_producto.html', {'producto': producto})
+
+def detalle_carro_pago(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    return render(request, 'Productos/carro.html', {'producto': producto})
