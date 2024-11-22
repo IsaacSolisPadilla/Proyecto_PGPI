@@ -24,7 +24,8 @@ def lista_categorias(request):
 
 def lista_productos(request):
     productos = Producto.objects.all()
-    return render(request, 'Productos/lista_productos.html', {'productos': productos})
+    categorias = CategoriaProducto.objects.all()
+    return render(request, 'Productos/lista_productos.html', {'productos': productos, 'categorias': categorias})
 
 def lista_facturas(request):
     facturas = Factura.objects.all()
@@ -106,5 +107,6 @@ def register_view(request):
     return render(request, 'login/register.html')
 
 def pagina_principal(request):
-    productos = Producto.objects.all()
-    return render(request, 'pagina_principal.html', {'productos': productos})
+    productos = Producto.objects.all()[:3]
+    categorias = CategoriaProducto.objects.all()
+    return render(request, 'pagina_principal.html', {'productos': productos, 'categorias': categorias})

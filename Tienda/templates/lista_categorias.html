@@ -1,6 +1,212 @@
-<h1>Lista de Categorías</h1>
-<ul>
-    {% for categoria in categorias %}
-        <li>{{ categoria.nombre }} - {{ categoria.descripcion }}</li>
-    {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aromas del Mundo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Fondo de la página */
+        body {
+            background: linear-gradient(135deg, #f3e7e9, #e3eeff); 
+            color: #333;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Contenedor principal */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #006e6f 25%, #008c8e 25%, #008c8e 50%, #006e6f 50%, #006e6f 75%, #008c8e 75%, #008c8e);
+            background-size: 40px 40px;
+        }
+
+        /* Título de Productos */
+        .featured-products h2 {
+            font-size: 36px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        /* Cuadrícula de productos */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Producto individual */
+        .product {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Efecto al pasar el mouse */
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Imagen del producto */
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .product img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Nombre y precio del producto */
+        .product h3 {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .product p {
+            color: #777;
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        /* Botón de añadir al carrito */
+        .add-to-cart-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .add-to-cart-button i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .add-to-cart-button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .add-to-cart-button:active {
+            background-color: #1e7e34;
+            transform: translateY(0);
+        }
+
+        /* Contenedor para crear un nuevo producto */
+        .create-button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .create-button {
+            background-color: #ffffff;
+            color: #006e6f;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .create-button:hover {
+            background-color: #006e6f;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            margin-top: 50px;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+
+        footer a {
+            color: royalblue;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <section class="featured-products" id="productos">
+        <h2>Productos</h2>
+        {% if user.is_authenticated and user.is_staff %}
+        <div class="create-button-container">
+            <a href="{% url 'crear_producto' %}" class="create-button">
+                Crear Producto
+            </a>
+        </div>
+        {% endif %}
+        <div class="product-grid">
+            {% for producto in productos %}
+            <div class="product">
+                <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
+                    {% if producto.fotografia %}
+                    <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}">
+                    {% else %}
+                    <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+                    {% endif %}
+                    <h3>{{ producto.nombre }}</h3>
+                    <p>${{ producto.precio }}</p>
+                    <form action="{% url 'agregar_producto_a_factura' producto.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="add-to-cart-button">
+                            <i class="fas fa-cart-plus"></i> Añadir al carrito
+                        </button>
+                    </form>
+                </a>
+            </div>
+            {% empty %}
+            <p>No hay productos disponibles en este momento.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+</body>
+</html>

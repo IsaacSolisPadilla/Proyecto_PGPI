@@ -170,6 +170,115 @@
         }
     },
     {
+    "model": "Tienda.producto",
+    "pk": 4,
+    "fields": {
+        "nombre": "Vela de Eucalipto",
+        "categoria": 1,
+        "precio": "7.99",
+        "stock": 120,
+        "descripcion": "Vela de eucalipto para energizar el ambiente",
+        "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqEQodYBjharjn0WNLonSiN0tr9zk8YY6aw&s"
+    }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 5,
+        "fields": {
+            "nombre": "Cristal de Amatista",
+            "categoria": 2,
+            "precio": "25.99",
+            "stock": 30,
+            "descripcion": "Cristal de amatista para meditación profunda",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 6,
+        "fields": {
+            "nombre": "Incienso de Rosa Mosqueta",
+            "categoria": 3,
+            "precio": "4.49",
+            "stock": 80,
+            "descripcion": "Incienso de rosa mosqueta para equilibrio emocional",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 7,
+        "fields": {
+            "nombre": "Vela de Citronela",
+            "categoria": 1,
+            "precio": "6.49",
+            "stock": 150,
+            "descripcion": "Vela de citronela para repeler insectos y aromatizar el ambiente",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 8,
+        "fields": {
+            "nombre": "Cristal de Selenita",
+            "categoria": 2,
+            "precio": "12.99",
+            "stock": 40,
+            "descripcion": "Cristal de selenita para limpieza energética",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 9,
+        "fields": {
+            "nombre": "Incienso de Lavanda",
+            "categoria": 3,
+            "precio": "3.79",
+            "stock": 60,
+            "descripcion": "Incienso de lavanda para relajación y sueño profundo",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 10,
+        "fields": {
+            "nombre": "Vela de Jazmín",
+            "categoria": 1,
+            "precio": "8.99",
+            "stock": 200,
+            "descripcion": "Vela de jazmín para crear un ambiente relajante y floral",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 11,
+        "fields": {
+            "nombre": "Cristal de Turmalina",
+            "categoria": 2,
+            "precio": "18.49",
+            "stock": 25,
+            "descripcion": "Cristal de turmalina para protección energética",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 12,
+        "fields": {
+            "nombre": "Incienso de Mirra",
+            "categoria": 3,
+            "precio": "5.49",
+            "stock": 90,
+            "descripcion": "Incienso de mirra para meditación profunda y protección",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+
+    {
         "model": "Tienda.factura",
         "pk": 1,
         "fields": {

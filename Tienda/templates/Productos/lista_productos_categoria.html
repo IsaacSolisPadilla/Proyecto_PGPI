@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aromas del Mundo</title>
+    <title>{{ categoria.nombre }} - Aromas del Mundo</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
         html, body {
@@ -361,17 +361,12 @@
         </ul>
     </nav>
 <div class="container">
+    <!-- Título de la categoría -->
+    <section class="category-title">
+        <h2>Productos en la categoría: {{ categoria.nombre }}</h2>
+    </section>
+
     <section class="featured-products" id="productos">
-        <section class="category-title">
-            <h2>Productos</h2>
-        </section>
-        {% if user.is_authenticated and user.is_staff %}
-        <div class="create-button-container">
-            <a href="{% url 'crear_producto' %}" class="create-button">
-                Crear Producto
-            </a>
-        </div>
-        {% endif %}
         <div class="product-grid">
             {% for producto in productos %}
             <div class="product">
@@ -392,7 +387,7 @@
                 </a>
             </div>
             {% empty %}
-            <p>No hay productos disponibles en este momento.</p>
+            <p>No hay productos disponibles en esta categoría.</p>
             {% endfor %}
         </div>
     </section>

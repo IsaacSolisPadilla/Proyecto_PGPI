@@ -10,6 +10,9 @@ from django.contrib.auth.views import LogoutView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('facturas/', views.lista_facturas, name='lista_facturas'),
+    path('productos/', views.lista_productos, name='lista_productos'),
+    path('categorias/', views.lista_categorias, name='lista_categorias'),
+    path('categorias/<int:categoria_id>/', producto_views.lista_productos_de_categoria, name='lista_productos_categoria'),
     path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
     path('factura/confirmar', viewsFactura.confirmar_factura, name='crear_pedido'),
     path('factura/agregar/<int:producto_id>/', viewsFactura.agregar_producto_a_factura, name='agregar_producto_a_factura'),

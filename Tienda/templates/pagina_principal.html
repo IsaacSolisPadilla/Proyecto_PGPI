@@ -45,28 +45,22 @@
         </a>
         {% endif %}
         <li class="navbar-item">
+            <a href="/">
+            <button class="navbar-link">Home</button>
+            </a>
+        </li>
+        <li class="navbar-item">
             <button class="navbar-link">Categorías</button>
             <ul class="dropdown-menu">
-                <li><a href="#">Cristales</a></li>
-                <li><a href="#">Incienso</a></li>
-                <li><a href="#">Velas</a></li>
+                {% for categoria in categorias %}
+                    <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>
+                {% endfor %}
             </ul>
         </li>
         <li class="navbar-item">
+            <a href="/productos">
             <button class="navbar-link">Productos</button>
-            <ul class="dropdown-menu">
-                <li><a href="#">Chanel</a></li>
-                <li><a href="#">Dior</a></li>
-                <li><a href="#">Gucci</a></li>
-            </ul>
-        </li>
-        <li class="navbar-item">
-            <button class="navbar-link">Ofertas</button>
-            <ul class="dropdown-menu">
-                <li><a href="#">Descuentos</a></li>
-                <li><a href="#">Promociones</a></li>
-                <li><a href="#">Novedades</a></li>
-            </ul>
+            </a>
         </li>
         {% if user.is_authenticated and not user.is_staff %}
         
@@ -98,7 +92,7 @@
         <div class="product">
             <a href="{% url 'detalle_producto' producto.id %}" style=" text-decoration: none;">
                 {% if producto.fotografia %}
-                <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}">
+                <img src="{{ producto.fotografia }}" alt="{{ producto.nombre }}">
                 {% else %}
                 <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
                 {% endif %}
@@ -151,6 +145,7 @@
         letter-spacing: 0.05em;
         color: #ffffff;
     }
+    
 
     .cta svg {
         position: relative;
@@ -359,10 +354,6 @@
 
     /* Menú dropdown */
     .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 40px;
-        right: 0;
         background-color: #ffffff;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 5px;
@@ -372,7 +363,6 @@
 
     .dropdown-menu .dropdown-item {
         display: block;
-        padding: 10px 15px;
         color: #006e6f;
         background-color: #ffffff;
         text-decoration: none;
@@ -424,8 +414,6 @@
     .dropdown-menu {
         display: none;
         position: absolute;
-        top: 40px;
-        left: 0;
         background-color: #fff;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 5px;
@@ -440,10 +428,10 @@
 
     .dropdown-menu a {
         display: block;
-        padding: 10px 15px;
+        padding: 10px;
         color: #333;
         text-decoration: none;
-       
+        
         transition: background-color 0.3s ease;
     }
 
