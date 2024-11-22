@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponseRedirect
 from Tienda.models import Factura, LineaFactura, Producto
-from Tienda.forms import FormFactura
+from Tienda.forms import AdminFormFactura, FormFactura
 
 def agregar_producto_a_factura(request, producto_id):
     if request.method == "POST":
@@ -156,3 +156,17 @@ def crear_sesion_pago(request):
 
     # Redirige al usuario a la URL de la sesión de Stripe Checkout
     return HttpResponseRedirect(session.url)
+
+def modificar_factura(request, factura_id):
+    factura = get_object_or_404(Factura, id=factura_id)
+    if request.method == 'POST':
+        data = request.POST.copy()
+        data['metodo_de_pago'] = factura.metodo_de_pago  # Forzar el valor original
+        form = AdminFormFactura(data, instance=factura)
+        form = AdminFormFactura(request.POST, instance=factura)
+        if form.is_valid():
+            form.save()
+        return redirect('/facturas')
+    else:
+        form = AdminFormFactura(instance=factura, is_disable=True)
+        return render(request, 'factura.html', {"form": form})
