@@ -484,7 +484,7 @@
                 <button class="navbar-link">Productos</button>
                 </a>
             </li>
-            {% if user.is_authenticated and not user.is_staff %}
+            {% if user.is_authenticated and user.is_staff %}
             <li class="navbar-item">
                 <a href="/categorias/crear">
                 <button class="navbar-link">Crear categoria</button>
@@ -505,7 +505,7 @@
         <section class="category-title">
             <div class="title-container">
                 <h2>Productos en la categoría: {{ categoria.nombre }}</h2>
-                {% if user.is_authenticated and not user.is_staff %}
+                {% if user.is_authenticated and user.is_staff %}
                 <form method="POST" action="{% url 'eliminar_categoria' categoria.id %}" class="delete-form">
                     {% csrf_token %}
                     <button type="submit" class="delete-button" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">
