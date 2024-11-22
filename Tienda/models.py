@@ -94,6 +94,18 @@ class Factura(models.Model):
             "precio_total": self.precio_total()
         }
 
+class Direccion(models.Model):
+    userId = models.IntegerField()
+    location = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"User ID: {self.userId} - Location: {self.location}"
+    
+    def to_dict(self):
+        return {
+            "userId": self.userId,
+            "location": self.location
+        }
 
 class LineaFactura(models.Model):
     
