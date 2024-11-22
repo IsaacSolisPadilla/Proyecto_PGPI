@@ -207,39 +207,36 @@
     }
 </style>
 
-<table class="cart">
+
 
     <div class="formulario">
-        <div style="display: flex; flex-direction: row; justify-content: space-between;">
-            <p style="width: 60vh;">Nombre:<input id="nombre" type="text"></p>
-            <p style="width: 60vh;">Apellidos:<input id="apellidos" type="text"></p>
-            <p style="width: 60vh;">Email:<input id="email" type="email"></p>
-        </div>
-
-        <p>Direccion:<input id="direccion" type="text"></p>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}  
+            <table class="cart">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Precio total</th>
+                    </tr>
+                </thead>
+                <tbody id="lineas">
+                    <!-- Se rellena en el javascript -->
+                </tbody>
+                
+            </table>
+            <button type="submit">Aceptar</button>
+            <button onclick="window.location.href = '/' ">Volver</button>    
+        </form>
     </div>
 
-    <thead>
-        <tr>
-            <th>Imagen</th>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Precio Unitario</th>
-            <th>Precio total</th>
-        </tr>
-    </thead>
-    <tbody id="lineas">
-        <!-- Se rellena en el javascript -->
-    </tbody>
-    
-</table>
 
 
-    <form action="{% url 'crear_sesion_pago' %}" method="post" >
-        {% csrf_token %}
-        <button type="submit" >Aceptar</button>
-    </form>
-    <button onclick="window.location.href = '/' ">Volver</button>    
+
+
 
 
 <script src="https://unpkg.com/feather-icons"></script>

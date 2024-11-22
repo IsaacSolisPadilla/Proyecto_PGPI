@@ -62,7 +62,6 @@
             <button class="navbar-link">Productos</button>
             </a>
         </li>
-        {% if user.is_authenticated and not user.is_staff %}
         
         <li style="display: flex; align-items: center;">
             <a href="/carrito">
@@ -70,7 +69,11 @@
             </a>
             
         </li>
-        {% endif %}
+
+        <li>
+            Estado Pedido Nº <input id="numero-factura" type="text">
+            <button onclick="mostrarEstadoPedido()">BUSCAR</button>
+        </li>
     </ul>
 </nav>
 
@@ -112,6 +115,16 @@
 </body>
 </html>
 </div>
+
+<script>
+    function mostrarEstadoPedido(){
+        const numero_factura = document.getElementById("numero-factura").value
+        fetch("/factura/numero_factura/" + numero_factura)
+            .then(data => data.json())
+            .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
+            .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
+    }
+</script>
 
 <style>
     .cta {

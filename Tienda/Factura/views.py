@@ -2,9 +2,10 @@ import json
 from typing import List
 import stripe
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponseRedirect
-from Tienda.models import LineaFactura, Producto, Factura
+from Tienda.models import Factura, LineaFactura, Producto
+from Tienda.forms import FormFactura
 
 def agregar_producto_a_factura(request, producto_id):
     if request.method == "POST":
@@ -51,9 +52,14 @@ def agregar_producto_a_factura(request, producto_id):
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
 def actualizar_factura(request):
+    
     if(request.method == "PUT"):
         body = json.loads(request.body)
-        factura = request.user.facturas.filter(estado="Espera").first()
+        factura = None
+        if request.user != None:
+            factura = request.user.facturas.filter(estado="Espera").first()
+        else:
+            factura = request.user.facturas.filter(numero_factura=1).first()
         if factura == None:
             return redirect("/")
         lineas_factura: List[LineaFactura] = factura.lineas_factura.all()
@@ -77,33 +83,56 @@ def actualizar_factura(request):
 
         return JsonResponse({"message": "Datos recibidos correctamente"}, status=200)
     
+def obtener_factura_por_numero_factura(request, numero_factura):
+    print(numero_factura)
+    print(Factura.objects.filter(numero_factura=numero_factura).first())
+    return JsonResponse({"estado_factura": get_object_or_404(Factura, numero_factura=numero_factura).estado} ,status=200)
+
 def obtener_factura_espera(request):
-    print(request.user)
-    factura = request.user.facturas.filter(estado="Espera").first()
+    print("-"*100)
+    print(request.GET.get("num_factura"))
+    print("-"*100)
+    factura = None
+    if request.user != None:
+        factura = request.user.facturas.filter(estado="Espera").first()
+    else:
+        factura = request.user.facturas.filter(numero_factura=1).first()
+
     if factura is None:
         return JsonResponse({})
     ls = {i:value for i, value in enumerate(map(lambda x: x.to_dict(), list(factura.lineas_factura.all())))}
     return JsonResponse(ls)
  
 def confirmar_factura(request):
-    if(request.method == "POST"):
-        body = json.loads(request.body)
-        print("\033[44m")
-        print(body)
-        print("\033[0m")
+    form = FormFactura(request.POST)
+    if(request.method == "POST" and form.is_valid()):
+        print(form.fields)
         return None
     
-    factura = request.user.facturas.filter(estado="Espera").first()
+    factura = None
+    if request.user != None:
+        factura = request.user.facturas.filter(estado="Espera").first()
+    else:
+        factura = request.user.facturas.filter(numero_factura=1).first()
     if factura == None:
         return redirect("/")
+    
     return render(
         request,
         'crear_factura.html',
-        {'lineas': factura.lineas_factura.all() if factura != None else [], "precio_total": factura.precio_total() }
+        {
+            'lineas': factura.lineas_factura.all() if factura != None else [], 
+            'precio_total': factura.precio_total(),
+            'form': FormFactura()
+        }
     )
 
 def crear_sesion_pago(request):
-    factura = request.user.facturas.filter(estado="Espera").first()
+    if request.user != None:
+        factura = request.user.facturas.filter(estado="Espera").first()
+    else:
+        factura = request.user.facturas.filter(numero_factura=1).first()
+
     coste = factura.precio_total()
     stripe.api_key = 'sk_test_51Q2XBLRr6L8GxbwMtP9iKtu8hChihr12m1xHEGoTlGRQSZYCHR8APCuH2T2vA454IoYMwRBMEit7V9MxfSpOZouT00Re1Yl42n'
 
