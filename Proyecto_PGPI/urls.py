@@ -9,7 +9,6 @@ from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('categorias/', views.lista_categorias, name='lista_categorias'),
     path('facturas/', views.lista_facturas, name='lista_facturas'),
     path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
     path('factura/confirmar', viewsFactura.confirmar_factura, name='crear_pedido'),
@@ -25,4 +24,10 @@ urlpatterns = [
     path('productos/crear/', producto_views.crear_producto, name='crear_producto'),
     path('producto/<int:producto_id>/editar/', producto_views.actualizar_producto, name='actualizar_producto'),
     path('productos/<int:producto_id>/eliminar/', producto_views.eliminar_producto, name='eliminar_producto'),
+
+    path('categorias/', views.lista_categorias, name='lista_categorias'),
+    path('categorias/crear/', producto_views.crear_categoria_de_producto, name='crear_categoria'),
+    path('categorias/<int:categoria_de_producto_id>/editar/', producto_views.actualizar_categoria_de_producto, name='actualizar_categoria'),
+    path('categorias/<int:categoria_de_producto_id>/eliminar/', producto_views.eliminar_categoria_de_producto, name='eliminar_categoria'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
