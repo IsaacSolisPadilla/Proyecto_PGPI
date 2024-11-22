@@ -62,7 +62,8 @@ class Factura(models.Model):
     )
     metodo_de_pago = models.CharField(
         max_length=50,
-        choices=[("Contrareembolso", "Contrareembolso"), ("Pasarela","Pasarela de pago")]
+        choices=[("Contrareembolso", "Contrareembolso"), ("Pasarela","Pasarela de pago")],
+        null=True
     )
 
     COSTE_ENVIO = 10
@@ -99,15 +100,16 @@ class LineaFactura(models.Model):
     factura = models.ForeignKey(Factura, on_delete=models.CASCADE, related_name="lineas_factura", null=True)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1)
-    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2, null=True)
 
-    def __ini__(self, factura, producto, cantidad):
-        self.factura = factura
-        self.producto = producto
-        self.cantidad = cantidad
+    # def __init__(self, factura, producto, cantidad, precio_unitario):
+    #     self.factura = factura
+    #     self.producto = producto
+    #     self.cantidad = cantidad
+    #     self.precio_unitario = precio_unitario
         
     def precio_linea(self):
-        return self.precion_unitario * self.cantidad
+        return self.precio_unitario * self.cantidad
 
     def __str__(self):
         return f"{self.cantidad} de {self.producto.nombre} en Factura {self.factura.id}"
