@@ -11,6 +11,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('facturas/', views.lista_facturas, name='lista_facturas'),
     path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
+    path('/factura/agregar/<int:producto_id>/', viewsFactura.agregar_producto_a_factura, name='agregar_producto_a_factura'),
     path('factura/confirmar', viewsFactura.confirmar_factura, name='crear_pedido'),
     path('factura/actualizar', viewsFactura.actualizar_factura, name='actualizar_factura'),
     path('carrito', views.ver_carrito),
