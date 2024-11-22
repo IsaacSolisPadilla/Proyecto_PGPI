@@ -53,18 +53,19 @@ class Factura(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="facturas")
     numero_factura = models.CharField(unique=True, max_length=12)
     fecha_pedido = models.DateTimeField(auto_now_add=True)
-    fecha_salida = models.DateTimeField()
-    fecha_entrega = models.DateTimeField()
+    fecha_salida = models.DateTimeField(null=True)
+    fecha_entrega = models.DateTimeField(null=True)
     direccion = models.TextField()
     estado = models.CharField(
         max_length=50,
-        choices=[("Pendiente", "Pendiente"), ("Enviado","Enviado") ,("Entregado","Entregado")]
+        choices=[("Espera","Espera"), ("Pendiente", "Pendiente"), ("Enviado","Enviado") ,("Entregado","Entregado")]
     )
     metodo_de_pago = models.CharField(
         max_length=50,
         choices=[("Contrareembolso", "Contrareembolso"), ("Pasarela","Pasarela de pago")]
     )
-    coste_envio = models.DecimalField(max_digits=10, decimal_places=2)
+
+    COSTE_ENVIO = 10
     
     def save(self, *args, **kwargs):
         if not self.numero_factura:
@@ -72,8 +73,11 @@ class Factura(models.Model):
         super().save(*args, **kwargs)
     
     def precio_total(self):
-        return sum(map(lambda linea: linea.precio_linea() ,self.lineas_factura.all()))
-    
+        precio_total = sum(map(lambda linea: linea.precio_linea() ,self.lineas_factura.all()))
+        if precio_total < 50:
+            precio_total += Factura.COSTE_ENVIO
+        return precio_total
+
     def __str__(self):
         return f"Factura {self.id}"
     
@@ -86,7 +90,6 @@ class Factura(models.Model):
             "direccion": self.direccion,
             "estado": self.estado,
             "metodo_de_pago": self.metodo_de_pago,
-            "coste_envio": self.coste_envio,
             "precio_total": self.precio_total()
         }
 
@@ -96,6 +99,7 @@ class LineaFactura(models.Model):
     factura = models.ForeignKey(Factura, on_delete=models.CASCADE, related_name="lineas_factura", null=True)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1)
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2, null=False)
 
     def __ini__(self, factura, producto, cantidad):
         self.factura = factura
@@ -103,7 +107,7 @@ class LineaFactura(models.Model):
         self.cantidad = cantidad
         
     def precio_linea(self):
-        return self.producto.precio * self.cantidad
+        return self.precion_unitario * self.cantidad
 
     def __str__(self):
         return f"{self.cantidad} de {self.producto.nombre} en Factura {self.factura.id}"
