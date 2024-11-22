@@ -180,7 +180,9 @@
             "fecha_entrega": null,
             "direccion": "Calle Falsa 123, Ciudad Esotérica",
             "estado": "Espera",
-            "metodo_de_pago": null
+            "metodo_de_pago": null,
+            "nombre": null,
+            "apellidos": null
         }
     },
     {
@@ -194,7 +196,9 @@
             "fecha_entrega": "2024-11-16T10:00:00Z",
             "direccion": "Avenida Siempreviva 742, Ciudad Espiritual",
             "estado": "Enviado",
-            "metodo_de_pago": "Contrareembolso"
+            "metodo_de_pago": "Contrareembolso",
+            "nombre": "Pepe",
+            "apellidos": "Gonzalez"
         }
     },
     {
