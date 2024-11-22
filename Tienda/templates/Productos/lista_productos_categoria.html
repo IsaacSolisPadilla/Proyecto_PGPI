@@ -169,138 +169,271 @@
         footer a:hover {
             text-decoration: underline;
         }
+
         .dropdown-button {
-    background: none;
-    border: none;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #ffffff;
-    display: inline-flex;
-    align-items: center;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    }
+            background: none;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
 
-    .dropdown-button:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-    }
+        .dropdown-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
 
-    /* Menú dropdown */
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 40px;
-        right: 0;
-        background-color: #ffffff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        overflow: hidden;
-        z-index: 1000;
-    }
+        /* Menú dropdown */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
 
-    .dropdown-menu .dropdown-item {
-        display: block;
-        padding: 10px 15px;
-        color: #006e6f;
-        background-color: #ffffff;
-        text-decoration: none;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-    }
+        .dropdown-menu .dropdown-item {
+            display: block;
+            padding: 10px 15px;
+            color: #006e6f;
+            background-color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
 
-    .dropdown-menu .dropdown-item:hover {
-        background-color: rgba(0, 140, 142, 0.1);
-    }
+        .dropdown-menu .dropdown-item:hover {
+            background-color: rgba(0, 140, 142, 0.1);
+        }
 
-    /* Mostrar menú al hacer hover */
-    .user-info:hover .dropdown-menu {
-        display: block;
-    }
+        /* Mostrar menú al hacer hover */
+        .user-info:hover .dropdown-menu {
+            display: block;
+        }
 
-    .navbar {
-        background-color: #006e6f;
-        padding: 10px 20px;
-    }
+        .navbar {
+            background-color: #006e6f;
+            padding: 10px 20px;
+        }
 
-    .navbar-menu {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-    }
+        .navbar-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
 
-    .navbar-item {
-        position: relative;
-        margin: 0 15px;
-    }
+        .navbar-item {
+            position: relative;
+            margin: 0 15px;
+        }
 
-    .navbar-link {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        padding: 10px;
-        transition: background-color 0.3s ease;
-    }
+        .navbar-link {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
 
-    .navbar-link:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-    }
+        .navbar-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
 
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 40px;
-        left: 0;
-        background-color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        overflow: hidden;
-        z-index: 1000;
-        width: 132px;
-    }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+            width: 132px;
+        }
 
-    .dropdown-menu li {
-        list-style: none;
-    }
+        .dropdown-menu li {
+            list-style: none;
+        }
 
-    .dropdown-menu a {
-        display: block;
-        padding: 10px 15px;
-        color: #333;
-        text-decoration: none;
-       
-        transition: background-color 0.3s ease;
-    }
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
 
-    .dropdown-menu a:hover {
-        background-color: rgba(0, 140, 142, 0.1);
-    }
+        .dropdown-menu a:hover {
+            background-color: rgba(0, 140, 142, 0.1);
+        }
 
-    .navbar-item:hover .dropdown-menu {
-        display: block;
-    }
+        .navbar-item:hover .dropdown-menu {
+            display: block;
+        }
 
-    .navbar-item {
-        position: relative;
-    }
+        .navbar-item {
+            position: relative;
+        }
 
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        overflow: hidden;
-        z-index: 1000;
-    }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
 
+        .dropdown-menu .dropdown-item {
+            display: block;
+            padding: 10px 15px;
+            color: #006e6f;
+            background-color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: rgba(0, 140, 142, 0.1);
+        }
+
+        /* Mostrar menú al hacer hover */
+        .user-info:hover .dropdown-menu {
+            display: block;
+        }
+
+        .navbar {
+            background-color: #006e6f;
+            padding: 10px 20px;
+        }
+
+        .navbar-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar-item {
+            position: relative;
+            margin: 0 15px;
+        }
+
+        .navbar-link {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+            width: 132px;
+        }
+
+        .dropdown-menu li {
+            list-style: none;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: rgba(0, 140, 142, 0.1);
+        }
+
+        .navbar-item:hover .dropdown-menu {
+            display: block;
+        }
+
+        .navbar-item {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .category-title {
+            margin-bottom: 20px;
+        }
+
+        .title-container {
+            display: flex;
+            align-items: center; /* Centra el botón verticalmente con el texto */
+            justify-content: space-between; /* Añadir espacio extra entre el título y el botón si es necesario */
+        }
+
+        .title-container h2 {
+            margin: 0; /* Elimina márgenes para que se alinee correctamente */
+            flex: 1; /* Permite que el título ocupe el espacio disponible */
+        }
+
+        .delete-form {
+            margin-left: 10px; /* Añade un pequeño margen entre el título y el botón */
+        }
+
+        .delete-button {
+            background-color: transparent;
+            border: none;
+            color: #bd1313;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .delete-button:hover {
+            background-color: rgba(189, 19, 19, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -337,7 +470,9 @@
                 </a>
             </li>
             <li class="navbar-item">
-                <button class="navbar-link">Categorías</button>
+                <a href="/categorias">
+                <button class="navbar-link">Categorias</button>
+            </a>
                 <ul class="dropdown-menu">
                     {% for categoria in categorias %}
                         <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>
@@ -350,47 +485,66 @@
                 </a>
             </li>
             {% if user.is_authenticated and not user.is_staff %}
-            
+            <li class="navbar-item">
+                <a href="/categorias/crear">
+                <button class="navbar-link">Crear categoria</button>
+                </a>
+            </li>
+            {% endif %}
+            {% if user.is_authenticated and not user.is_staff %}
             <li style="display: flex; align-items: center;">
                 <a href="/carrito">
                     <i class="fas fa-shopping-cart" style="color: white;"></i>
                 </a>
-                
             </li>
             {% endif %}
         </ul>
     </nav>
-<div class="container">
-    <!-- Título de la categoría -->
-    <section class="category-title">
-        <h2>Productos en la categoría: {{ categoria.nombre }}</h2>
-    </section>
-
-    <section class="featured-products" id="productos">
-        <div class="product-grid">
-            {% for producto in productos %}
-            <div class="product">
-                <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
-                    {% if producto.fotografia %}
-                    <img src="{{ producto.fotografia }}" alt="{{ producto.nombre }}">
-                    {% else %}
-                    <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
-                    {% endif %}
-                    <h3>{{ producto.nombre }}</h3>
-                    <p>${{ producto.precio }}</p>
-                    <form action="{% url 'agregar_producto_a_factura' producto.id %}" method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="add-to-cart-button">
-                            <i class="fas fa-cart-plus"></i> Añadir al carrito
-                        </button>
-                    </form>
+    <div class="container">
+        <!-- Título de la categoría -->
+        <section class="category-title">
+            <div class="title-container">
+                <h2>Productos en la categoría: {{ categoria.nombre }}</h2>
+                {% if user.is_authenticated and not user.is_staff %}
+                <form method="POST" action="{% url 'eliminar_categoria' categoria.id %}" class="delete-form">
+                    {% csrf_token %}
+                    <button type="submit" class="delete-button" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
+                <a href="{% url 'ver_actualizar_categoria' categoria.id %}">
+                    <i class="fas fa-edit"></i>
                 </a>
+                {% endif %}
             </div>
-            {% empty %}
-            <p>No hay productos disponibles en esta categoría.</p>
-            {% endfor %}
-        </div>
-    </section>
-</div>
+        </section>
+
+        <section class="featured-products" id="productos">
+            <div class="product-grid">
+                {% for producto in productos %}
+                <div class="product">
+                    <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
+                        {% if producto.fotografia %}
+                        <img src="{{ producto.fotografia }}" alt="{{ producto.nombre }}">
+                        {% else %}
+                        <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+                        {% endif %}
+                        <h3>{{ producto.nombre }}</h3>
+                        <p>${{ producto.precio }}</p>
+                        <form action="{% url 'agregar_producto_a_factura' producto.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="add-to-cart-button">
+                                <i class="fas fa-cart-plus"></i> Añadir al carrito
+                            </button>
+                        </form>
+                    </a>
+                </div>
+                {% empty %}
+                <p>No hay productos disponibles en esta categoría.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
 </body>
 </html>
+

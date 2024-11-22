@@ -32,7 +32,8 @@ urlpatterns = [
 
     path('categorias/', views.lista_categorias, name='lista_categorias'),
     path('categorias/crear/', producto_views.crear_categoria_de_producto, name='crear_categoria'),
-    path('categorias/<int:categoria_de_producto_id>/editar/', producto_views.actualizar_categoria_de_producto, name='actualizar_categoria'),
+    path('categorias/<int:categoria_de_producto_id>/editar/', producto_views.ver_actualizar_categoria_de_producto, name='ver_actualizar_categoria'),
+    path('categorias/<int:categoria_de_producto_id>/editado/', producto_views.actualizar_categoria_de_producto, name='actualizar_categoria'),
     path('categorias/<int:categoria_de_producto_id>/eliminar/', producto_views.eliminar_categoria_de_producto, name='eliminar_categoria'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

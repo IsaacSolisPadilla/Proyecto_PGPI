@@ -169,44 +169,324 @@
         footer a:hover {
             text-decoration: underline;
         }
+        .dropdown-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    }
+
+    .dropdown-button:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Menú dropdown */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+    }
+
+    .dropdown-menu .dropdown-item {
+        display: block;
+        padding: 10px 15px;
+        color: #006e6f;
+        background-color: #ffffff;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: rgba(0, 140, 142, 0.1);
+    }
+
+    /* Mostrar menú al hacer hover */
+    .user-info:hover .dropdown-menu {
+        display: block;
+    }
+
+    .navbar {
+        background-color: #006e6f;
+        padding: 10px 20px;
+    }
+
+    .navbar-menu {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .navbar-item {
+        position: relative;
+        margin: 0 15px;
+    }
+
+    .navbar-link {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .navbar-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+        width: 132px;
+    }
+
+    .dropdown-menu li {
+        list-style: none;
+    }
+
+    .dropdown-menu a {
+        display: block;
+        padding: 10px 15px;
+        color: #333;
+        text-decoration: none;
+       
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: rgba(0, 140, 142, 0.1);
+    }
+
+    .navbar-item:hover .dropdown-menu {
+        display: block;
+    }
+
+    .navbar-item {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+    }
+
 
     </style>
 </head>
 <body>
-<div class="container">
-    <section class="featured-products" id="productos">
-        <h2>Productos</h2>
-        {% if user.is_authenticated and user.is_staff %}
-        <div class="create-button-container">
-            <a href="{% url 'crear_producto' %}" class="create-button">
-                Crear Producto
+    <nav class="navbar">
+        <ul class="navbar-menu">
+            {% if user.is_authenticated %}
+                <li class="navbar-item" style="position: absolute; left: 1%;">
+                    <button class="dropdown-button">
+                        Hola, {{ user.username }}
+                        <svg width="15px" height="10px" viewBox="0 0 13 10">
+                            <path d="M1,5 L11,5"></path>
+                            <polyline points="8 1 12 5 8 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu">
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                        </form>
+                    </div>
+                </li>
+            {% else %}
+            <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
+                <span>Iniciar Sesión</span>
+                <svg width="15px" height="10px" viewBox="0 0 13 10">
+                    <path d="M1,5 L11,5"></path>
+                    <polyline points="8 1 12 5 8 9"></polyline>
+                </svg>
             </a>
-        </div>
-        {% endif %}
-        <div class="product-grid">
-            {% for producto in productos %}
-            <div class="product">
-                <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
-                    {% if producto.fotografia %}
-                    <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}">
-                    {% else %}
-                    <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
-                    {% endif %}
-                    <h3>{{ producto.nombre }}</h3>
-                    <p>${{ producto.precio }}</p>
-                    <form action="{% url 'agregar_producto_a_factura' producto.id %}" method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="add-to-cart-button">
-                            <i class="fas fa-cart-plus"></i> Añadir al carrito
-                        </button>
-                    </form>
+            {% endif %}
+            <li class="navbar-item">
+                <a href="/">
+                <button class="navbar-link">Home</button>
                 </a>
+            </li>
+            <li class="navbar-item">
+                <a href="/categorias">
+                <button class="navbar-link">Categorias</button>
+            </a>
+                <ul class="dropdown-menu">
+                    {% for categoria in categorias %}
+                        <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li class="navbar-item">
+                <a href="/productos">
+                <button class="navbar-link">Productos</button>
+                </a>
+            </li>
+            {% if user.is_authenticated and not user.is_staff %}
+            
+            <li style="display: flex; align-items: center;">
+                <a href="/carrito">
+                    <i class="fas fa-shopping-cart" style="color: white;"></i>
+                </a>
+                
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <div class="container">
+        <!-- Título de las categorías -->
+        <section class="category-title">
+            <div class="title-container">
+                <h2>Categorías disponibles:</h2>
+                {% if user.is_authenticated and user.is_staff %}
+                    <a href="{% url 'crear_categoria' %}" class="create-button">Crear nueva categoría</a>
+                {% endif %}
             </div>
-            {% empty %}
-            <p>No hay productos disponibles en este momento.</p>
-            {% endfor %}
-        </div>
-    </section>
-</div>
+        </section>
+    
+        <!-- Listado de categorías -->
+        <section class="category-list">
+            <div class="category-grid">
+                {% for categoria in categorias %}
+                <div class="category-item">
+                    <a href="/categorias/{{ categoria.id }}" style="text-decoration: none;">
+                        <h3>{{ categoria.nombre }}</h3>
+                        <p>{{ categoria.descripcion|default:"Sin descripción" }}</p>
+                    </a>
+                    {% if user.is_authenticated and user.is_staff %}
+                    <div class="category-actions">
+                        <a href="{% url 'editar_categoria' categoria.id %}" class="edit-button">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <form method="POST" action="{% url 'eliminar_categoria' categoria.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-button" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <p>No hay categorías disponibles.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+    
 </body>
 </html>
+<style>
+    /* Contenedor de categorías */
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .category-item {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .category-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-item h3 {
+        font-size: 20px;
+        color: #006e6f;
+        margin: 10px 0;
+    }
+
+    .category-item p {
+        color: #555;
+        font-size: 16px;
+    }
+
+    .category-actions {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .edit-button, .delete-button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        color: #006e6f;
+        font-size: 16px;
+        padding: 5px 10px;
+        transition: color 0.3s ease;
+        text-decoration: none;
+    }
+
+    .edit-button:hover {
+        color: #218838;
+    }
+
+    .delete-button {
+        color: #e63946;
+    }
+
+    .delete-button:hover {
+        color: #c62828;
+    }
+
+    .create-button {
+        background-color: #ffffff;
+        color: #006e6f;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        margin-left: auto;
+    }
+
+    .create-button:hover {
+        background-color: #006e6f;
+        color: white;
+    }
+</style>

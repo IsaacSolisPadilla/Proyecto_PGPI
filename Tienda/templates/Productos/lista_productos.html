@@ -337,7 +337,9 @@
                 </a>
             </li>
             <li class="navbar-item">
-                <button class="navbar-link">Categorías</button>
+                <a href="/categorias">
+                <button class="navbar-link">Categorias</button>
+            </a>
                 <ul class="dropdown-menu">
                     {% for categoria in categorias %}
                         <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>

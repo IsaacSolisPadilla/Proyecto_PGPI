@@ -52,14 +52,14 @@ def detalle_carro_pago(request, producto_id):
 
 #=====
 
-@user_passes_test(lambda u: u.is_superuser)
 def crear_categoria_de_producto(request):
     if request.method == 'POST':
         data = request.POST
         categoriaProducto = ProductoService.crear_categoria_de_producto(data)
         return redirect('lista_categorias')
     else:
-        return render(request, 'Productos/crear_categoria_producto.html')
+        categorias = CategoriaProducto.objects.all()
+        return render(request, 'Productos/crear_categoria_producto.html',{'categorias': categorias} )
 
 @user_passes_test(lambda u: u.is_superuser)
 def eliminar_categoria_de_producto(request, categoria_de_producto_id):
@@ -67,22 +67,18 @@ def eliminar_categoria_de_producto(request, categoria_de_producto_id):
     return redirect('lista_categorias')
 
 @user_passes_test(lambda u: u.is_superuser)
-def actualizar_categoria_de_producto(request, categoria_de_producto_id):
+def ver_actualizar_categoria_de_producto(request, categoria_de_producto_id):
     categoria = get_object_or_404(CategoriaProducto, id=categoria_de_producto_id)
+    return render(request, 'Productos/actualizar_categoria.html', {'categoria': categoria})
 
-    if request.method == 'POST':
-        data = request.POST
-        ProductoService.actualizar_categoria_de_producto(categoria_de_producto_id, data)
-        return redirect('lista_categorias') 
-    else:
-        return render(request, 'Productos/actualizar_categoria.html', {'categoria': categoria})
+@user_passes_test(lambda u: u.is_superuser)
+def actualizar_categoria_de_producto(request, categoria_de_producto_id):   
+    data = request.POST
+    ProductoService.actualizar_categoria_de_producto(categoria_de_producto_id, data)
+    return redirect('lista_categorias')
 
 def lista_productos_de_categoria(request, categoria_id):
-    # Obtener la categoría o retornar error 404 si no se encuentra
     categoria = get_object_or_404(CategoriaProducto, id=categoria_id)
-    # Obtener los productos que pertenecen a esta categoría
     productos = Producto.objects.filter(categoria=categoria)
-    # Renderizar la plantilla pasando la categorías
     categorias = CategoriaProducto.objects.all()
-    # Renderizar la plantilla pasando la categoría y los productos
     return render(request, 'Productos/lista_productos_categoria.html', {'categorias': categorias, 'categoria': categoria, 'productos': productos})

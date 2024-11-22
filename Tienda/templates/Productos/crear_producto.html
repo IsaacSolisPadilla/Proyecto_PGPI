@@ -41,23 +41,36 @@
         </a>
         {% endif %}
         <li class="navbar-item">
-            <button class="navbar-link">Categorías</button>
+            <a href="/">
+            <button class="navbar-link">Home</button>
+            </a>
+        </li>
+        <li class="navbar-item">
+            <a href="/categorias">
+                <button class="navbar-link">Categorias</button>
+            </a>
             <ul class="dropdown-menu">
-                <li><a href="#">Cristales</a></li>
-                <li><a href="#">Incienso</a></li>
-                <li><a href="#">Velas</a></li>
+                {% for categoria in categorias %}
+                    <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>
+                {% endfor %}
             </ul>
         </li>
         <li class="navbar-item">
+            <a href="/productos">
             <button class="navbar-link">Productos</button>
-            <ul class="dropdown-menu">
-                <li><a href="#">Chanel</a></li>
-                <li><a href="#">Dior</a></li>
-                <li><a href="#">Gucci</a></li>
-            </ul>
+            </a>
         </li>
+        
+        <li style="display: flex; align-items: center;">
+            <a href="/carrito">
+                <i class="fas fa-shopping-cart" style="color: white;"></i>
+            </a>
+            
+        </li>
+         
     </ul>
 </nav>
+
 
 <section class="form-section">
     <div class="form-container">
