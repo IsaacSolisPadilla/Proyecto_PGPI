@@ -12,6 +12,7 @@ urlpatterns = [
     path('facturas/', views.lista_facturas, name='lista_facturas'),
     path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
     path('factura/confirmar', viewsFactura.confirmar_factura, name='crear_pedido'),
+    path('factura/agregar/<int:producto_id>/', viewsFactura.agregar_producto_a_factura, name='agregar_producto_a_factura'),
     path('factura/actualizar', viewsFactura.actualizar_factura, name='actualizar_factura'),
     path('factura/numero_factura/<str:numero_factura>', viewsFactura.obtener_factura_por_numero_factura, name='buscar_factura_por_numero'),
     path('carrito', views.ver_carrito),

@@ -7,6 +7,50 @@ from django.http import HttpResponseRedirect
 from Tienda.models import Factura, LineaFactura, Producto
 from Tienda.forms import FormFactura
 
+def agregar_producto_a_factura(request, producto_id):
+    if request.method == "POST":
+        cantidad = 1
+        if not producto_id:
+            return JsonResponse({"error": "No se especificó el producto"}, status=400)
+        print(producto_id)
+        producto = get_object_or_404(Producto, id=producto_id)
+
+        if producto.stock < cantidad:
+            return JsonResponse({"error": "Stock insuficiente para este producto"}, status=400)
+
+        # Busca una factura pendiente asociada al usuario
+        factura, creada = Factura.objects.get_or_create(
+            usuario=request.user,
+            estado="Espera",
+            defaults={
+                "direccion": "",  # Puedes definir valores predeterminados
+                "metodo_de_pago": "Contrareembolso",  # O cambiarlo según corresponda
+            },
+        )
+
+        # Intenta obtener una línea de factura existente para el producto
+        linea_factura, creada_linea = LineaFactura.objects.get_or_create(
+            factura=factura,
+            producto=producto,
+            defaults={"cantidad": cantidad},
+        )
+
+        if not creada_linea:
+            # Si la línea ya existe, actualiza la cantidad
+            nueva_cantidad = linea_factura.cantidad + cantidad
+            if producto.stock < nueva_cantidad:
+                return JsonResponse({"error": "Stock insuficiente para la cantidad solicitada"}, status=400)
+            linea_factura.cantidad = nueva_cantidad
+            linea_factura.save()
+
+        # Actualiza el stock del producto
+        producto.stock -= cantidad
+        producto.save()
+
+        return JsonResponse({"message": "Producto añadido a la factura correctamente"}, status=200)
+
+    return JsonResponse({"error": "Método no permitido"}, status=405)
+
 def actualizar_factura(request):
     
     if(request.method == "PUT"):

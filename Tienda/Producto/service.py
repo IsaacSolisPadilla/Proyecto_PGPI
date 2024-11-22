@@ -81,8 +81,8 @@ class ProductoService:
 
     @staticmethod
     def listar_categorias_de_productos():
-        cateogiras = CategoriaProducto.objects.all()
-        return [cateogira.to_dict() for cateogira in cateogiras]
+        categorias = CategoriaProducto.objects.all()
+        return [categoria.to_dict() for categoria in categorias]
 
 
 
