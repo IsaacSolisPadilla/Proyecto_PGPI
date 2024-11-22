@@ -202,7 +202,7 @@
 </table>
 <div style="display: flex; flex-direction: row;">
     <button onclick="actualizarFactura()">Actualizar</button>
-    <button onclick="window.location.href = '/facturas/confirmar'">Confirmar</button>
+    <button onclick="window.location.href = '/factura/confirmar'">Confirmar</button>
     <button onclick="window.location.href = '/' ">Volver</button>    
 </div>
 
@@ -215,7 +215,15 @@
         .then(json => factura = json)
         .then(_ => {
             const tbody = document.getElementById("lineas")
-            console.log(factura)
+            
+            if(factura === null || Object.keys(factura).length === 0) {
+                const facturaVacia = document.createElement("p");
+                facturaVacia.textContent = "No hay productos pendientes"
+                console.log(tbody.parentNode)
+                tbody.parentNode.replaceChild(tbody, facturaVacia);
+                return ;
+            }
+            
             for(const n_linea in factura) {
                 tbody.innerHTML += `
                 <tr id="linea-${n_linea}">

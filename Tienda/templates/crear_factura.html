@@ -251,7 +251,10 @@
         .then(json => factura = json)
         .then(_ => {
             const tbody = document.getElementById("lineas")
-            
+            if(Object.keys(factura).length === 0) {
+                tbody.innerHTML += `<p>No hay productos pendientes</p>`
+                return ;
+            }
             for(const n_linea in factura) {
                 tbody.innerHTML += `
                 <tr id="linea-${n_linea}">

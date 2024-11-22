@@ -12,7 +12,7 @@ urlpatterns = [
     path('categorias/', views.lista_categorias, name='lista_categorias'),
     path('facturas/', views.lista_facturas, name='lista_facturas'),
     path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
-    path('facturas/confirmar', viewsFactura.confirmar_factura, name='crear_pedido'),
+    path('factura/confirmar', viewsFactura.confirmar_factura, name='crear_pedido'),
     path('factura/actualizar', viewsFactura.actualizar_factura, name='actualizar_factura'),
     path('carrito', views.ver_carrito),
     path('factura/pendiente', viewsFactura.obtener_factura_pendiente),

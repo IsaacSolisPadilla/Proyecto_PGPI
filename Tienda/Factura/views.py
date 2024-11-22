@@ -11,6 +11,8 @@ def actualizar_factura(request):
     if(request.method == "PUT"):
         body = json.loads(request.body)
         factura = request.user.facturas.filter(estado="Pendiente").first()
+        if factura == None:
+            return redirect("/")
         lineas_factura: List[LineaFactura] = factura.lineas_factura.all()
         producto_id_linea = dict()
 
@@ -35,6 +37,8 @@ def actualizar_factura(request):
 def obtener_factura_pendiente(request):
     print(request.user)
     factura = request.user.facturas.filter(estado="Pendiente").first()
+    if factura is None:
+        return JsonResponse({})
     ls = {i:value for i, value in enumerate(map(lambda x: x.to_dict(), list(factura.lineas_factura.all())))}
     return JsonResponse(ls)
  
