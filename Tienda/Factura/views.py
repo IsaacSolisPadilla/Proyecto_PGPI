@@ -6,6 +6,9 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponseRedirect
 from Tienda.models import Factura, LineaFactura, Producto
 from Tienda.forms import AdminFormFactura, FormFactura
+from django.conf import settings
+from django.http import HttpResponse
+from django.core.mail import send_mail
 
 def agregar_producto_a_factura(request, producto_id):
     if request.method == "POST":
@@ -127,8 +130,10 @@ def confirmar_factura(request):
         }
     )
 
+# En la vista que genera la sesión de pago de Stripe
+
 def crear_sesion_pago(request):
-    if request.user != None:
+    if request.user is not None:
         factura = request.user.facturas.filter(estado="Espera").first()
     else:
         factura = request.user.facturas.filter(numero_factura=1).first()
@@ -150,7 +155,7 @@ def crear_sesion_pago(request):
             'quantity': 1,
         }],
         mode='payment',
-        success_url=request.build_absolute_uri('/'),  # URL de éxito
+        success_url=request.build_absolute_uri('/procesar_pago/?session_id={CHECKOUT_SESSION_ID}'),  # Redirige a esta URL
         cancel_url=request.build_absolute_uri('/'),  # URL de cancelación
     )
 
@@ -170,3 +175,59 @@ def modificar_factura(request, factura_id):
     else:
         form = AdminFormFactura(instance=factura, is_disable=True)
         return render(request, 'factura.html', {"form": form})
+    
+def procesar_pago(request):
+    session_id = request.GET.get('session_id')
+    stripe.api_key = 'sk_test_51Q2XBLRr6L8GxbwMtP9iKtu8hChihr12m1xHEGoTlGRQSZYCHR8APCuH2T2vA454IoYMwRBMEit7V9MxfSpOZouT00Re1Yl42n'
+    try:
+        # Obtener los detalles de la sesión de pago desde Stripe
+        session = stripe.checkout.Session.retrieve(session_id)
+        
+        # Verifica si el pago fue exitoso
+        if session.payment_status == 'paid':
+            # Obtener la información del cliente (correo, etc.)
+            customer_email = session.customer_email
+            
+            # Aquí debes buscar la factura del usuario que ha sido pagada
+            if request.user is not None:
+                factura = request.user.facturas.filter(estado="Espera").first()
+            else:
+                factura = request.user.facturas.filter(numero_factura=1).first()
+
+            # Contenido del correo
+            subject = "Factura de tu compra"
+            message = message = f"""
+                Hola {factura.nombre} {factura.apellidos},
+
+                Gracias por tu compra. El precio total de tu factura es {factura.precio_total()} EUR.
+
+                Aquí están los detalles de tu pedido:
+
+                - Número de factura: {factura.numero_factura}
+                - Fecha del pedido: {factura.fecha_pedido.strftime('%d/%m/%Y %H:%M:%S')}
+                - Fecha de salida: {factura.fecha_salida.strftime('%d/%m/%Y %H:%M:%S') if factura.fecha_salida else 'No disponible'}
+                - Fecha de entrega: {factura.fecha_entrega.strftime('%d/%m/%Y %H:%M:%S') if factura.fecha_entrega else 'No disponible'}
+                - Dirección de envío: {factura.direccion}
+
+                Gracias por confiar en nosotros. Si tienes alguna pregunta, no dudes en contactarnos.
+
+                Saludos,
+                El equipo de tu tienda
+            """
+
+            # Enviar el correo
+            send_mail(
+                subject,
+                message,
+                'eduroblesrusso82@gmail.com',  # Dirección del remitente
+                [customer_email],  # Dirección del destinatario
+                fail_silently=False,
+            )
+
+            return HttpResponse("Pago completado y correo enviado.")
+        else:
+            return HttpResponse("El pago no se completó correctamente.")
+    
+    except stripe.error.StripeError as e:
+        return HttpResponse(f"Hubo un error al procesar el pago: {str(e)}")
+
