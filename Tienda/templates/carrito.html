@@ -224,7 +224,7 @@
     feather.replace();
     var factura = null;
     var facturaConProductos = true;
-    fetch("/factura/pendiente")
+    fetch("/factura/espera")
         .then(data => data.json())
         .then(json => factura = json)
         .then(_ => {
@@ -234,7 +234,7 @@
                 const carrito = document.getElementById("cart")
                 const facturaVacia = document.createElement("p");
                 facturaVacia.className = "mensaje-error"
-                facturaVacia.textContent = "No hay productos pendientes"
+                facturaVacia.textContent = "No hay productos en factura"
                 carrito.parentNode.replaceChild(facturaVacia, carrito)
                 document.getElementById("confirmar").remove()
                 document.getElementById("actualizar").remove()

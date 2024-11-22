@@ -246,13 +246,13 @@
 <script>
     feather.replace();
     var factura = null;
-    fetch("/factura/pendiente")
+    fetch("/factura/espera")
         .then(data => data.json())
         .then(json => factura = json)
         .then(_ => {
             const tbody = document.getElementById("lineas")
             if(Object.keys(factura).length === 0) {
-                tbody.innerHTML += `<p>No hay productos pendientes</p>`
+                tbody.innerHTML += `<p>No hay productos en factura</p>`
                 return ;
             }
             for(const n_linea in factura) {

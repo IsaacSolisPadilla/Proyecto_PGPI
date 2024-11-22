@@ -10,7 +10,7 @@ from Tienda.models import LineaFactura, Producto
 def actualizar_factura(request):
     if(request.method == "PUT"):
         body = json.loads(request.body)
-        factura = request.user.facturas.filter(estado="Pendiente").first()
+        factura = request.user.facturas.filter(estado="Espera").first()
         if factura == None:
             return redirect("/")
         lineas_factura: List[LineaFactura] = factura.lineas_factura.all()
@@ -34,9 +34,9 @@ def actualizar_factura(request):
 
         return JsonResponse({"message": "Datos recibidos correctamente"}, status=200)
     
-def obtener_factura_pendiente(request):
+def obtener_factura_espera(request):
     print(request.user)
-    factura = request.user.facturas.filter(estado="Pendiente").first()
+    factura = request.user.facturas.filter(estado="Espera").first()
     if factura is None:
         return JsonResponse({})
     ls = {i:value for i, value in enumerate(map(lambda x: x.to_dict(), list(factura.lineas_factura.all())))}
@@ -50,7 +50,7 @@ def confirmar_factura(request):
         print("\033[0m")
         return None
     
-    factura = request.user.facturas.filter(estado="Pendiente").first()
+    factura = request.user.facturas.filter(estado="Espera").first()
     if factura == None:
         return redirect("/")
     return render(
@@ -60,7 +60,7 @@ def confirmar_factura(request):
     )
 
 def crear_sesion_pago(request):
-    factura = request.user.facturas.filter(estado="Pendiente").first()
+    factura = request.user.facturas.filter(estado="Espera").first()
     coste = factura.precio_total()
     stripe.api_key = 'sk_test_51Q2XBLRr6L8GxbwMtP9iKtu8hChihr12m1xHEGoTlGRQSZYCHR8APCuH2T2vA454IoYMwRBMEit7V9MxfSpOZouT00Re1Yl42n'
 

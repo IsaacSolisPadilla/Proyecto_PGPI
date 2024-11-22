@@ -14,7 +14,7 @@ urlpatterns = [
     path('factura/confirmar', viewsFactura.confirmar_factura, name='crear_pedido'),
     path('factura/actualizar', viewsFactura.actualizar_factura, name='actualizar_factura'),
     path('carrito', views.ver_carrito),
-    path('factura/pendiente', viewsFactura.obtener_factura_pendiente),
+    path('factura/espera', viewsFactura.obtener_factura_espera),
     path('', views.pagina_principal, name='pagina_principal'),
     path('login/', views.login_view, name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
