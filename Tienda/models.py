@@ -53,8 +53,8 @@ class Factura(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="facturas")
     numero_factura = models.CharField(unique=True, max_length=12)
     fecha_pedido = models.DateTimeField(auto_now_add=True)
-    fecha_salida = models.DateTimeField(null=True)
-    fecha_entrega = models.DateTimeField(null=True)
+    fecha_salida = models.DateTimeField(null=True, blank=True)
+    fecha_entrega = models.DateTimeField(null=True, blank=True)
     direccion = models.TextField()
     estado = models.CharField(
         max_length=50,
