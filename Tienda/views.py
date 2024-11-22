@@ -34,8 +34,6 @@ def lista_usuarios(request):
     usuarios = User.objects.all()
     return render(request, 'lista_usuarios.html', {'usuarios': usuarios})
 
-
-
 def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
