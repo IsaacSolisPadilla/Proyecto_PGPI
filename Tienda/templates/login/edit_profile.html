@@ -1,0 +1,17 @@
+<!-- templates/profile/edit_profile.html -->
+<h2>Editar perfil</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend>Información de perfil</legend>
+        {{ profile_form.as_p }}
+    </fieldset>
+
+    <fieldset>
+        <legend>Cambiar contraseña</legend>
+        {{ password_form.as_p }}
+    </fieldset>
+
+    <button type="submit">Guardar cambios</button>
+</form>

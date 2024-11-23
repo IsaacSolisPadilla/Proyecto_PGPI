@@ -6,6 +6,7 @@ from Tienda import views
 from Tienda.Factura import views as viewsFactura
 from Tienda.Producto import views as producto_views
 from django.contrib.auth.views import LogoutView
+from Tienda.Usuario import views as usuario_views
 
 urlpatterns = [
     path('', views.pagina_principal, name='pagina_principal'),
@@ -15,6 +16,7 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('register/', views.register_view, name='register'),
+    path('editar-perfil/', usuario_views.edit_profile, name='edit_profile'),
 
     path('facturas/', views.lista_facturas, name='lista_facturas'),
     path('factura/<int:factura_id>/', viewsFactura.modificar_factura, name="factura_admin"),
