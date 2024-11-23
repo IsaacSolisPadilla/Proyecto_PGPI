@@ -44,7 +44,8 @@ def actualizar_producto(request, producto_id):
 
 def detalle_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
-    return render(request, 'Productos/detalle_producto.html', {'producto': producto})
+    categorias = CategoriaProducto.objects.all()
+    return render(request, 'Productos/detalle_producto.html', {'producto': producto, 'categorias': categorias})
 
 def detalle_carro_pago(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
