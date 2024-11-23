@@ -470,7 +470,7 @@
                 </a>
             </li>
             <li class="navbar-item">
-                <a href="/categorias">
+                <a>
                 <button class="navbar-link">Categorias</button>
             </a>
                 <ul class="dropdown-menu">
@@ -531,7 +531,7 @@
                         {% endif %}
                         <h3>{{ producto.nombre }}</h3>
                         <p>${{ producto.precio }}</p>
-                        <form action="{% url 'agregar_producto_a_factura' producto.id %}" method="post" style="display: inline;">
+                        <form action="{% url 'cart:cart_add' producto.id %}" method="post" style="display: inline;">
                             {% csrf_token %}
                             <button type="submit" class="add-to-cart-button">
                                 <i class="fas fa-cart-plus"></i> Añadir al carrito

@@ -54,57 +54,57 @@ def agregar_producto_a_factura(request, producto_id):
 
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
-def actualizar_factura(request):
+# def actualizar_factura(request):
     
-    if(request.method == "PUT"):
-        body = json.loads(request.body)
-        factura = None
-        if request.user != None:
-            factura = request.user.facturas.filter(estado="Espera").first()
-        else:
-            factura = request.user.facturas.filter(numero_factura=1).first()
-        if factura == None:
-            return redirect("/")
-        lineas_factura: List[LineaFactura] = factura.lineas_factura.all()
-        producto_id_linea = dict()
+#     if(request.method == "PUT"):
+#         body = json.loads(request.body)
+#         factura = None
+#         if request.user != None:
+#             factura = request.user.facturas.filter(estado="Espera").first()
+#         else:
+#             factura = request.user.facturas.filter(numero_factura=1).first()
+#         if factura == None:
+#             return redirect("/")
+#         lineas_factura: List[LineaFactura] = factura.lineas_factura.all()
+#         producto_id_linea = dict()
 
-        # Eliminación de productos
-        for ln in lineas_factura:
-            if str(ln.producto.id) not in body["lineas_factura"].keys():
-                print(1)
-                ln.delete()
-            else:
-                producto_id_linea[str(ln.producto.id)] = ln
+#         # Eliminación de productos
+#         for ln in lineas_factura:
+#             if str(ln.producto.id) not in body["lineas_factura"].keys():
+#                 print(1)
+#                 ln.delete()
+#             else:
+#                 producto_id_linea[str(ln.producto.id)] = ln
 
-        # Se actualizan los demás casos
-        lineas_factura_body = body["lineas_factura"]
-        for new_id in lineas_factura_body.keys():
-            linea_factura = producto_id_linea[str(new_id)]
-            if linea_factura.cantidad != lineas_factura_body[new_id]:
-                linea_factura.cantidad = lineas_factura_body[new_id]
-                linea_factura.save()
+#         # Se actualizan los demás casos
+#         lineas_factura_body = body["lineas_factura"]
+#         for new_id in lineas_factura_body.keys():
+#             linea_factura = producto_id_linea[str(new_id)]
+#             if linea_factura.cantidad != lineas_factura_body[new_id]:
+#                 linea_factura.cantidad = lineas_factura_body[new_id]
+#                 linea_factura.save()
 
-        return JsonResponse({"message": "Datos recibidos correctamente"}, status=200)
+#         return JsonResponse({"message": "Datos recibidos correctamente"}, status=200)
     
 def obtener_factura_por_numero_factura(request, numero_factura):
     print(numero_factura)
     print(Factura.objects.filter(numero_factura=numero_factura).first())
     return JsonResponse({"estado_factura": get_object_or_404(Factura, numero_factura=numero_factura).estado} ,status=200)
 
-def obtener_factura_espera(request):
-    print("-"*100)
-    print(request.GET.get("num_factura"))
-    print("-"*100)
-    factura = None
-    if request.user != None:
-        factura = request.user.facturas.filter(estado="Espera").first()
-    else:
-        factura = request.user.facturas.filter(numero_factura=1).first()
+# def obtener_factura_espera(request):
+#     print("-"*100)
+#     print(request.GET.get("num_factura"))
+#     print("-"*100)
+#     factura = None
+#     if request.user != None:
+#         factura = request.user.facturas.filter(estado="Espera").first()
+#     else:
+#         factura = request.user.facturas.filter(numero_factura=1).first()
 
-    if factura is None:
-        return JsonResponse({})
-    ls = {i:value for i, value in enumerate(map(lambda x: x.to_dict(), list(factura.lineas_factura.all())))}
-    return JsonResponse(ls)
+#     if factura is None:
+#         return JsonResponse({})
+#     ls = {i:value for i, value in enumerate(map(lambda x: x.to_dict(), list(factura.lineas_factura.all())))}
+#     return JsonResponse(ls)
  
 def confirmar_factura(request):
     form = FormFactura(request.POST)
@@ -113,10 +113,11 @@ def confirmar_factura(request):
         return None
     
     factura = None
-    if request.user != None:
-        factura = request.user.facturas.filter(estado="Espera").first()
-    else:
-        factura = request.user.facturas.filter(numero_factura=1).first()
+    # TODO: ahora se debe coger el carrito
+    # if request.user != None:
+    #     factura = request.user.facturas.filter(estado="Espera").first()
+    # else:
+    #     factura = request.user.facturas.filter(numero_factura=1).first()
     if factura == None:
         return redirect("/")
     
@@ -133,6 +134,7 @@ def confirmar_factura(request):
 # En la vista que genera la sesión de pago de Stripe
 
 def crear_sesion_pago(request):
+    # TODO: mirar que modificar aquí
     if request.user is not None:
         factura = request.user.facturas.filter(estado="Espera").first()
     else:
@@ -189,10 +191,11 @@ def procesar_pago(request):
             customer_email = session.customer_email
             
             # Aquí debes buscar la factura del usuario que ha sido pagada
-            if request.user is not None:
-                factura = request.user.facturas.filter(estado="Espera").first()
-            else:
-                factura = request.user.facturas.filter(numero_factura=1).first()
+            # TODO: Mirar que hacer aquí
+            # if request.user is not None:
+            #     factura = request.user.facturas.filter(estado="Espera").first()
+            # else:
+            #     factura = request.user.facturas.filter(numero_factura=1).first()
 
             # Contenido del correo
             subject = "Factura de tu compra"

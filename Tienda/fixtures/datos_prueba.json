@@ -288,10 +288,10 @@
             "fecha_salida": null,
             "fecha_entrega": null,
             "direccion": "Calle Falsa 123, Ciudad Esotérica",
-            "estado": "Espera",
-            "metodo_de_pago": null,
-            "nombre": null,
-            "apellidos": null
+            "estado": "Pendiente",
+            "metodo_de_pago": "Pasarela",
+            "nombre": "Daniel",
+            "apellidos": "Cancio Trigo"
         }
     },
     {

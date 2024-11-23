@@ -60,7 +60,7 @@ class Factura(models.Model):
     direccion = models.TextField()
     estado = models.CharField(
         max_length=50,
-        choices=[("Espera","Espera"), ("Pendiente", "Pendiente"), ("Enviado","Enviado") ,("Entregado","Entregado")]
+        choices=[("Pendiente", "Pendiente"), ("Enviado","Enviado") ,("Entregado","Entregado")]
     )
     metodo_de_pago = models.CharField(
         max_length=50,
