@@ -354,6 +354,13 @@
     .filters button:active {
         background-color: #1e7e34;
     }
+    .filters-container {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        align-items: center; /* Centrar verticalmente */
+        padding: 20px 0; /* Espaciado superior e inferior */
+        width: 100%; /* Asegura el ancho completo */
+    }
 
 
     </style>
@@ -423,15 +430,17 @@
                 <section class="category-title">
                     <h2>Productos</h2>
                 </section>
-                <div class="filters">
-                    <input type="text" id="filter-name" placeholder="Filtrar por nombre..." oninput="filterProducts()">
-                    <input type="number" id="filter-price" placeholder="Filtrar por precio máximo..." oninput="filterProducts()">
-                    <select id="filter-category" onchange="filterProducts()">
-                        <option value="">Seleccionar categoría</option>
-                        {% for categoria in categorias %}
-                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
-                        {% endfor %}
-                    </select>
+                <div class="filters-container">
+                    <div class="filters">
+                        <input type="text" id="filter-name" placeholder="Filtrar por nombre..." oninput="filterProducts()">
+                        <input type="number" id="filter-price" placeholder="Filtrar por precio máximo..." oninput="filterProducts()">
+                        <select id="filter-category" onchange="filterProducts()">
+                            <option value="">Seleccionar categoría</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
                 {% if user.is_authenticated and user.is_staff %}
                     <div class="create-button-container">
