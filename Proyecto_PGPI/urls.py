@@ -20,15 +20,13 @@ urlpatterns = [
 
     path('facturas/', views.lista_facturas, name='lista_facturas'),
     path('factura/<int:factura_id>/', viewsFactura.modificar_factura, name="factura_admin"),
-    # path('factura/espera', viewsFactura.obtener_factura_espera),
     path('factura/confirmar', viewsFactura.confirmar_factura, name='crear_pedido'),
-    path('factura/agregar/<int:producto_id>/', viewsFactura.agregar_producto_a_factura, name='agregar_producto_a_factura'),
-    # path('factura/actualizar', viewsFactura.actualizar_factura, name='actualizar_factura'),
     path('factura/numero_factura/<str:numero_factura>', viewsFactura.obtener_factura_por_numero_factura, name='buscar_factura_por_numero'),
     
-    # path('carrito', views.ver_carrito),
-    path('crear-sesion-pago/', viewsFactura.crear_sesion_pago, name='crear_sesion_pago'),
-
+    # path('crear-sesion-pago/', viewsFactura.crear_sesion_pago, name='crear_sesion_pago'),
+    path('cancelar_factura', viewsFactura.cancelar_factura, name='cancelar_factura'),
+    path('procesar_pago/', viewsFactura.procesar_pago, name="procesar_pago"),
+    
     path('productos/', views.lista_productos, name='lista_productos'),
     path('productos/<int:producto_id>/', producto_views.detalle_producto, name='detalle_producto'),
     path('productos/crear/', producto_views.crear_producto, name='crear_producto'),

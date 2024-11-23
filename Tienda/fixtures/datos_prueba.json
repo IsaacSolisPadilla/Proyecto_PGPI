@@ -291,7 +291,9 @@
             "estado": "Pendiente",
             "metodo_de_pago": "Pasarela",
             "nombre": "Daniel",
-            "apellidos": "Cancio Trigo"
+            "apellidos": "Cancio Trigo",
+            "is_draft_mode": "False",
+            "email": "fernando.diaz@example.com"
         }
     },
     {
@@ -307,7 +309,9 @@
             "estado": "Enviado",
             "metodo_de_pago": "Contrareembolso",
             "nombre": "Pepe",
-            "apellidos": "Gonzalez"
+            "apellidos": "Gonzalez",
+            "is_draft_mode": "False",
+            "email": "carlos.ramos@example.com"
         }
     },
     {

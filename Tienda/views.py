@@ -52,6 +52,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            user.facturas.filter(is_draft_mode=True).delete()
             messages.success(request, 'Inicio de sesión exitoso.')
             return redirect('/')  # Redirige a la página principal
         else:

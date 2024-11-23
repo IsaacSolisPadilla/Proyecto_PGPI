@@ -54,10 +54,12 @@ class Factura(models.Model):
     numero_factura = models.CharField(unique=True, max_length=12)
     nombre = models.CharField(max_length=50, null=True)
     apellidos = models.CharField(max_length=50, null=True)
+    email = models.EmailField()
     fecha_pedido = models.DateTimeField(auto_now_add=True)
     fecha_salida = models.DateTimeField(null=True, blank=True)
     fecha_entrega = models.DateTimeField(null=True, blank=True)
     direccion = models.TextField()
+    is_draft_mode = models.BooleanField(default=True)
     estado = models.CharField(
         max_length=50,
         choices=[("Pendiente", "Pendiente"), ("Enviado","Enviado") ,("Entregado","Entregado")]

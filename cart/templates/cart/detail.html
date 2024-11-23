@@ -226,7 +226,7 @@
           </form>
         </td>
         <td class="num">{{ item.precio }}€</td>
-        <td class="num">{{ item.total_price }}€</td>
+        <td class="num">{{ item.total_precio }}€</td>
       </tr>
       {% endwith %}
       {% endfor %}
@@ -235,14 +235,16 @@
         <td>Total</td>
         <td colspan="4"></td>
         <td class="num">
-          {{ cart.get_total_price|floatformat:2 }}€
+          {{ cart.get_total_precio|floatformat:2 }}€
         </td>
       </tr>
     </tbody>
   </table>
 </div>
 <div style="display: flex; flex-direction: row;">
+    {% if cart and cart|length > 0 %}
     <button id="confirmar" onclick="window.location.href = '/factura/confirmar'">Confirmar</button>
+    {% endif %}
     <button id="volver" onclick="window.location.href = '/' ">Volver</button>    
 </div>
 

@@ -223,13 +223,35 @@
                         <th>Precio total</th>
                     </tr>
                 </thead>
-                <tbody id="lineas">
-                    <!-- Se rellena en el javascript -->
-                </tbody>
+                <tbody>
+                    {% for item in cart %}
+                    {% with producto=item.producto %}
+                    <tr>
+                      <td><a href="{{ product.get_absolute_url }}"></a></td>
+                      <td>{{ producto.nombre }}</td>
+                      <td>
+                          {{ item.cantidad }}
+                      </td>
+                      <td class="num">{{ item.precio }}€</td>
+                      <td class="num">{{ item.total_precio }}€</td>
+                    </tr>
+                    {% endwith %}
+                    {% endfor %}
+                    
+                    <tr class="total">
+                      <td>Total</td>
+                      <td colspan="3"></td>
+                      <td class="num">
+                        {{ cart.get_total_precio|floatformat:2 }}€
+                      </td>
+                    </tr>
+                  </tbody>
                 
             </table>
-            <button type="submit">Aceptar</button>
-            <button onclick="window.location.href = '/' ">Volver</button>    
+            <div style="display: flex; flex-direction: row;">
+                <button type="submit">Aceptar</button>
+                <button onclick="window.location.href = '/' ">Volver</button>    
+            </div>
         </form>
     </div>
 
@@ -242,52 +264,6 @@
 <script src="https://unpkg.com/feather-icons"></script>
 <script>
     feather.replace();
-    var factura = null;
-    fetch("/factura/espera")
-        .then(data => data.json())
-        .then(json => factura = json)
-        .then(_ => {
-            const tbody = document.getElementById("lineas")
-            if(Object.keys(factura).length === 0) {
-                tbody.innerHTML += `<p>No hay productos en factura</p>`
-                return ;
-            }
-            for(const n_linea in factura) {
-                tbody.innerHTML += `
-                <tr id="linea-${n_linea}">
-                    <td>
-                        <img src="${factura[n_linea].producto.fotografia}" alt="${factura[n_linea].producto.nombre}">
-                    </td>
-                    <td>
-                        ${factura[n_linea].producto.nombre}
-                    </td>
-                    <td>
-                        ${factura[n_linea].cantidad}
-                    </td>
-                    <td>
-                        ${factura[n_linea].producto.precio}€
-                    </td>
-                    <td id="precio_total-${n_linea}">
-                        ${(factura[n_linea].cantidad * factura[n_linea].producto.precio).toFixed(2)}€
-                    </td>
-                </tr>`
-
-            }
-            
-            tbody.innerHTML += ` 
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <p style="display: flex; align-items: start;">+</p>
-                    <hr>
-                    <p id="precio_total">${factura[0].factura.precio_total}€</p>
-                </td>
-            </tr>`
-        })
-
 
     function obtenerForm() {
         // const form = {}

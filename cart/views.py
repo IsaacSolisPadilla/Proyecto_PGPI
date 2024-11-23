@@ -9,10 +9,8 @@ from .forms import CartAddProductForm
 @require_POST
 def cart_add(request, product_id):
     cart = Cart(request)
-    print(product_id)
     product = get_object_or_404(Producto, id=product_id)
     form = CartAddProductForm(request.POST)
-    print(form.errors)
     if form.is_valid():
         cd = form.cleaned_data
         cart.add(
