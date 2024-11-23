@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <div class="container">
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aromas del Mundo</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-</head>
+    <html lang="es">
 
-<header>
-    <div class="header-content">
-        
-            
-    </div>
-    <h1>Aromas del Mundo</h1>
-    <p>Enciende tus sentidos, descubre la magia de lo exótico.</p>
-</header>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Aromas del Mundo</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    </head>
 
-<nav class="navbar">
-    <ul class="navbar-menu">
-        {% if user.is_authenticated %}
+    <header>
+        <div class="header-content">
+
+
+        </div>
+        <h1>Aromas del Mundo</h1>
+        <p>Enciende tus sentidos, descubre la magia de lo exótico.</p>
+    </header>
+
+    <nav class="navbar">
+        <ul class="navbar-menu">
+            {% if user.is_authenticated %}
             <li class="navbar-item" style="position: absolute; left: 1%;">
                 <button class="dropdown-button">
                     Hola, {{ user.username }}
@@ -29,54 +30,119 @@
                     </svg>
                 </button>
                 <div class="dropdown-menu">
+                    <!-- Botón para editar perfil -->
+                    <a href="{% url 'edit_profile' %}" class="dropdown-item">Editar Perfil</a>
+
+                    <!-- Botón para cerrar sesión -->
                     <form method="POST" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <button type="submit" class="dropdown-item">Cerrar Sesión</button>
                     </form>
                 </div>
             </li>
-        {% else %}
-        <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
-            <span>Iniciar Sesión</span>
-            <svg width="15px" height="10px" viewBox="0 0 13 10">
-                <path d="M1,5 L11,5"></path>
-                <polyline points="8 1 12 5 8 9"></polyline>
-            </svg>
-        </a>
-        {% endif %}
-        <li class="navbar-item">
-            <a href="/">
-            <button class="navbar-link">Home</button>
+            {% else %}
+            <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
+                <span>Iniciar Sesión</span>
+                <svg width="15px" height="10px" viewBox="0 0 13 10">
+                    <path d="M1,5 L11,5"></path>
+                    <polyline points="8 1 12 5 8 9"></polyline>
+                </svg>
             </a>
-        </li>
-        <li class="navbar-item">
-            <a>
-                <button class="navbar-link">Categorias</button>
-            </a>
-            <ul class="dropdown-menu">
-                {% for categoria in categorias %}
+            {% endif %}
+            <li class="navbar-item">
+                <a href="/">
+                    <button class="navbar-link">Home</button>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <!-- ESTA REFERENCIA SOLO DEBE ESTAR SI ESTÁS AUTENTICADO -->
+                <a href="{% if user.is_staff%}/categorias{% else %}/{% endif %}">
+                    <button class="navbar-link">Categorias</button>
+                </a>
+                <ul class="dropdown-menu">
+                    {% for categoria in categorias %}
                     <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li class="navbar-item">
+                <a href="/productos">
+                    <button class="navbar-link">Productos</button>
+                </a>
+            </li>
+
+            <li style="display: flex; align-items: center;">
+                <a href="/cart">
+                    <i class="fas fa-shopping-cart" style="color: white;"></i>
+                </a>
+
+            </li>
+
+            <li style="display: flex; align-items: center; position: absolute; right: 0;">
+                <button class="navbar-link">Estado Pedido Nº</button>
+                <input id="numero-factura" type="text"
+                    style="margin-left: 5px; margin-right: 5px; padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
+                <button class="navbar-link" onclick="mostrarEstadoPedido()">BUSCAR</button>
+            </li>
+        </ul>
+    </nav>
+
+    <section class="hero" style="padding: 10px 10px;">
+        <h2>Descubre Nuestros Productos</h2>
+    </section>
+
+    <div class="container">
+        <section class="featured-products" id="productos">
+
+            <section class="hero" style="padding: 10px 10px;">
+                <div class="filters-container">
+                    <div class="filters">
+                        <input type="text" id="filter-name" placeholder="Filtrar por nombre..."
+                            oninput="filterProducts()">
+                        <input type="number" id="filter-price" placeholder="Filtrar por precio máximo..."
+                            oninput="filterProducts()">
+                        <select id="filter-category" onchange="filterProducts()">
+                            <option value="">Seleccionar categoría</option>
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </section>
+            {% if user.is_authenticated and user.is_staff %}
+            <div class="create-button-container">
+                <a href="{% url 'crear_producto' %}" class="create-button">
+                    Crear Producto
+                </a>
+            </div>
+            {% endif %}
+            <div class="product-grid" id="product-grid">
+                {% for producto in productos %}
+                <div class="product" data-name="{{ producto.nombre }}" data-price="{{ producto.precio }}"
+                    data-category="{{ producto.categoria.id }}">
+                    <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
+                        {% if producto.fotografia %}
+                        <img src="{{ producto.fotografia }}" alt="{{ producto.nombre }}">
+                        {% else %}
+                        <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+                        {% endif %}
+                        <h3>{{ producto.nombre }}</h3>
+                        <p>${{ producto.precio }}</p>
+                        <form action="{% url 'cart:cart_add' producto.id %}" method="post"
+                            style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="add-to-cart-button">
+                                <i class="fas fa-cart-plus"></i> Añadir al carrito
+                            </button>
+                        </form>
+                    </a>
+                </div>
+                {% empty %}
+                <p>No hay productos disponibles en este momento.</p>
                 {% endfor %}
             </ul>
         </li>
-        <li class="navbar-item">
-            <a href="/productos">
-            <button class="navbar-link">Productos</button>
-            </a>
-        </li>
-        
-        <li style="display: flex; align-items: center;">
-            <a href="/cart">
-                <i class="fas fa-shopping-cart" style="color: white;"></i>
-            </a>
-            
-        </li>
-
-        <li style="display: flex; align-items: center; position: absolute; right: 0;">
-            <button class="navbar-link">Estado Pedido Nº</button>
-            <input id="numero-factura" type="text" style="margin-left: 5px; margin-right: 5px; padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
-            <button class="navbar-link" onclick="mostrarEstadoPedido()">BUSCAR</button>
-        </li>               
     </ul>
 </nav>
 
@@ -109,369 +175,726 @@
         {% empty %}
         <p>No hay productos disponibles en este momento.</p>
         {% endfor %}
+            </div>
+        </section>
     </div>
-</section>
 
-<footer>
-    <p>&copy; 2024 Perfumería de Lujo. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
-</footer>
-</body>
-</html>
-</div>
+    <script>
+        function filterProducts() {
+            // Obtener valores de los filtros
+            const filterName = document.getElementById('filter-name').value.toLowerCase();
+            const filterPrice = parseFloat(document.getElementById('filter-price').value) || Infinity;
+            const filterCategory = document.getElementById('filter-category').value;
 
-<script>
-    function mostrarEstadoPedido(){
-        const numero_factura = document.getElementById("numero-factura").value
-        fetch("/factura/numero_factura/" + numero_factura)
-            .then(data => data.json())
-            .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
-            .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
-    }
-</script>
+            // Obtener todos los productos
+            const products = document.querySelectorAll('.product');
 
-<style>
-    .cta {
-        position: absolute;
-        margin: auto;
-        padding: 12px 18px;
-        transition: all 0.2s ease;
-        border: none;
-        background: none;
-        cursor: pointer;
-    }
+            // Filtrar productos
+            products.forEach(product => {
+                const productName = product.getAttribute('data-name').toLowerCase();
+                const productPrice = parseFloat(product.getAttribute('data-price'));
+                const productCategory = product.getAttribute('data-category');
 
-    .cta:before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: block;
-        border-radius: 50px;
-        background: #008c8e;
-        width: 45px;
-        height: 45px;
-        transition: all 0.3s ease;
-    }
+                // Verificar si el producto cumple con los filtros
+                const matchesName = productName.includes(filterName);
+                const matchesPrice = productPrice <= filterPrice;
+                const matchesCategory = filterCategory === '' || productCategory === filterCategory;
 
-    .cta span {
-        position: relative;
-        font-family: "Ubuntu", sans-serif;
-        font-size: 18px;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        color: #ffffff;
-    }
-    
+                // Mostrar u ocultar el producto según los filtros
+                if (matchesName && matchesPrice && matchesCategory) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+        function mostrarEstadoPedido() {
+            const numero_factura = document.getElementById("numero-factura").value
+            fetch("/factura/numero_factura/" + numero_factura)
+                .then(data => data.json())
+                .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
+                .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
+        }
+    </script>
+    </body>
 
-    .cta svg {
-        position: relative;
-        top: 0;
-        margin-left: 10px;
-        fill: none;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        stroke: #ffffff;
-        stroke-width: 2;
-        transform: translateX(-5px);
-        transition: all 0.3s ease;
-    }
+    </html>
+    <style>
+        .cta {
+            position: absolute;
+            margin: auto;
+            padding: 12px 18px;
+            transition: all 0.2s ease;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
 
-    .cta:hover:before {
-        width: 100%;
-        background: #008c8e;
-    }
+        .cta:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            border-radius: 50px;
+            background: #008c8e;
+            width: 45px;
+            height: 45px;
+            transition: all 0.3s ease;
+        }
 
-    .cta:hover svg {
-        transform: translateX(0);
-    }
+        .cta span {
+            position: relative;
+            font-family: "Ubuntu", sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #ffffff;
+        }
 
-    .cta:active {
-        transform: scale(0.95);
-    }
 
-    .container {
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #006e6f 25%, #008c8e 25%, #008c8e 50%, #006e6f 50%, #006e6f 75%, #008c8e 75%, #008c8e);
-        background-size: 40px 40px;
-    }
+        .cta svg {
+            position: relative;
+            top: 0;
+            margin-left: 10px;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke: #ffffff;
+            stroke-width: 2;
+            transform: translateX(-5px);
+            transition: all 0.3s ease;
+        }
 
-    body {
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
-        background: linear-gradient(135deg, #f3e7e9, #e3eeff);
-        color: #333;
-    }
+        .cta:hover:before {
+            width: 100%;
+            background: #008c8e;
+        }
 
-    header {
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 20px;
-        text-align: center;
-        border-bottom: 2px solid #ddd;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+        .cta:hover svg {
+            transform: translateX(0);
+        }
 
-    header h1 {
-        font-size: 36px;
-        color: #333;
-    }
+        .cta:active {
+            transform: scale(0.95);
+        }
 
-    header p {
-        font-size: 18px;
-        color: #555;
-    }
+        .container {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #006e6f 25%, #008c8e 25%, #008c8e 50%, #006e6f 50%, #006e6f 75%, #008c8e 75%, #008c8e);
+            background-size: 40px 40px;
+        }
 
-    .hero {
-        background-size: cover;
-        background-position: center;
-        color: white;
-        text-align: center;
-        padding: 100px 20px;
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f3e7e9, #e3eeff);
+            color: #333;
+        }
 
-    .hero h2 {
-        font-size: 48px;
-        margin-bottom: 10px;
-    }
+        header {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-    .featured-products {
-        padding: 50px 20px;
-        text-align: center;
-    }
+        header h1 {
+            font-size: 36px;
+            color: #333;
+        }
 
-    .featured-products h2 {
-        font-size: 32px;
-        margin-bottom: 20px;
-        color: #333;
-    }
+        header p {
+            font-size: 18px;
+            color: #555;
+        }
 
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
+        .hero {
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+        }
 
-    .product {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
 
-    .product img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-    }
+        .featured-products {
+            padding: 50px 20px;
+            text-align: center;
+        }
 
-    .product h3 {
-        font-size: 20px;
-        margin: 10px 0;
-        color: #333;
-    }
+        .featured-products h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+        }
 
-    .product p {
-        color: #777;
-        font-size: 16px;
-    }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
 
-    footer {
-        background-color: #333;
-        color: #fff;
-        text-align: center;
-        padding: 20px;
-        margin-top: 50px;
-    }
+        .product {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
 
-    footer p {
-        font-size: 14px;
-    }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
 
-    footer a {
-        color: royalblue;
-        text-decoration: none;
-    }
+        .product h3 {
+            font-size: 20px;
+            margin: 10px 0;
+            color: #333;
+        }
 
-    footer a:hover {
-        text-decoration: underline;
-    }
-    .create-button-container {
-        text-align: center;
-        margin-bottom: 20px;
-    }
+        .product p {
+            color: #777;
+            font-size: 16px;
+        }
 
-    .create-button {
-        background-color: #ffffff;
-        color: #006e6f;
-        text-decoration: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-        display: inline-block;
-        font-weight: bold;
-    }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
 
-    .create-button:hover {
-        background-color: #006e6f;
-        color: #ffffff;
-    }
+        footer p {
+            font-size: 14px;
+        }
 
-    /* Ajustes de la cuadrícula de productos */
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
+        footer a {
+            color: royalblue;
+            text-decoration: none;
+        }
 
-    .product {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
+        footer a:hover {
+            text-decoration: underline;
+        }
 
-    .product img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-    }
+        .create-button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    .product h3 {
-        font-size: 20px;
-        margin: 10px 0;
-        color: #333;
-    }
+        .create-button {
+            background-color: #ffffff;
+            color: #006e6f;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            font-weight: bold;
+        }
 
-    .product p {
-        color: #777;
-        font-size: 16px;
-    }
-    .dropdown-button {
-    background: none;
-    border: none;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #ffffff;
-    display: inline-flex;
-    align-items: center;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    }
+        .create-button:hover {
+            background-color: #006e6f;
+            color: #ffffff;
+        }
 
-    .dropdown-button:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-    }
+        /* Ajustes de la cuadrícula de productos */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
 
-    /* Menú dropdown */
-    .dropdown-menu {
-        background-color: #ffffff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        overflow: hidden;
-        z-index: 1000;
-    }
+        .product {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
 
-    .dropdown-menu .dropdown-item {
-        display: block;
-        color: #006e6f;
-        background-color: #ffffff;
-        text-decoration: none;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-    }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
 
-    .dropdown-menu .dropdown-item:hover {
-        background-color: rgba(0, 140, 142, 0.1);
-    }
+        .product h3 {
+            font-size: 20px;
+            margin: 10px 0;
+            color: #333;
+        }
 
-    /* Mostrar menú al hacer hover */
-    .user-info:hover .dropdown-menu {
-        display: block;
-    }
+        .product p {
+            color: #777;
+            font-size: 16px;
+        }
 
-    .navbar {
-        background-color: #006e6f;
-        padding: 10px 20px;
-    }
+        .dropdown-button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
 
-    .navbar-menu {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-    }
+        .dropdown-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
 
-    .navbar-item {
-        position: relative;
-        margin: 0 15px;
-    }
+        /* Menú dropdown */
+        .dropdown-menu {
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
 
-    .navbar-link {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        padding: 10px;
-        transition: background-color 0.3s ease;
-    }
+        .dropdown-menu .dropdown-item {
+            display: block;
+            color: #006e6f;
+            background-color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
 
-    .navbar-link:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-    }
+        .dropdown-menu .dropdown-item:hover {
+            background-color: rgba(0, 140, 142, 0.1);
+        }
 
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        background-color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        overflow: hidden;
-        z-index: 1000;
-        width: 132px;
-    }
+        /* Mostrar menú al hacer hover */
+        .user-info:hover .dropdown-menu {
+            display: block;
+        }
 
-    .dropdown-menu li {
-        list-style: none;
-    }
+        .navbar {
+            background-color: #006e6f;
+            padding: 10px 20px;
+        }
 
-    .dropdown-menu a {
-        display: block;
-        padding: 10px;
-        color: #333;
-        text-decoration: none;
-        
-        transition: background-color 0.3s ease;
-    }
+        .navbar-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
 
-    .dropdown-menu a:hover {
-        background-color: rgba(0, 140, 142, 0.1);
-    }
+        .navbar-item {
+            position: relative;
+            margin: 0 15px;
+        }
 
-    .navbar-item:hover .dropdown-menu {
-        display: block;
-    }
+        .navbar-link {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
 
-    .navbar-item {
-        position: relative;
-    }
+        .navbar-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
 
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: #fff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        overflow: hidden;
-        z-index: 1000;
-    }
-</style>
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+            width: 132px;
+        }
+
+        .dropdown-menu li {
+            list-style: none;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px;
+            color: #333;
+            text-decoration: none;
+
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: rgba(0, 140, 142, 0.1);
+        }
+
+        .navbar-item:hover .dropdown-menu {
+            display: block;
+        }
+
+        .navbar-item {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        /* Cuadrícula de productos */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Producto individual */
+        .product {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Efecto al pasar el mouse */
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Imagen del producto */
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .product img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Nombre y precio del producto */
+        .product h3 {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .product p {
+            color: #777;
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        /* Botón de añadir al carrito */
+        .add-to-cart-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .add-to-cart-button i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .add-to-cart-button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .add-to-cart-button:active {
+            background-color: #1e7e34;
+            transform: translateY(0);
+        }
+
+        /* Contenedor para crear un nuevo producto */
+        .create-button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .create-button {
+            background-color: #ffffff;
+            color: #006e6f;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .create-button:hover {
+            background-color: #006e6f;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            margin-top: 50px;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+
+        footer a {
+            color: royalblue;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .dropdown-button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Menú dropdown */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .dropdown-menu .dropdown-item {
+            display: block;
+            padding: 10px 15px;
+            color: #006e6f;
+            background-color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: rgba(0, 140, 142, 0.1);
+        }
+
+        /* Mostrar menú al hacer hover */
+        .user-info:hover .dropdown-menu {
+            display: block;
+        }
+
+        .navbar {
+            background-color: #006e6f;
+            padding: 10px 20px;
+        }
+
+        .navbar-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar-item {
+            position: relative;
+            margin: 0 15px;
+        }
+
+        .navbar-link {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+            width: 132px;
+        }
+
+        .dropdown-menu li {
+            list-style: none;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: rgba(0, 140, 142, 0.1);
+        }
+
+        .navbar-item:hover .dropdown-menu {
+            display: block;
+        }
+
+        .navbar-item {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        /* Estilo para el contenedor de filtros */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Estilo general de los campos de filtro */
+        .filters input,
+        .filters select {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Efecto de enfoque */
+        .filters input:focus,
+        .filters select:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+        }
+
+        /* Botón de reset (opcional) */
+        .filters button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .filters button:hover {
+            background-color: #218838;
+        }
+
+        .filters button:active {
+            background-color: #1e7e34;
+        }
+
+        .filters-container {
+            display: flex;
+            justify-content: center;
+            /* Centrar horizontalmente */
+            align-items: center;
+            /* Centrar verticalmente */
+            padding: 20px 0;
+            /* Espaciado superior e inferior */
+            width: 100%;
+            /* Asegura el ancho completo */
+        }
+    </style>

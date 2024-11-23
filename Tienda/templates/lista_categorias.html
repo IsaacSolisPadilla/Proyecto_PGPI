@@ -367,7 +367,7 @@
         <!-- Título de las categorías -->
         <section class="category-title">
             <div class="title-container">
-                <h2>Categorías disponibles:</h2>
+                <h2 style="color:white">Categorias disponibles:</h2>
                 {% if user.is_authenticated and user.is_staff %}
                     <a href="{% url 'crear_categoria' %}" class="create-button">Crear nueva categoría</a>
                 {% endif %}
@@ -385,7 +385,7 @@
                     </a>
                     {% if user.is_authenticated and user.is_staff %}
                     <div class="category-actions">
-                        <a href="{% url 'editar_categoria' categoria.id %}" class="edit-button">
+                        <a href="{% url 'ver_actualizar_categoria' categoria.id %}" class="edit-button">
                             <i class="fas fa-edit"></i> Editar
                         </a>
                         <form method="POST" action="{% url 'eliminar_categoria' categoria.id %}" style="display: inline;">

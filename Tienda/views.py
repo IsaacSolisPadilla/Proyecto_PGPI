@@ -108,6 +108,6 @@ def register_view(request):
     return render(request, 'login/register.html')
 
 def pagina_principal(request):
-    productos = Producto.objects.all()[:3]
+    productos = Producto.objects.all()
     categorias = CategoriaProducto.objects.all()
     return render(request, 'pagina_principal.html', {'productos': productos, 'categorias': categorias})

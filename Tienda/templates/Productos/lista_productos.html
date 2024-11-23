@@ -300,6 +300,68 @@
         overflow: hidden;
         z-index: 1000;
     }
+    /* Estilo para el contenedor de filtros */
+    .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        width: 100%;
+        max-width: 1200px;
+    }
+
+    /* Estilo general de los campos de filtro */
+    .filters input, .filters select {
+        flex: 1;
+        min-width: 200px;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #333;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Efecto de enfoque */
+    .filters input:focus, .filters select:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+    }
+
+    /* Botón de reset (opcional) */
+    .filters button {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .filters button:hover {
+        background-color: #218838;
+    }
+
+    .filters button:active {
+        background-color: #1e7e34;
+    }
+    .filters-container {
+        display: flex;
+        justify-content: center; /* Centrar horizontalmente */
+        align-items: center; /* Centrar verticalmente */
+        padding: 20px 0; /* Espaciado superior e inferior */
+        width: 100%; /* Asegura el ancho completo */
+    }
+
 
     </style>
 </head>
@@ -364,22 +426,22 @@
     </nav>
     
         <div class="container">
-            <!-- Filtros -->
-            <div class="filters">
-                <input type="text" id="filter-name" placeholder="Filtrar por nombre..." oninput="filterProducts()">
-                <input type="number" id="filter-price" placeholder="Filtrar por precio máximo..." oninput="filterProducts()">
-                <select id="filter-category" onchange="filterProducts()">
-                    <option value="">Seleccionar categoría</option>
-                    {% for categoria in categorias %}
-                        <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-    
             <section class="featured-products" id="productos">
                 <section class="category-title">
                     <h2>Productos</h2>
                 </section>
+                <div class="filters-container">
+                    <div class="filters">
+                        <input type="text" id="filter-name" placeholder="Filtrar por nombre..." oninput="filterProducts()">
+                        <input type="number" id="filter-price" placeholder="Filtrar por precio máximo..." oninput="filterProducts()">
+                        <select id="filter-category" onchange="filterProducts()">
+                            <option value="">Seleccionar categoría</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
                 {% if user.is_authenticated and user.is_staff %}
                     <div class="create-button-container">
                         <a href="{% url 'crear_producto' %}" class="create-button">
