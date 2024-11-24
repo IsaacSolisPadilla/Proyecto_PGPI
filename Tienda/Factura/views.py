@@ -34,11 +34,11 @@ def confirmar_factura(request):
         if len(cart) > 0:
             form = FormFactura(request.POST)
             if form.is_valid():
-                if request.user != None and request.user.is_anonymous:
-                    request.user.facturas.filter(is_draft_mode=True).delete()
                 factura = Factura()
                 data = request.POST.copy()
-                factura.usuario = request.user
+                if request.user != None and not request.user.is_anonymous:
+                    request.user.facturas.filter(is_draft_mode=True).delete()
+                    factura.usuario = request.user
                 factura.nombre = data["nombre"]
                 factura.apellidos = data["apellidos"]
                 factura.direccion = data["direccion"]
@@ -121,7 +121,7 @@ def crear_sesion_pago(request, factura: Factura):
     return HttpResponseRedirect(session.url)
 
 def cancelar_factura(request):
-    if request.user.is_anonymous != None  and request.user.is_anonymous:
+    if request.user.is_anonymous != None and not request.user.is_anonymous:
         request.user.facturas.filter(is_draft_mode=True).delete()
     return redirect("/")
     
