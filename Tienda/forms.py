@@ -1,17 +1,18 @@
 from django import forms
 
 from Tienda.models import Factura
+from django.contrib.auth.models import User
 
 class FormFactura(forms.Form):
     
     def __init__(self, *args, **kwargs):
         # Coge el atributo user entre los kwargs y lo borrar para eliminar error al pasar parametro a super.__init__()
-        user = None
+        user:User = None
         if "user" in kwargs:
             user = kwargs["user"]
             del kwargs["user"]
         super().__init__(*args, **kwargs)
-        if user != None:
+        if user != None and not user.is_anonymous:
             self.fields["nombre"].initial = user.first_name
             self.fields["apellidos"].initial = user.last_name
             self.fields["direccion"].initial = None
