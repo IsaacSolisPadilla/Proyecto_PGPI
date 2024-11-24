@@ -2,6 +2,7 @@
 
 {% block title %}Aromas del Mundo{% endblock %}
 
+<<<<<<< HEAD
 {% block content %}
 <section class="featured-products" id="productos">
     
@@ -10,6 +11,176 @@
         <a href="{% url 'crear_producto' %}" class="create-button">
             Crear Producto
         </a>
+=======
+    <header>
+        <div class="header-content">
+
+
+        </div>
+        <h1>Aromas del Mundo</h1>
+        <p>Enciende tus sentidos, descubre la magia de lo exótico.</p>
+    </header>
+
+    <nav class="navbar">
+        <ul class="navbar-menu">
+            {% if user.is_authenticated %}
+            <li class="navbar-item" style="position: absolute; left: 1%;">
+                <button class="dropdown-button">
+                    Hola, {{ user.username }}
+                    <svg width="15px" height="10px" viewBox="0 0 13 10">
+                        <path d="M1,5 L11,5"></path>
+                        <polyline points="8 1 12 5 8 9"></polyline>
+                    </svg>
+                </button>
+                <div class="dropdown-menu">
+                    <!-- Botón para editar perfil -->
+                    <a href="{% url 'edit_profile' %}" class="dropdown-item">Editar Perfil</a>
+
+                    <!-- Botón para cerrar sesión -->
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                    </form>
+                </div>
+            </li>
+            {% else %}
+            <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
+                <span>Iniciar Sesión</span>
+                <svg width="15px" height="10px" viewBox="0 0 13 10">
+                    <path d="M1,5 L11,5"></path>
+                    <polyline points="8 1 12 5 8 9"></polyline>
+                </svg>
+            </a>
+            {% endif %}
+            <li class="navbar-item">
+                <a href="/">
+                    <button class="navbar-link">Home</button>
+                </a>
+            </li>
+            <li class="navbar-item">
+                <!-- ESTA REFERENCIA SOLO DEBE ESTAR SI ESTÁS AUTENTICADO -->
+                <a href="{% if user.is_staff%}/categorias{% else %}/{% endif %}">
+                    <button class="navbar-link">Categorias</button>
+                </a>
+                <ul class="dropdown-menu">
+                    {% for categoria in categorias %}
+                    <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li class="navbar-item">
+                <a href="/productos">
+                    <button class="navbar-link">Productos</button>
+                </a>
+            </li>
+
+            <li style="display: flex; align-items: center;">
+                <a href="/cart">
+                    <i class="fas fa-shopping-cart" style="color: white;"></i>
+                </a>
+
+            </li>
+
+            <li style="display: flex; align-items: center; position: absolute; right: 0;">
+                <button class="navbar-link">Estado Pedido Nº</button>
+                <input id="numero-factura" type="text"
+                    style="margin-left: 5px; margin-right: 5px; padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
+                <button class="navbar-link" onclick="mostrarEstadoPedido()">BUSCAR</button>
+            </li>
+        </ul>
+    </nav>
+
+    <section class="hero" style="padding: 10px 10px;">
+        <h2>Descubre Nuestros Productos</h2>
+    </section>
+
+    <div class="container">
+        <section class="featured-products" id="productos">
+
+            <section class="hero" style="padding: 10px 10px;">
+                <div class="filters-container">
+                    <div class="filters">
+                        <input type="text" id="filter-name" placeholder="Filtrar por nombre..."
+                            oninput="filterProducts()">
+                        <input type="number" id="filter-price" placeholder="Filtrar por precio máximo..."
+                            oninput="filterProducts()">
+                        <select id="filter-category" onchange="filterProducts()">
+                            <option value="">Seleccionar categoría</option>
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </section>
+            {% if user.is_authenticated and user.is_staff %}
+            <div class="create-button-container">
+                <a href="{% url 'crear_producto' %}" class="create-button">
+                    Crear Producto
+                </a>
+            </div>
+            {% endif %}
+            <div class="product-grid" id="product-grid">
+                {% for producto in productos %}
+                <div class="product" data-name="{{ producto.nombre }}" data-price="{{ producto.precio }}"
+                    data-category="{{ producto.categoria.id }}">
+                    <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
+                        {% if producto.fotografia %}
+                        <img src="{{ producto.fotografia }}" alt="{{ producto.nombre }}">
+                        {% else %}
+                        <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+                        {% endif %}
+                        <h3>{{ producto.nombre }}</h3>
+                        <p>${{ producto.precio }}</p>
+                        <form action="{% url 'cart:cart_add' producto.id %}" method="post"
+                            style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="add-to-cart-button">
+                                <i class="fas fa-cart-plus"></i> Añadir al carrito
+                            </button>
+                        </form>
+                    </a>
+                </div>
+                {% empty %}
+                <p>No hay productos disponibles en este momento.</p>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<section class="hero" style="padding: 10px 10px;">
+    <h2>Descubre Nuestros Aromas Exclusivos</h2>
+</section>
+
+<section class="featured-products" id="productos" style="padding: 10px 10px;">
+    <h2>Productos Destacados</h2>
+    {% if user.is_authenticated and user.is_staff %}
+        <div class="create-button-container">
+            <a href="{% url 'crear_producto' %}" class="create-button">
+                Crear Producto
+            </a>
+        </div>
+    {% endif %}
+    <div class="product-grid">
+        {% for producto in productos %}
+        <div class="product">
+            <a href="{% url 'detalle_producto' producto.id %}" style=" text-decoration: none;">
+                {% if producto.fotografia %}
+                <img src="{{ producto.fotografia }}" alt="{{ producto.nombre }}">
+                {% else %}
+                <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+                {% endif %}
+                <h3>{{ producto.nombre }}</h3>
+                <p>${{ producto.precio }}</p>
+            </a>
+        </div>
+        {% empty %}
+        <p>No hay productos disponibles en este momento.</p>
+        {% endfor %}
+            </div>
+        </section>
+>>>>>>> parent of 38a9fce (khlfhiljlhljljh)
     </div>
     {% endif %}
     <div class="product-grid" id="product-grid" style="margin-top: 20px;">
