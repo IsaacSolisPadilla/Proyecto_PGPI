@@ -1,175 +1,387 @@
 <!DOCTYPE html>
+<div class="container">
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aromas del Mundo</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-        }
+</head>
 
-        /* Fondo de la página */
-        body {
-            background: linear-gradient(135deg, #f3e7e9, #e3eeff); 
-            color: #333;
-            background-size: cover;
-            background-position: center;
-        }
+<header>
+    <div class="header-content">
+        
+            
+    </div>
+    <h1>Aromas del Mundo</h1>
+    <p>Enciende tus sentidos, descubre la magia de lo exótico.</p>
+    
+    <a href="{% url 'pagina_principal' %}" class="back-button">Volver</a>
+</header>
 
-        /* Contenedor principal */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            width: 100%;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #006e6f 25%, #008c8e 25%, #008c8e 50%, #006e6f 50%, #006e6f 75%, #008c8e 75%, #008c8e);
-            background-size: 40px 40px;
-        }
 
-        /* Título de Categoría */
-        .category-title h2 {
-            font-size: 36px;
-            color: #fff;
-            margin-bottom: 20px;
-        }
+<nav class="navbar">
+    <ul class="navbar-menu">
+        {% if user.is_authenticated %}
+            <li class="navbar-item" style="position: absolute; left: 1%;">
+                <button class="dropdown-button">
+                    Hola, {{ user.username }}
+                    <svg width="15px" height="10px" viewBox="0 0 13 10">
+                        <path d="M1,5 L11,5"></path>
+                        <polyline points="8 1 12 5 8 9"></polyline>
+                    </svg>
+                </button>
+                <div class="dropdown-menu">
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                    </form>
+                </div>
+            </li>
+        {% else %}
+        <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
+            <span>Iniciar Sesión</span>
+            <svg width="15px" height="10px" viewBox="0 0 13 10">
+                <path d="M1,5 L11,5"></path>
+                <polyline points="8 1 12 5 8 9"></polyline>
+            </svg>
+        </a>
+        {% endif %}
 
-        /* Cuadrícula de productos */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        <li class="container-input">
+            <form method="GET" action="{% url 'listar_productos' %}">
+                <input type="text" placeholder="Buscar productos..." name="search" class="input" value="{{ request.GET.search }}">
+                <button type="submit" style="background: none; border: none;">
+                    <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </form>
+        </li>
+        
 
-        /* Producto individual */
-        .product {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-            padding: 20px;
-        }
+        <li class="navbar-item">
+            <button class="navbar-link">Categorías</button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Cristales</a></li>
+                <li><a href="#">Incienso</a></li>
+                <li><a href="#">Velas</a></li>
+            </ul>
+        </li>
+        {% if user.is_authenticated and not user.is_staff %}
+        
+        <a href="/carrito"  style="position: absolute; right: 1%;  padding: 12px 18px; ">
+            <i class="fas fa-shopping-cart" style="color: white;"></i>
+        </a>
+        
+            
+        {% endif %}
+    </ul>
+</nav>
 
-        /* Efecto al pasar el mouse */
-        .product:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
-        }
 
-        /* Imagen del producto */
-        .product img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            transition: transform 0.3s ease;
-        }
 
-        .product img:hover {
-            transform: scale(1.05);
-        }
+    <section class="featured-products" id="productos" style="padding: 10px 10px;">
+        <h2>Resultados de la Búsqueda</h2>
+        {% if user.is_authenticated and user.is_staff %}
+            <div class="create-button-container">
+                <a href="{% url 'crear_producto' %}" class="create-button">
+                    Crear Producto
+                </a>
+            </div>
+        {% endif %}
+        <div class="product-grid">
+            {% for producto in productos %}
+            <div class="product">
+                <a href="{% url 'detalle_producto' producto.id %}" style=" text-decoration: none;">
+                    {% if producto.fotografia %}
+                    <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}">
+                    {% else %}
+                    <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+                    {% endif %}
+                    <h3>{{ producto.nombre }}</h3>
+                    <p>${{ producto.precio }}</p>
+                </a>
+            </div>
+            {% empty %}
+            <p>No hay productos disponibles en este momento.</p>
+            {% endfor %}
+        </div>
+    </section>
+    
+<footer>
+    <p>&copy; 2024 Aromas del Mundo. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
+</footer>
+</html>
+</div>
 
-        /* Nombre y precio del producto */
-        .product h3 {
-            font-size: 18px;
-            color: #333;
-            margin: 10px 0;
-        }
+<style>
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #006e6f;
+        color: #ffffff;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-        .product p {
-            color: #777;
-            font-size: 16px;
-            margin: 5px 0;
-        }
+    .back-button:hover {
+        background-color: #ffffff;
+        color: #005a5b;
+    }
 
-        /* Botón de añadir al carrito */
-        .add-to-cart-button {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 25px;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 15px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
+    .container-input {
+    position: relative;
+    }
 
-        .add-to-cart-button i {
-            margin-right: 10px;
-            font-size: 20px;
-        }
+    .input {
+    width: 150px;
+    padding: 10px 0px 10px 40px;
+    border-radius: 9999px;
+    border: solid 1px #333;
+    transition: all .2s ease-in-out;
+    outline: none;
+    opacity: 0.8;
+    }
 
-        .add-to-cart-button:hover {
-            background-color: #218838;
-            transform: translateY(-2px);
-        }
+    .container-input svg {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translate(0, -50%);
+    }
 
-        .add-to-cart-button:active {
-            background-color: #1e7e34;
-            transform: translateY(0);
-        }
+    .input:focus {
+    opacity: 1;
+    width: 250px;
+    }
+    .fa-shopping-cart:hover {
+        transform: scale(1.3);
+        transition: transform 0.3s ease;
+    }
+    .cta {
+        position: absolute;
+        margin: auto;
+        padding: 12px 18px;
+        transition: all 0.2s ease;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
 
-        /* Contenedor para crear un nuevo producto */
-        .create-button-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    .cta:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        border-radius: 50px;
+        background: #008c8e;
+        width: 45px;
+        height: 45px;
+        transition: all 0.3s ease;
+    }
 
-        .create-button {
-            background-color: #ffffff;
-            color: #006e6f;
-            text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
+    .cta span {
+        position: relative;
+        font-family: "Ubuntu", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        color: #ffffff;
+    }
 
-        .create-button:hover {
-            background-color: #006e6f;
-            color: white;
-        }
+    .cta svg {
+        position: relative;
+        top: 0;
+        margin-left: 10px;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke: #ffffff;
+        stroke-width: 2;
+        transform: translateX(-5px);
+        transition: all 0.3s ease;
+    }
 
-        /* Footer */
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            width: 100%;
-            margin-top: 50px;
-        }
+    .cta:hover:before {
+        width: 100%;
+        background: #008c8e;
+    }
 
-        footer p {
-            font-size: 14px;
-        }
+    .cta:hover svg {
+        transform: translateX(0);
+    }
 
-        footer a {
-            color: royalblue;
-            text-decoration: none;
-        }
+    .cta:active {
+        transform: scale(0.95);
+    }
 
-        footer a:hover {
-            text-decoration: underline;
-        }
-        .dropdown-button {
+    .container {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #006e6f 25%, #008c8e 25%, #008c8e 50%, #006e6f 50%, #006e6f 75%, #008c8e 75%, #008c8e);
+        background-size: 40px 40px;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #f3e7e9, #e3eeff);
+        color: #333;
+    }
+
+    header {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        text-align: center;
+        border-bottom: 2px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+        font-size: 36px;
+        color: #333;
+    }
+
+    header p {
+        font-size: 18px;
+        color: #555;
+    }
+
+    .hero {
+        background-size: cover;
+        background-position: center;
+        color: white;
+        text-align: center;
+        padding: 100px 20px;
+    }
+
+    .hero h2 {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+
+    .featured-products {
+        padding: 50px 20px;
+        text-align: center;
+    }
+
+    .featured-products h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .product {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .product img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    .product h3 {
+        font-size: 20px;
+        margin: 10px 0;
+        color: #333;
+    }
+
+    .product p {
+        color: #777;
+        font-size: 16px;
+    }
+
+    footer {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+        margin-top: 50px;
+    }
+
+    footer p {
+        font-size: 14px;
+    }
+
+    footer a {
+        color: royalblue;
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+    .create-button-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .create-button {
+        background-color: #ffffff;
+        color: #006e6f;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+        font-weight: bold;
+    }
+
+    .create-button:hover {
+        background-color: #006e6f;
+        color: #ffffff;
+    }
+
+    /* Ajustes de la cuadrícula de productos */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .product {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .product img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    .product h3 {
+        font-size: 20px;
+        margin: 10px 0;
+        color: #333;
+    }
+
+    .product p {
+        color: #777;
+        font-size: 16px;
+    }
+    .dropdown-button {
     background: none;
     border: none;
     font-size: 18px;
@@ -300,270 +512,5 @@
         overflow: hidden;
         z-index: 1000;
     }
-    /* Estilo para el contenedor de filtros */
-    .filters {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: center;
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
-        width: 100%;
-        max-width: 1200px;
-    }
 
-    /* Estilo general de los campos de filtro */
-    .filters input, .filters select {
-        flex: 1;
-        min-width: 200px;
-        padding: 10px 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 16px;
-        color: #333;
-        outline: none;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    /* Efecto de enfoque */
-    .filters input:focus, .filters select:focus {
-        border-color: #28a745;
-        box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
-    }
-
-    /* Botón de reset (opcional) */
-    .filters button {
-        background-color: #28a745;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
-
-    .filters button:hover {
-        background-color: #218838;
-    }
-
-    .filters button:active {
-        background-color: #1e7e34;
-    }
-    .filters-container {
-        display: flex;
-        justify-content: center; /* Centrar horizontalmente */
-        align-items: center; /* Centrar verticalmente */
-        padding: 20px 0; /* Espaciado superior e inferior */
-        width: 100%; /* Asegura el ancho completo */
-    }
-    .cta {
-            position: absolute;
-            margin: auto;
-            padding: 12px 18px;
-            transition: all 0.2s ease;
-            border: none;
-            background: none;
-            cursor: pointer;
-        }
-
-        .cta:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: block;
-            border-radius: 50px;
-            background: #008c8e;
-            width: 45px;
-            height: 45px;
-            transition: all 0.3s ease;
-        }
-
-        .cta span {
-            position: relative;
-            font-family: "Ubuntu", sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            color: #ffffff;
-        }
-
-
-        .cta svg {
-            position: relative;
-            top: 0;
-            margin-left: 10px;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke: #ffffff;
-            stroke-width: 2;
-            transform: translateX(-5px);
-            transition: all 0.3s ease;
-        }
-
-        .cta:hover:before {
-            width: 100%;
-            background: #008c8e;
-        }
-
-        .cta:hover svg {
-            transform: translateX(0);
-        }
-
-        .cta:active {
-            transform: scale(0.95);
-        }
-
-
-
-    </style>
-</head>
-<body>
-    <nav class="navbar">
-        <ul class="navbar-menu">
-            {% if user.is_authenticated %}
-                <li class="navbar-item" style="position: absolute; left: 1%;">
-                    <button class="dropdown-button">
-                        Hola, {{ user.username }}
-                        <svg width="15px" height="10px" viewBox="0 0 13 10">
-                            <path d="M1,5 L11,5"></path>
-                            <polyline points="8 1 12 5 8 9"></polyline>
-                        </svg>
-                    </button>
-                    <div class="dropdown-menu">
-                        <form method="POST" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="dropdown-item">Cerrar Sesión</button>
-                        </form>
-                    </div>
-                </li>
-            {% else %}
-            <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
-                <span>Iniciar Sesión</span>
-                <svg width="15px" height="10px" viewBox="0 0 13 10">
-                    <path d="M1,5 L11,5"></path>
-                    <polyline points="8 1 12 5 8 9"></polyline>
-                </svg>
-            </a>
-            {% endif %}
-            <li class="navbar-item">
-                <a href="/">
-                <button class="navbar-link">Home</button>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="/categorias">
-                    <button class="navbar-link">Categorias</button>
-                </a>
-                
-            </li>
-            
-            {% if user.is_authenticated and not user.is_staff %}
-            
-            <li style="display: flex; align-items: center;">
-                <a href="/carrito">
-                    <i class="fas fa-shopping-cart" style="color: white;"></i>
-                </a>
-                
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
-    
-        <div class="container">
-            <section class="featured-products" id="productos">
-                <section class="category-title">
-                    <h2>Productos</h2>
-                </section>
-                <div class="filters-container">
-                    <div class="filters">
-                        <input type="text" id="filter-name" placeholder="Filtrar por nombre..." oninput="filterProducts()">
-                        <input type="number" id="filter-price" placeholder="Filtrar por precio máximo..." oninput="filterProducts()">
-                        <select id="filter-category" onchange="filterProducts()">
-                            <option value="">Seleccionar categoría</option>
-                            {% for categoria in categorias %}
-                                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                {% if user.is_authenticated and user.is_staff %}
-                    <div class="create-button-container">
-                        <a href="{% url 'crear_producto' %}" class="create-button">
-                            Crear Producto
-                        </a>
-                    </div>
-                {% endif %}
-                <div class="product-grid" id="product-grid">
-                    {% for producto in productos %}
-                        <div class="product" data-name="{{ producto.nombre }}" data-price="{{ producto.precio }}" data-category="{{ producto.categoria.id }}">
-                            <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
-                                {% if producto.fotografia %}
-                                    <img src="{{ producto.fotografia }}" alt="{{ producto.nombre }}">
-                                {% else %}
-                                    <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
-                                {% endif %}
-                                <h3>{{ producto.nombre }}</h3>
-                                <p>${{ producto.precio }}</p>
-                                <form action="{% url 'cart:cart_add' producto.id %}" method="post" style="display: inline;">
-                                    {% csrf_token %}
-                                    <button type="submit" class="add-to-cart-button">
-                                        <i class="fas fa-cart-plus"></i> Añadir al carrito
-                                    </button>
-                                </form>
-                            </a>
-                        </div>
-                    {% empty %}
-                        <p>No hay productos disponibles en este momento.</p>
-                    {% endfor %}
-                </div>
-            </section>
-        </div>
-    
-        <script>
-            function filterProducts() {
-                // Obtener valores de los filtros
-                const filterName = document.getElementById('filter-name').value.toLowerCase();
-                const filterPrice = parseFloat(document.getElementById('filter-price').value) || Infinity;
-                const filterCategory = document.getElementById('filter-category').value;
-    
-                // Obtener todos los productos
-                const products = document.querySelectorAll('.product');
-    
-                // Filtrar productos
-                products.forEach(product => {
-                    const productName = product.getAttribute('data-name').toLowerCase();
-                    const productPrice = parseFloat(product.getAttribute('data-price'));
-                    const productCategory = product.getAttribute('data-category');
-    
-                    // Verificar si el producto cumple con los filtros
-                    const matchesName = productName.includes(filterName);
-                    const matchesPrice = productPrice <= filterPrice;
-                    const matchesCategory = filterCategory === '' || productCategory === filterCategory;
-    
-                    // Mostrar u ocultar el producto según los filtros
-                    if (matchesName && matchesPrice && matchesCategory) {
-                        product.style.display = 'block';
-                    } else {
-                        product.style.display = 'none';
-                    }
-                });
-            }
-    function mostrarEstadoPedido() {
-        const numero_factura = document.getElementById("numero-factura").value
-        fetch("/factura/numero_factura/" + numero_factura)
-            .then(data => data.json())
-            .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
-            .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
-    }
-        </script>
-    </body>
-    </html>
-    
-    
+</style>
