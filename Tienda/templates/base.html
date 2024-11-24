@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<div class="container">
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Aromas del Mundo{% endblock %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content"></div>
+            <h1>Aromas del Mundo</h1>
+            <p>Enciende tus sentidos, descubre la magia de lo exótico.</p>
+            <a href="{% url 'pagina_principal' %}" class="back-button">Volver</a>
+        </header>
+
+        <nav class="navbar">
+            <ul class="navbar-menu">
+                {% if user.is_authenticated %}
+                    <li class="navbar-item" style="position: absolute; left: 1%;">
+                        <button class="dropdown-button">
+                            Hola, {{ user.username }}
+                            <svg width="15px" height="10px" viewBox="0 0 13 10">
+                                <path d="M1,5 L11,5"></path>
+                                <polyline points="8 1 12 5 8 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="{% url 'edit_profile' %}" class="dropdown-item">Editar Perfil</a>
+
+                            <form method="POST" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                            </form>
+                        </div>
+                    </li>
+                {% else %}
+                <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
+                    <span>Iniciar Sesión</span>
+                    <svg width="15px" height="10px" viewBox="0 0 13 10">
+                        <path d="M1,5 L11,5"></path>
+                        <polyline points="8 1 12 5 8 9"></polyline>
+                    </svg>
+                </a>
+                {% endif %}
+
+                <li class="container-input">
+                    <form method="GET" action="{% url 'lista_productos' %}">
+                       </form> <input type="text" id="filter-name" placeholder="Buscar por nombre..." class="input" oninput="filterProducts()">
+                        <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+                        </svg>
+                    </form>
+                </li>
+
+                <li class="navbar-item">
+                    <i class="fas fa-filter dropdown-button" style="cursor: pointer; color: white;"></i>
+                 
+                    <section class="dropdown-menu" style="width: 220px; padding: 10px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <div style="margin-bottom: 10px;">
+                            <label for="filter-price" style="font-weight: bold; color: #006e6f;">Filtrar por precio máximo:</label>
+                            <input type="number" id="filter-price" placeholder="Precio máximo..." oninput="filterProducts()" min="0" style="width: 205px; padding: 8px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                        </div>
+                        <div>
+                            <label for="filter-category" style="font-weight: bold; color: #006e6f;">Seleccionar categoría:</label>
+                            <select id="filter-category" onchange="filterProducts()" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                                <option value="">Seleccionar categoría</option>
+                                {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </section>
+                    <li class="navbar-item" style="margin-left: 0px;">
+                        <a href="/categorias">
+                        <button class="navbar-link">Categorias</button>
+                    </a>
+                    </li>
+                </li>
+                <a href="/cart"  style="position: absolute; right: 35%;  padding: 12px 18px; ">
+                    <i class="fas fa-shopping-cart" style="color: white;"></i>
+                </a>
+
+                <li style="display: flex; align-items: center; position: absolute; right: 0;">
+                    <button class="navbar-link">Estado Pedido Nº</button>
+                    <input id="numero-factura" type="text"
+                        style="margin-left: 5px; margin-right: 5px; padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
+                    <button class="navbar-link" onclick="mostrarEstadoPedido()">BUSCAR</button>
+                </li>
+
+            </ul>
+        </nav>
+
+        {% block content %}{% endblock %}
+
+        <footer>
+            <p>&copy; 2024 Perfumería de Lujo. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
+        </footer>
+    </div>
+    <script>
+        function mostrarEstadoPedido() {
+            const numero_factura = document.getElementById("numero-factura").value
+            fetch("/factura/numero_factura/" + numero_factura)
+                .then(data => data.json())
+                .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
+                .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
+        }
+    </script>
+    
+</body>
+</html>
+</div>
+<style>
+    .container-input {
+    position: relative;
+}
+
+.input {
+    width: 150px;
+    padding: 10px 0px 10px 40px;
+    border-radius: 9999px;
+    border: solid 1px #333;
+    transition: all .2s ease-in-out;
+    outline: none;
+    opacity: 0.8;
+}
+
+.container-input svg {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translate(0, -50%);
+}
+
+.input:focus {
+    opacity: 1;
+    width: 250px;
+}
+.fa-shopping-cart:hover {
+    transform: scale(1.3);
+    transition: transform 0.3s ease;
+}
+.cta {
+    position: absolute;
+    margin: auto;
+    padding: 12px 18px;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.cta:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    border-radius: 50px;
+    background: #008c8e;
+    width: 45px;
+    height: 45px;
+    transition: all 0.3s ease;
+}
+
+.cta span {
+    position: relative;
+    font-family: "Ubuntu", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+}
+
+.cta svg {
+    position: relative;
+    top: 0;
+    margin-left: 10px;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: #ffffff;
+    stroke-width: 2;
+    transform: translateX(-5px);
+    transition: all 0.3s ease;
+}
+
+.cta:hover:before {
+    width: 100%;
+    background: #008c8e;
+}
+
+.cta:hover svg {
+    transform: translateX(0);
+}
+
+.cta:active {
+    transform: scale(0.95);
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    background-color: #008c8e; /* Un tono verde azulado */
+}
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f3e7e9, #e3eeff);
+    color: #333;
+}
+
+header {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 36px;
+    color: #333;
+}
+
+header p {
+    font-size: 18px;
+    color: #555;
+}
+
+.hero {
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.hero h2 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.featured-products {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.featured-products h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.product {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.product img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.product h3 {
+    font-size: 20px;
+    margin: 10px 0;
+    color: #333;
+}
+
+.product p {
+    color: #777;
+    font-size: 16px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+footer p {
+    font-size: 14px;
+}
+
+footer a {
+    color: royalblue;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+.create-button-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.create-button {
+    background-color: #ffffff;
+    color: #006e6f;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.create-button:hover {
+    background-color: #006e6f;
+    color: #ffffff;
+}
+
+/* Ajustes de la cuadrícula de productos */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.product {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.product img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.product h3 {
+    font-size: 20px;
+    margin: 10px 0;
+    color: #333;
+}
+
+.product p {
+    color: #777;
+    font-size: 16px;
+}
+.dropdown-button {
+background: none;
+border: none;
+font-size: 18px;
+font-weight: bold;
+cursor: pointer;
+color: #ffffff;
+display: inline-flex;
+align-items: center;
+padding: 10px;
+border-radius: 5px;
+transition: background-color 0.3s ease;
+}
+
+.dropdown-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Menú dropdown */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.dropdown-menu .dropdown-item {
+    display: block;
+    padding: 10px 15px;
+    color: #006e6f;
+    background-color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: rgba(0, 140, 142, 0.1);
+}
+
+/* Mostrar menú al hacer hover */
+.user-info:hover .dropdown-menu {
+    display: block;
+}
+
+.navbar {
+    background-color: #006e6f;
+    padding: 10px 20px;
+}
+
+.navbar-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar-item {
+    position: relative;
+    margin: 0 15px;
+}
+
+.navbar-link {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 1000;
+    width: 132px;
+}
+
+.dropdown-menu li {
+    list-style: none;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+   
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+    background-color: rgba(0, 140, 142, 0.1);
+}
+
+.navbar-item:hover .dropdown-menu {
+    display: block;
+}
+
+.navbar-item {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #006e6f;
+    color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    }
+
+    .back-button:hover {
+        background-color: #ffffff;
+        color: #005a5b;
+    }
+
+    button {
+        background-color: #008c8e;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #006e6f;
+    }
+
+    .cancel-button {
+        background-color: #bd1313;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .cancel-button:hover {
+        background-color: #cc1f1f;
+    }
+
+    .cancel-button:active {
+        background-color: #005557;
+    }
+    input, textarea, select, button {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #f3e7e9, #e3eeff);
+        color: #333;
+    }
+
+    
+    main {
+        max-width: 800px;
+        margin: 50px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #ffffff;
+    }
+
+     /* Estilo para el contenedor de filtros */
+     .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Estilo general de los campos de filtro */
+        .filters input,
+        .filters select {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Efecto de enfoque */
+        .filters input:focus,
+        .filters select:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+        }
+
+        /* Botón de reset (opcional) */
+        .filters button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .filters button:hover {
+            background-color: #218838;
+        }
+
+        .filters button:active {
+            background-color: #1e7e34;
+        }
+
+        .filters-container {
+            display: flex;
+            justify-content: center;
+            /* Centrar horizontalmente */
+            align-items: center;
+            /* Centrar verticalmente */
+            padding: 20px 0;
+            /* Espaciado superior e inferior */
+            width: 100%;
+            /* Asegura el ancho completo */
+        }
+
+        /* Cuadrícula de productos */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Producto individual */
+        .product {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Efecto al pasar el mouse */
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Imagen del producto */
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .product img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Nombre y precio del producto */
+        .product h3 {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .product p {
+            color: #777;
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        /* Botón de añadir al carrito */
+        .add-to-cart-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .add-to-cart-button i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .add-to-cart-button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .add-to-cart-button:active {
+            background-color: #1e7e34;
+            transform: translateY(0);
+        }
+
+        /* Contenedor para crear un nuevo producto */
+        .create-button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .create-button {
+            background-color: #ffffff;
+            color: #006e6f;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .create-button:hover {
+            background-color: #006e6f;
+            color: white;
+        }
+
+        /* Ajustes de la cuadrícula de productos */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .product {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .product h3 {
+            font-size: 20px;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .product p {
+            color: #777;
+            font-size: 16px;
+        }
+        .form-section {
+        padding: 50px 20px;
+        text-align: center;
+    }
+
+    .form-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: auto;
+        text-align: left;
+    }
+
+    .form-container label {
+        font-weight: bold;
+        color: #555;
+        display: block;
+        margin-top: 10px;
+    }
+
+    .form-container input[type="text"],
+    .form-container input[type="number"],
+    .form-container textarea,
+    .form-container select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
+    .form-container textarea {
+        resize: vertical;
+    }
+
+    .form-container input[type="file"] {
+        margin-top: 5px;
+    }
+
+    .update-button {
+        background-color: #006e6f;
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+    }
+
+    .update-button:hover {
+        background-color: #008c8e;
+    }
+
+    .delete-button {
+        background-color: #d9534f;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .delete-button:hover {
+        background-color: #c9302c;
+    }
+
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .category-item {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .category-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-item h3 {
+        font-size: 20px;
+        color: #006e6f;
+        margin: 10px 0;
+    }
+
+    .category-item p {
+        color: #555;
+        font-size: 16px;
+    }
+
+    .category-actions {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .edit-button, .delete-button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        color: #006e6f;
+        font-size: 16px;
+        padding: 5px 10px;
+        transition: color 0.3s ease;
+        text-decoration: none;
+    }
+
+    .edit-button:hover {
+        color: #218838;
+    }
+
+    .delete-button {
+        color: #e63946;
+    }
+
+    .delete-button:hover {
+        color: #c62828;
+    }
+
+    .create-button {
+        background-color: #ffffff;
+        color: #006e6f;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        margin-left: auto;
+    }
+
+    .create-button:hover {
+        background-color: #006e6f;
+        color: white;
+    }
+
+    .category-title .title-container {
+    align-items: center; /* Centra verticalmente los elementos */
+    gap: 10px; /* Espaciado opcional entre el texto y los botones */
+}
+
+    .title-container h2 {
+        text-align: center;
+        color: #ffffff;
+    }
+
+    .delete-form {
+        align-items: center;
+        gap: 10px; /* Espaciado entre botones */
+    }
+
+.delete-button,
+.edit-button {
+    background: none; /* Sin fondo */
+    border: none; /* Sin borde */
+    cursor: pointer; /* Icono de mano al pasar por encima */
+    font-size: 16px; /* Ajusta el tamaño de los iconos */
+    color: #ff0000;
+    transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.delete-button:hover i,
+.edit-button:hover {
+    color: #ff4d4d; /* Cambia el color al pasar por encima (eliminar) */
+}
+
+.edit-button:hover i {
+    color: #ffffff; /* Cambia el color al pasar por encima (editar) */
+}
+
+.delete-button i,
+.edit-button i {
+    font-size: 20px; /* Tamaño de los iconos */
+}
+
+
+    
+    
+</style>
+
+
+    

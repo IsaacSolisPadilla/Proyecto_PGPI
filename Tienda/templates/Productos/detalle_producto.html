@@ -1,90 +1,17 @@
-<!DOCTYPE html>
-<div class="container">
-<html lang="es">
-<body>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<header>
-    <h1>{{ producto.nombre }}</h1>
-    <a href="{% url 'pagina_principal' %}" class="back-button">Volver</a>
-</header>
-<nav class="navbar">
-    <ul class="navbar-menu">
-        {% if user.is_authenticated %}
-            <li class="navbar-item" style="position: absolute; left: 1%;">
-                <button class="dropdown-button">
-                    Hola, {{ user.username }}
-                    <svg width="15px" height="10px" viewBox="0 0 13 10">
-                        <path d="M1,5 L11,5"></path>
-                        <polyline points="8 1 12 5 8 9"></polyline>
-                    </svg>
-                </button>
-                <div class="dropdown-menu">
-                    <form method="POST" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="dropdown-item">Cerrar Sesión</button>
-                    </form>
-                </div>
-            </li>
-        {% else %}
-        <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
-            <span>Iniciar Sesión</span>
-            <svg width="15px" height="10px" viewBox="0 0 13 10">
-                <path d="M1,5 L11,5"></path>
-                <polyline points="8 1 12 5 8 9"></polyline>
-            </svg>
-        </a>
-        {% endif %}
-        <li class="navbar-item">
-            <a>
-                <button class="navbar-link">Categorias</button>
-            </a>
-            <a href="/">
-            <button class="navbar-link">Home</button>
-            </a>
-        </li>
-        <li class="navbar-item">
-            <a href="/categorias">
-            <button class="navbar-link">Categorias</button>
-        </a>
-            <ul class="dropdown-menu">
-                {% for categoria in categorias %}
-                    <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-        <li class="navbar-item">
-            <a href="/productos">
-            <button class="navbar-link">Productos</button>
-            </a>
-        </li>
-        {% if user.is_authenticated and user.is_staff %}
-        <li class="navbar-item">
-            <a href="/categorias/crear">
-            <button class="navbar-link">Crear categoria</button>
-            </a>
-        </li>
-        {% endif %}
-        {% if user.is_authenticated and not user.is_staff %}
-        <li style="display: flex; align-items: center;">
-            <a href="/carrito">
-                <i class="fas fa-shopping-cart" style="color: white;"></i>
-            </a>
-        </li>
-        {% endif %}
-    </ul>
-</nav>
+{% extends 'base.html' %}
 
+{% block title %}{{ producto.nombre }}{% endblock %}
+
+{% block content %}
 <section class="hero" style="padding: 5px 5px;">
     <h2>Detalles del Producto</h2>
 </section>
 
 <section class="product-details">
-    
     <div class="product">
         <div style="margin-bottom: 20px;">
             {% if user.is_authenticated and user.is_staff %}
                 <a href="{% url 'actualizar_producto' producto.id %}" class="update-button" style="margin-right: 10px;">Actualizar Producto</a>
-                
                 <form action="{% url 'eliminar_producto' producto.id %}" method="post" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" class="delete-button">Eliminar Producto</button>
@@ -92,39 +19,55 @@
             {% endif %}
         </div>
         {% if producto.fotografia %}
-        <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image';">
-        {% else %}
-        <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
-        {% endif %}
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <div style="position: relative; width: 300px; height: 300px;">
+                <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image';">
+                {% else %}
+                <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+                {% endif %}
+            </div>
+        </div>
         <h3>{{ producto.nombre }}</h3>
         <p><strong>Precio:</strong> ${{ producto.precio }}</p>
         <p><strong>Stock:</strong> {{ producto.stock }}</p>
         <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
         <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
-        <form action="{% url 'agregar_producto_a_factura' producto.id %}" method="post" style="display: inline;">
+        <form action="{% url 'cart:cart_add' producto.id %}" method="post" style="display: inline;">
             {% csrf_token %}
             <button type="submit" class="add-to-cart-button">
                 <i class="fas fa-cart-plus"></i> Añadir al carrito
             </button>
         </form>
     </div>
-    <form action="{% url 'cart:cart_add' producto.id %}" method="post" style="display: inline;">
-        {% csrf_token %}
-        <button type="submit" class="add-to-cart-button">
-            <i class="fas fa-cart-plus"></i> Añadir al carrito
-        </button>
-    </form>
-    
 </section>
-
-<footer>
-    <p>&copy; 2024 Perfumería de Lujo. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
-</footer>
-</body>
-</html>
-</div>
+{% endblock %}
 
 <style>
+    .container-input {
+    position: relative;
+    }
+
+    .input {
+    width: 150px;
+    padding: 10px 0px 10px 40px;
+    border-radius: 9999px;
+    border: solid 1px #333;
+    transition: all .2s ease-in-out;
+    outline: none;
+    opacity: 0.8;
+    }
+
+    .container-input svg {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translate(0, -50%);
+    }
+
+    .input:focus {
+    opacity: 1;
+    width: 250px;
+    }
     /* Botón de añadir al carrito */
     .add-to-cart-button {
         background-color: #28a745;
@@ -504,6 +447,23 @@
             display: block;
         }
 
+    .dropdown-menu .dropdown-item {
+        display: block;
+        padding: 10px 15px;
+        color: #006e6f;
+        background-color: #ffffff;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: rgba(0, 140, 142, 0.1);
+    }
+
+    .navbar-item:hover .dropdown-menu {
+        display: block;
+    }
         .navbar {
             background-color: #006e6f;
             padding: 10px 20px;

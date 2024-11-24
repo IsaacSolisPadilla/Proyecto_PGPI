@@ -1,15 +1,14 @@
 <div class="container">
     <a href="{% url 'pagina_principal' %}" class="back-button">Volver a la pantalla principal</a>
     <form class="form" method="post">
-        {% csrf_token %}
         <p class="title">Editar Perfil</p>
-
+        {% csrf_token %}
         {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-            <p>{{ message }}</p>
-            {% endfor %}
-        </div>
+            <div class="messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
         {% endif %}
 
         <div class="flex">
@@ -55,40 +54,36 @@
 </div>
 
 <style>
-    .back-button {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        background-color: #ffffff;
-        color: #006e6f;
-        padding: 10px 15px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .back-button:hover {
-        background-color: #005a5b;
-        color: #ffffff;
-    }
-
+    .messages {
+            color: red;
+            margin-bottom: 15px;
+        }
     .container {
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100%;
         height: 100%;
-        background: #006e6f;
-        /* Fallback for browsers that don't support gradients */
-        background: linear-gradient(135deg,
-                #006e6f 25%,
-                #008c8e 25%,
-                #008c8e 50%,
-                #006e6f 50%,
-                #006e6f 75%,
-                #008c8e 75%,
-                #008c8e);
+        background: #006e6f; /* Fallback for browsers that don't support gradients */
+        background: linear-gradient(
+            135deg,
+            #006e6f 25%,
+            #008c8e 25%,
+            #008c8e 50%,
+            #006e6f 50%,
+            #006e6f 75%,
+            #008c8e 75%,
+            #008c8e
+        );
         background-size: 40px 40px;
+    }
+    .container1 {
+        /* Basic dimensions and centering */
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        padding: 20px;
+        
     }
 
     .form {
@@ -101,7 +96,6 @@
         border-radius: 20px;
         position: relative;
     }
-
     .title {
         font-size: 28px;
         color: #006e6f;
@@ -112,9 +106,7 @@
         align-items: center;
         padding-left: 30px;
     }
-
-    .title::before,
-    .title::after {
+    .title::before,.title::after {
         position: absolute;
         content: "";
         height: 16px;
@@ -123,36 +115,37 @@
         left: 0px;
         background-color: #006e6f;
     }
-
     .title::before {
         width: 18px;
         height: 18px;
         background-color: #006e6f;
     }
-
     .title::after {
         width: 18px;
         height: 18px;
         animation: pulse 1s linear infinite;
     }
-
-    .messages {
-        color: red;
+    .message, .signin {
+        color: rgba(88, 87, 87, 0.822);
         font-size: 14px;
-        text-align: center;
-        margin-bottom: 10px;
     }
-
+    .signin {
+        text-align: center;
+    }
+    .signin a {
+        color: #006e6f;
+    }
+    .signin a:hover {
+        text-decoration: underline #006e6f;
+    }
     .flex {
         display: flex;
         width: 100%;
         gap: 6px;
     }
-
     .form label {
         position: relative;
     }
-
     .form label .input {
         width: 100%;
         padding: 10px 10px 20px 10px;
@@ -160,8 +153,7 @@
         border: 1px solid rgba(105, 105, 105, 0.397);
         border-radius: 10px;
     }
-
-    .form label .input+span {
+    .form label .input + span {
         position: absolute;
         left: 10px;
         top: 15px;
@@ -170,23 +162,18 @@
         cursor: text;
         transition: 0.3s ease;
     }
-
-    .form label .input:placeholder-shown+span {
+    .form label .input:placeholder-shown + span {
         top: 15px;
         font-size: 0.9em;
     }
-
-    .form label .input:focus+span,
-    .form label .input:valid+span {
+    .form label .input:focus + span,.form label .input:valid + span {
         top: 30px;
         font-size: 0.7em;
         font-weight: 600;
     }
-
-    .form label .input:valid+span {
+    .form label .input:valid + span {
         color: green;
     }
-
     .submit {
         border: none;
         outline: none;
@@ -197,20 +184,56 @@
         font-size: 16px;
         transform: .3s ease;
     }
-
     .submit:hover {
-        background-color: #005a5b;
+        background-color: #006e6f;
     }
-
     @keyframes pulse {
         from {
             transform: scale(0.9);
             opacity: 1;
         }
-
         to {
             transform: scale(1.8);
             opacity: 0;
         }
+    }
+
+    header {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    header h1 {
+    font-size: 36px;
+    color: #333;
+    }
+    header p {
+    font-size: 18px;
+    color: #555;
+    }
+    body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f3e7e9, #e3eeff);
+    color: #333;
+    }
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #ffffff;
+        color: #006e6f;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .back-button:hover {
+        background-color: #005a5b;
+        color: #ffffff;
     }
 </style>

@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizar Categoría</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
+{% block title %}Actualizar Categoria{% endblock %}
 
-<body>
-    <header>
-        <h1>Actualizar Categoría</h1>
-        <a href="{% url 'pagina_principal' %}" class="back-button">Volver</a>
-    </header>
+{% block content %}
 
     <main class="form-section">
         <div class="form-container">
@@ -30,156 +20,9 @@
                     <button type="submit" class="submit-button">
                         <i class="fas fa-edit"></i> Actualizar
                     </button>
-                    <a href="/categorias/{{ categoria.id }}" class="cancel-button">Cancelar</a>
+                    <a href="javascript:history.back()" class="cancel-button" style="text-decoration: none; text-align: center; padding: 10px 15px;">Cancelar</a>
                 </div>
             </form>
         </div>
     </main>
-
-    <footer>
-        <p>&copy; 2024 Categorías Inc. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
-    </footer>
-</body>
-
-</html>
-
-<style>
-    body {
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
-        background: linear-gradient(135deg, #006e6f 25%, #008c8e 25%, #008c8e 50%, #006e6f 50%, #006e6f 75%, #008c8e 75%, #008c8e);
-        background-size: 40px 40px; /* Para dar la textura de líneas diagonales */
-        color: #333;
-    }
-
-    header {
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 20px;
-        text-align: center;
-        border-bottom: 2px solid #ddd;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    header h1 {
-        font-size: 36px;
-        color: #333;
-    }
-
-    .back-button {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        background-color: #006e6f;
-        color: #ffffff;
-        padding: 10px 15px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .back-button:hover {
-        background-color: #ffffff;
-        color: #005a5b;
-    }
-
-    .form-section {
-        padding: 50px 20px;
-        text-align: center;
-    }
-
-    .form-container {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 500px;
-        margin: auto;
-        text-align: left;
-    }
-
-    .form-container label {
-        font-weight: bold;
-        color: #555;
-        display: block;
-        margin-top: 10px;
-    }
-
-    .form-container input[type="text"],
-    .form-container textarea {
-        width: 100%;
-        padding: 10px;
-        margin-top: 5px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 16px;
-        box-sizing: border-box;
-    }
-
-    .form-container textarea {
-        resize: vertical;
-    }
-
-    .submit-button {
-        background-color: #008c8e;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-        margin-top: 20px;
-        width: 100%;
-    }
-
-    .submit-button:hover {
-        background-color: #006e6f;
-    }
-
-    .submit-button:active {
-        background-color: #005557;
-    }
-
-    .cancel-button {
-        background-color: #bd1313;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-        margin-top: 20px;
-        width: 100%;
-    }
-
-    .cancel-button:hover {
-        background-color: #cc1f1f;
-    }
-
-    .cancel-button:active {
-        background-color: #005557;
-    }
-
-    footer {
-        background-color: #333;
-        color: #fff;
-        text-align: center;
-        padding: 20px;
-        margin-top: 50px;
-    }
-
-    footer p {
-        font-size: 14px;
-    }
-
-    footer a {
-        color: royalblue;
-        text-decoration: none;
-    }
-
-    footer a:hover {
-        text-decoration: underline;
-    }
-</style>
+{% endblock %}
