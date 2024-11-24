@@ -1,41 +1,421 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<div class="container">
+<html lang="es">
 
-{% block title %}Actualizar Producto{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Producto</title>
+</head>
 
-{% block content %}
-<main>
-    <h2>Formulario de Actualización</h2>
-    <form method="POST" action="{% url 'actualizar_producto' producto.id %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre" id="nombre" value="{{ producto.nombre }}" required>
-
-        <label for="precio">Precio:</label>
-        <input type="number" name="precio" id="precio" value="{{ producto.precio }}" required>
-
-        <label for="stock">Stock:</label>
-        <input type="number" name="stock" id="stock" value="{{ producto.stock }}" required>
-
-        <label for="descripcion">Descripción:</label>
-        <textarea name="descripcion" id="descripcion">{{ producto.descripcion }}</textarea>
-
-        <label for="fotografia">Fotografía:</label>
-        <input type="file" name="fotografia" id="fotografia">
-        {% if producto.fotografia %}
-            <img src="{{ producto.fotografia.url }}" alt="Imagen actual del producto" width="100">
+<header>
+    <div class="header-content"></div>
+    <h1>Actualizar Producto</h1>
+    <a href="{% url 'pagina_principal' %}" class="back-button">Volver</a>
+</header>
+<nav class="navbar">
+    <ul class="navbar-menu">
+        {% if user.is_authenticated %}
+            <li class="navbar-item" style="position: absolute; left: 1%;">
+                <button class="dropdown-button">
+                    Hola, {{ user.username }}
+                    <svg width="15px" height="10px" viewBox="0 0 13 10">
+                        <path d="M1,5 L11,5"></path>
+                        <polyline points="8 1 12 5 8 9"></polyline>
+                    </svg>
+                </button>
+                <div class="dropdown-menu">
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                    </form>
+                </div>
+            </li>
+        {% else %}
+        <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
+            <span>Iniciar Sesión</span>
+            <svg width="15px" height="10px" viewBox="0 0 13 10">
+                <path d="M1,5 L11,5"></path>
+                <polyline points="8 1 12 5 8 9"></polyline>
+            </svg>
+        </a>
         {% endif %}
-        <label for="categoria">Categoría:</label>
-        <select name="categoria" id="categoria">
-            {% for categoria in categorias %}
-            <option value="{{ categoria.id }}" {% if categoria.id == producto.categoria.id %}selected{% endif %}>
-                {{ categoria.nombre }}
-            </option>
-            {% endfor %}
-        </select>
-        <div style="display: flex; justify-content: space-between;">
-            <button type="submit" style="margin-right: 200px; padding: 10px 15px; border-radius: 5px;">Actualizar Producto</button>
-            <a href="javascript:history.back()" class="cancel-button" style="text-decoration: none; text-align: center; padding: 10px 15px;">Cancelar</a>
-        </div>
-    </form>
-</main>
-{% endblock %}
+        
+        <li class="container-input">
+            <form method="GET" action="{% url 'listar_productos' %}">
+                <input type="text" placeholder="Buscar productos..." name="search" class="input" value="{{ request.GET.search }}">
+                <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+                </svg>
+            </form>
+        </li>
+        
+
+        <li class="navbar-item">
+            <button class="navbar-link">Categorías</button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Cristales</a></li>
+                <li><a href="#">Incienso</a></li>
+                <li><a href="#">Velas</a></li>
+            </ul>
+        </li>
+        {% if user.is_authenticated and not user.is_staff %}
+        
+        <a href="/carrito"  style="position: absolute; right: 1%;  padding: 12px 18px; ">
+            <i class="fas fa-shopping-cart" style="color: white;"></i>
+        </a>
+        
+            
+        {% endif %}
+    </ul>
+</nav>
+    <main>
+        <h2>Formulario de Actualización</h2>
+        <form method="POST" action="{% url 'actualizar_producto' producto.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" id="nombre" value="{{ producto.nombre }}" required>
+
+            <label for="precio">Precio:</label>
+            <input type="number" name="precio" id="precio" value="{{ producto.precio }}" required>
+
+            <label for="stock">Stock:</label>
+            <input type="number" name="stock" id="stock" value="{{ producto.stock }}" required>
+
+            <label for="descripcion">Descripción:</label>
+            <textarea name="descripcion" id="descripcion">{{ producto.descripcion }}</textarea>
+
+            <label for="fotografia">Fotografía:</label>
+            <input type="file" name="fotografia" id="fotografia">
+            {% if producto.fotografia %}
+                <img src="{{ producto.fotografia.url }}" alt="Imagen actual del producto" width="100">
+            {% endif %}
+            <label for="categoria">Categoría:</label>
+            <select name="categoria" id="categoria">
+                {% for categoria in categorias %}
+                <option value="{{ categoria.id }}" {% if categoria.id == producto.categoria.id %}selected{% endif %}>
+                    {{ categoria.nombre }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <div style="display: flex; justify-content: space-between;">
+                <button type="submit">Actualizar Producto</button>
+                <a href="{% url 'detalle_producto' producto.id %}" class="cancel-button" style="text-decoration: none; padding: 10px 15px; border-radius: 5px;">Cancelar</a>
+            </div>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Perfumería de Lujo. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
+    </footer>
+
+</html>
+</div>
+
+<style>
+    .container-input {
+    position: relative;
+    }
+
+    .input {
+    width: 150px;
+    padding: 10px 0px 10px 40px;
+    border-radius: 9999px;
+    border: solid 1px #333;
+    transition: all .2s ease-in-out;
+    outline: none;
+    opacity: 0.8;
+    }
+
+    .container-input svg {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translate(0, -50%);
+    }
+
+    .input:focus {
+    opacity: 1;
+    width: 250px;
+    }
+    .container {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #006e6f 25%, #008c8e 25%, #008c8e 50%, #006e6f 50%, #006e6f 75%, #008c8e 75%, #008c8e);
+        background-size: 40px 40px;
+    }
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #006e6f;
+        color: #ffffff;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .back-button:hover {
+        background-color: #ffffff;
+        color: #005a5b;
+    }
+
+
+    header {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        text-align: center;
+        border-bottom: 2px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+        font-size: 36px;
+        color: #333;
+    }
+
+    header p {
+        font-size: 18px;
+        color: #555;
+    }
+
+    input, textarea, select, button {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .hero {
+        background-size: cover;
+        background-position: center;
+        color: white;
+        text-align: center;
+        padding: 100px 20px;
+    }
+
+    .hero h2 {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+
+    .navbar {
+        background-color: #006e6f;
+        padding: 10px 20px;
+    }
+
+    .navbar-menu {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .navbar-item {
+        position: relative;
+        margin: 0 15px;
+    }
+
+    .navbar-link {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .navbar-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    }
+
+    .dropdown-button:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Menú dropdown */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 40px;
+        right: 0;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+    }
+
+    .dropdown-menu .dropdown-item {
+        display: block;
+        padding: 10px 15px;
+        color: #006e6f;
+        background-color: #ffffff;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown-menu .dropdown-item:hover {
+        background-color: rgba(0, 140, 142, 0.1);
+    }
+
+    /* Mostrar menú al hacer hover */
+    .user-info:hover .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+        width: 132px;
+    }
+
+    .dropdown-menu li {
+        list-style: none;
+    }
+
+    .dropdown-menu a {
+        display: block;
+        padding: 10px 15px;
+        color: #333;
+        text-decoration: none;
+       
+        transition: background-color 0.3s ease;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: rgba(0, 140, 142, 0.1);
+    }
+
+    .navbar-item:hover .dropdown-menu {
+        display: block;
+    }
+
+    .navbar-item {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #f3e7e9, #e3eeff);
+        color: #333;
+    }
+
+    
+    main {
+        max-width: 800px;
+        margin: 50px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #006e6f;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+
+    button {
+        background-color: #008c8e;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #006e6f;
+    }
+
+    .cancel-button {
+        background-color: #bd1313;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .cancel-button:hover {
+        background-color: #cd1d1d;
+    }
+
+    footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        margin-top: 20px;
+    }
+
+    footer a {
+        color: #4ecdc4;
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        z-index: 1000;
+    }
+</style>
