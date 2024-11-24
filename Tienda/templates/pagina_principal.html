@@ -3,21 +3,8 @@
 {% block title %}Aromas del Mundo{% endblock %}
 
 {% block content %}
-<!--<section class="featured-products" id="productos">
-    <section class="hero" style="padding: 10px 10px;">
-        <div class="filters-container">
-            <div class="filters">
-                <input type="text" id="filter-name" placeholder="Filtrar por nombre..." oninput="filterProducts()">
-                <input type="number" id="filter-price" placeholder="Filtrar por precio máximo..." oninput="filterProducts()">
-                <select id="filter-category" onchange="filterProducts()">
-                    <option value="">Seleccionar categoría</option>
-                    {% for categoria in categorias %}
-                    <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-    </section> -->
+<section class="featured-products" id="productos">
+    
     {% if user.is_authenticated and user.is_staff %}
     <div class="create-button-container" style="margin-top: 20px;">
         <a href="{% url 'crear_producto' %}" class="create-button">

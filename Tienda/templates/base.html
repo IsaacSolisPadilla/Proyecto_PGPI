@@ -74,19 +74,25 @@
                             </select>
                         </div>
                     </section>
-                    {% if user.is_authenticated and user.is_staff %}
-                    <li class="navbar-item">
+                    <li class="navbar-item" style="margin-left: 0px;">
                         <a href="/categorias">
                         <button class="navbar-link">Categorias</button>
                     </a>
                     </li>
-                    {% endif %}
                 </li>
                 {% if user.is_authenticated and not user.is_staff %}
-                <a href="/carrito"  style="position: absolute; right: 1%;  padding: 12px 18px; ">
+                <a href="/carrito"  style="position: absolute; right: 35%;  padding: 12px 18px; ">
                     <i class="fas fa-shopping-cart" style="color: white;"></i>
                 </a>
                 {% endif %}
+
+                <li style="display: flex; align-items: center; position: absolute; right: 0;">
+                    <button class="navbar-link">Estado Pedido Nº</button>
+                    <input id="numero-factura" type="text"
+                        style="margin-left: 5px; margin-right: 5px; padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
+                    <button class="navbar-link" onclick="mostrarEstadoPedido()">BUSCAR</button>
+                </li>
+
             </ul>
         </nav>
 
@@ -96,6 +102,16 @@
             <p>&copy; 2024 Perfumería de Lujo. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
         </footer>
     </div>
+    <script>
+        function mostrarEstadoPedido() {
+            const numero_factura = document.getElementById("numero-factura").value
+            fetch("/factura/numero_factura/" + numero_factura)
+                .then(data => data.json())
+                .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
+                .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
+        }
+    </script>
+    
 </body>
 </html>
 </div>
