@@ -25,4 +25,5 @@ urlpatterns = [
     path('productos/crear/', producto_views.crear_producto, name='crear_producto'),
     path('producto/<int:producto_id>/editar/', producto_views.actualizar_producto, name='actualizar_producto'),
     path('productos/<int:producto_id>/eliminar/', producto_views.eliminar_producto, name='eliminar_producto'),
+    path('productos/', producto_views.lista_productos, name='listar_productos'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
