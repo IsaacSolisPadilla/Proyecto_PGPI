@@ -56,20 +56,11 @@
             </li>
             <li class="navbar-item">
                 <!-- ESTA REFERENCIA SOLO DEBE ESTAR SI ESTÁS AUTENTICADO -->
-                <a href="{% if user.is_staff%}/categorias{% else %}/{% endif %}">
+                <a href="/categorias">
                     <button class="navbar-link">Categorias</button>
                 </a>
-                <ul class="dropdown-menu">
-                    {% for categoria in categorias %}
-                    <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>
-                    {% endfor %}
-                </ul>
             </li>
-            <li class="navbar-item">
-                <a href="/productos">
-                    <button class="navbar-link">Productos</button>
-                </a>
-            </li>
+            
 
             <li style="display: flex; align-items: center;">
                 <a href="/cart">
@@ -141,40 +132,6 @@
                 {% empty %}
                 <p>No hay productos disponibles en este momento.</p>
                 {% endfor %}
-            </ul>
-        </li>
-    </ul>
-</nav>
-
-<section class="hero" style="padding: 10px 10px;">
-    <h2>Descubre Nuestros Aromas Exclusivos</h2>
-</section>
-
-<section class="featured-products" id="productos" style="padding: 10px 10px;">
-    <h2>Productos Destacados</h2>
-    {% if user.is_authenticated and user.is_staff %}
-        <div class="create-button-container">
-            <a href="{% url 'crear_producto' %}" class="create-button">
-                Crear Producto
-            </a>
-        </div>
-    {% endif %}
-    <div class="product-grid">
-        {% for producto in productos %}
-        <div class="product">
-            <a href="{% url 'detalle_producto' producto.id %}" style=" text-decoration: none;">
-                {% if producto.fotografia %}
-                <img src="{{ producto.fotografia }}" alt="{{ producto.nombre }}">
-                {% else %}
-                <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
-                {% endif %}
-                <h3>{{ producto.nombre }}</h3>
-                <p>${{ producto.precio }}</p>
-            </a>
-        </div>
-        {% empty %}
-        <p>No hay productos disponibles en este momento.</p>
-        {% endfor %}
             </div>
         </section>
     </div>
