@@ -1,4 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Carrito{% endblock %}
+
+{% block content %}
 <h1>Crear pedido</h1>
+
+{% if error_message %}
+<div class="mensaje-error">{{ error_message }}</div>
+{% endif %}
+
+<form method="post" action="{% url 'crear_pedido' %}">
+    {% csrf_token %}
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in carrito %}
+            <tr>
+                <td>{{ item.producto.nombre }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td>${{ item.producto.precio }}</td>
+                <td>${{ item.total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="total">
+        <strong>Total a pagar: ${{ total }}</strong>
+    </div>
+    <button type="submit" class="submit-button">Realizar Pedido</button>
+</form>
+{% endblock %}
 <style>
     .mensaje-error {
         color: white;
@@ -193,161 +231,3 @@
     }
 </style>
 
-<div>
-<table id="cart" class="cart">
-
-    <thead>
-        <tr>
-            <th>Imagen</th>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Remover</th>
-            <th>Precio Unitario</th>
-            <th>Precio total</th>
-        </tr>
-    </thead>
-    <tbody id="lineas">
-        <!-- Se rellena en el javascript -->
-    </tbody>
-    
-    
-</table>
-</div>
-<div style="display: flex; flex-direction: row;">
-    <button id="actualizar" onclick="actualizarFactura()">Actualizar</button>
-    <button id="confirmar" onclick="window.location.href = '/factura/confirmar'">Confirmar</button>
-    <button id="volver" onclick="window.location.href = '/' ">Volver</button>    
-</div>
-
-<script src="https://unpkg.com/feather-icons"></script>
-<script>
-    feather.replace();
-    var factura = null;
-    var facturaConProductos = true;
-    fetch("/factura/espera")
-        .then(data => data.json())
-        .then(json => factura = json)
-        .then(_ => {
-            const tbody = document.getElementById("lineas")
-            
-            if(factura === null || Object.keys(factura).length === 0) {
-                const carrito = document.getElementById("cart")
-                const facturaVacia = document.createElement("p");
-                facturaVacia.className = "mensaje-error"
-                facturaVacia.textContent = "No hay productos en factura"
-                carrito.parentNode.replaceChild(facturaVacia, carrito)
-                document.getElementById("confirmar").remove()
-                document.getElementById("actualizar").remove()
-                facturaConProductos = false;
-                return ;
-            }
-            
-            for(const n_linea in factura) {
-                tbody.innerHTML += `
-                <tr id="linea-${n_linea}">
-                    <td>
-                        <img src="${factura[n_linea].producto.fotografia}" alt="${factura[n_linea].producto.nombre}">
-                    </td>
-                    <td>
-                        ${factura[n_linea].producto.nombre}
-                    </td>
-                    <td>
-                        <input id="cantidad-${n_linea}"
-                               n_linea="${n_linea}"
-                               onkeydown="return soloFlechas(event);" 
-                               oninput="actualizarAtributo(this)"
-                               value="${factura[n_linea].cantidad}"  
-                               type="number" 
-                               min="1" 
-                               max="${factura[n_linea].producto.stock}">
-                    </td>
-                    <td>
-                        <button n_linea="${n_linea}" onclick="eliminarProducto(this)">
-                            X
-                        </button>
-                    </td>
-                    <td>
-                        ${factura[n_linea].producto.precio}€
-                    </td>
-                    <td id="precio_total-${n_linea}">
-                        ${(factura[n_linea].cantidad * factura[n_linea].producto.precio).toFixed(2)}€
-                    </td>
-                </tr>`
-
-            }
-            
-            tbody.innerHTML += ` 
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <p style="display: flex; align-items: start;">+</p>
-                    <hr>
-                    <p id="precio_total">${factura[0].factura.precio_total}€</p>
-                </td>
-            </tr>`
-        })
-
-    function actualizarAtributo(elemento) {
-        const n_linea = elemento.getAttribute("n_linea")
-        const precio_total_linea = document.getElementById(`precio_total-${n_linea}`)
-        precio_total_linea.textContent = (elemento.value * factura[n_linea].producto.precio).toFixed(2) + "€"
-        const precio_total = document.getElementById(`precio_total`)
-        let valor = 0
-        for (const index in factura) {
-            valor += Number(document.getElementById(`precio_total-${index}`).textContent.replace("€",""))
-        }
-        precio_total.textContent = valor.toFixed(2) + "€"
-    }
-
-    function eliminarProducto(elemento) {
-        const n_linea = elemento.getAttribute("n_linea")
-        delete factura[n_linea]
-        if(Object.keys(factura).length === 0){
-            window.location.href = '/'
-        }
-        document.getElementById(`linea-${n_linea}`).remove()
-        const precio_total = document.getElementById(`precio_total`)
-        let valor = 0
-        for (const index in factura) {
-            valor += Number(document.getElementById(`precio_total-${index}`).textContent.replace("€",""))
-        }
-        precio_total.textContent = valor.toFixed(2) + "€"
-    }
-
-    function soloFlechas(event) {
-        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-            return true; // Permite las flechas
-        }
-        event.preventDefault();
-    }
-
-    function obtenerForm() {
-        const form = {}
-        let lineas_factura = {}
-        for (const n_linea in factura) {
-            const producto_id = factura[n_linea].producto.id
-            const cantidad = Number(document.getElementById(`cantidad-${n_linea}`).value)
-            lineas_factura[producto_id] = cantidad
-        }
-        form["lineas_factura"]=lineas_factura
-        return form
-    }
-
-    function actualizarFactura() {
-        fetch("/factura/actualizar", 
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    'X-CSRFToken': '{{csrf_token}}'
-                },
-                body: JSON.stringify(obtenerForm())
-            }
-        )
-    }
-
-</script>
