@@ -22,32 +22,29 @@
             </div>
         </section>
 
-        <section class="featured-products" id="productos">
-            <div class="product-grid">
-                {% for producto in productos %}
-                <div class="product">
-                    <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
-                        {% if producto.fotografia %}
-                        <img src="{{ producto.fotografia }}" alt="{{ producto.nombre }}">
-                        {% else %}
-                        <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
-                        {% endif %}
-                        <h3>{{ producto.nombre }}</h3>
-                        <p>${{ producto.precio }}</p>
-                        <form action="{% url 'cart:cart_add' producto.id %}" method="post" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="add-to-cart-button">
-                                <i class="fas fa-cart-plus"></i> Añadir al carrito
-                            </button>
-                        </form>
-                    </a>
-                </div>
-                {% empty %}
-                <p>No hay productos disponibles en esta categoría.</p>
-                {% endfor %}
+        <div class="product-grid" id="product-grid" style="margin-top: 20px;">
+            {% for producto in productos %}
+            <div class="product" data-name="{{ producto.nombre }}" data-price="{{ producto.precio }}" data-category="{{ producto.categoria.id }}">
+                <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
+                    {% if producto.fotografia %}
+                    <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}">
+                    {% else %}
+                    <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+                    {% endif %}
+                    <h3>{{ producto.nombre }}</h3>
+                    <p>${{ producto.precio }}</p>
+                    <form action="{% url 'cart:cart_add' producto.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="add-to-cart-button">
+                            <i class="fas fa-cart-plus"></i> Añadir al carrito
+                        </button>
+                    </form>
+                </a>
             </div>
-        </section>
-    </div>
+            {% empty %}
+            <p>No hay productos disponibles en este momento.</p>
+            {% endfor %}
+        </div>
 <script>
     function mostrarEstadoPedido() {
         const numero_factura = document.getElementById("numero-factura").value
@@ -55,6 +52,35 @@
             .then(data => data.json())
             .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
             .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
+    }
+    
+    function filterProducts() {
+        // Obtener valores de los filtros
+        const filterName = document.getElementById('filter-name').value.toLowerCase();
+        const filterPrice = parseFloat(document.getElementById('filter-price').value) || Infinity;
+        const filterCategory = document.getElementById('filter-category').value;
+
+        // Obtener todos los productos
+        const products = document.querySelectorAll('.product');
+
+        // Filtrar productos
+        products.forEach(product => {
+            const productName = product.getAttribute('data-name').toLowerCase();
+            const productPrice = parseFloat(product.getAttribute('data-price'));
+            const productCategory = product.getAttribute('data-category');
+
+            // Verificar si el producto cumple con los filtros
+            const matchesName = productName.includes(filterName);
+            const matchesPrice = productPrice <= filterPrice;
+            const matchesCategory = filterCategory === '' || productCategory === filterCategory;
+
+            // Mostrar u ocultar el producto según los filtros
+            if (matchesName && matchesPrice && matchesCategory) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
     }
 </script>
 {% endblock %}

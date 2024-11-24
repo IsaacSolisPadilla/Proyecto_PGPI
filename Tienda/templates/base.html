@@ -110,6 +110,7 @@
                 .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
                 .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
         }
+        
         // Función para obtener el número de productos en el carrito
         function actualizarCartCount() {
             fetch('/cart-count')
