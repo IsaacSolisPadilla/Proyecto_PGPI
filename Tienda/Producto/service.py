@@ -53,3 +53,36 @@ class ProductoService:
         producto.delete()
         return {"mensaje": "Producto eliminado correctamente"}
 
+    @staticmethod
+    def crear_categoria_de_producto(data):
+        categoriaproducto = CategoriaProducto(
+            nombre=data.get('nombre'),
+            descripcion=data.get('descripcion'),
+        )
+        categoriaproducto.save()
+        return categoriaproducto.to_dict()
+    
+
+    @staticmethod
+    def actualizar_categoria_de_producto(cateogira_producto_id, data):
+        cateogriaDeProducto = get_object_or_404(CategoriaProducto, id=cateogira_producto_id)
+        cateogriaDeProducto.nombre = data.get('nombre', cateogriaDeProducto.nombre)
+        cateogriaDeProducto.descripcion = data.get('descripcion', cateogriaDeProducto.descripcion)
+        cateogriaDeProducto.save()
+        return cateogriaDeProducto.to_dict()
+
+
+    @staticmethod
+    def eliminar__categoria_de_producto(categoria_de_producto_id):
+        producto = get_object_or_404(CategoriaProducto, id=categoria_de_producto_id)
+        producto.delete()
+        return {"mensaje": "Categoría de producto eliminada correctamente"}
+
+
+    @staticmethod
+    def listar_categorias_de_productos():
+        categorias = CategoriaProducto.objects.all()
+        return [categoria.to_dict() for categoria in categorias]
+
+
+

@@ -12,7 +12,7 @@
             "is_superuser": false,
             "last_login": "2024-11-10T12:34:56Z",
             "date_joined": "2024-01-01T09:00:00Z",
-            "password": "pbkdf2_sha256$260000$abcdef$..."
+            "password": "pbkdf2_sha256$390000$ZqfjT7WmSI7X$8H+YO3J9zmVQvzmO2Xb3dP9mrUzRE0R9cK8k0Gn9f4Y="
         }
     },
     {
@@ -170,18 +170,128 @@
         }
     },
     {
+    "model": "Tienda.producto",
+    "pk": 4,
+    "fields": {
+        "nombre": "Vela de Eucalipto",
+        "categoria": 1,
+        "precio": "7.99",
+        "stock": 120,
+        "descripcion": "Vela de eucalipto para energizar el ambiente",
+        "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqEQodYBjharjn0WNLonSiN0tr9zk8YY6aw&s"
+    }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 5,
+        "fields": {
+            "nombre": "Cristal de Amatista",
+            "categoria": 2,
+            "precio": "25.99",
+            "stock": 30,
+            "descripcion": "Cristal de amatista para meditación profunda",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 6,
+        "fields": {
+            "nombre": "Incienso de Rosa Mosqueta",
+            "categoria": 3,
+            "precio": "4.49",
+            "stock": 80,
+            "descripcion": "Incienso de rosa mosqueta para equilibrio emocional",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 7,
+        "fields": {
+            "nombre": "Vela de Citronela",
+            "categoria": 1,
+            "precio": "6.49",
+            "stock": 150,
+            "descripcion": "Vela de citronela para repeler insectos y aromatizar el ambiente",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 8,
+        "fields": {
+            "nombre": "Cristal de Selenita",
+            "categoria": 2,
+            "precio": "12.99",
+            "stock": 40,
+            "descripcion": "Cristal de selenita para limpieza energética",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 9,
+        "fields": {
+            "nombre": "Incienso de Lavanda",
+            "categoria": 3,
+            "precio": "3.79",
+            "stock": 60,
+            "descripcion": "Incienso de lavanda para relajación y sueño profundo",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 10,
+        "fields": {
+            "nombre": "Vela de Jazmín",
+            "categoria": 1,
+            "precio": "8.99",
+            "stock": 200,
+            "descripcion": "Vela de jazmín para crear un ambiente relajante y floral",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 11,
+        "fields": {
+            "nombre": "Cristal de Turmalina",
+            "categoria": 2,
+            "precio": "18.49",
+            "stock": 25,
+            "descripcion": "Cristal de turmalina para protección energética",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 12,
+        "fields": {
+            "nombre": "Incienso de Mirra",
+            "categoria": 3,
+            "precio": "5.49",
+            "stock": 90,
+            "descripcion": "Incienso de mirra para meditación profunda y protección",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+        }
+    },
+
+    {
         "model": "Tienda.factura",
         "pk": 1,
         "fields": {
             "usuario": 1,
             "numero_factura": "ORD12345",
             "fecha_pedido": "2024-11-10T10:00:00Z",
-            "fecha_salida": "2024-11-12T10:00:00Z",
-            "fecha_entrega": "2024-11-15T10:00:00Z",
+            "fecha_salida": null,
+            "fecha_entrega": null,
             "direccion": "Calle Falsa 123, Ciudad Esotérica",
-            "estado": "Pendiente",
-            "metodo_de_pago": "Pasarela",
-            "coste_envio": "4.99"
+            "estado": "Espera",
+            "metodo_de_pago": null,
+            "nombre": null,
+            "apellidos": null
         }
     },
     {
@@ -196,7 +306,8 @@
             "direccion": "Avenida Siempreviva 742, Ciudad Espiritual",
             "estado": "Enviado",
             "metodo_de_pago": "Contrareembolso",
-            "coste_envio": "3.99"
+            "nombre": "Pepe",
+            "apellidos": "Gonzalez"
         }
     },
     {
@@ -205,7 +316,8 @@
         "fields": {
             "factura": 1,
             "producto": 1,
-            "cantidad": 3
+            "cantidad": 3,
+            "precio_unitario": "5.99"
         }
     },
     {
@@ -214,7 +326,8 @@
         "fields": {
             "factura": 1,
             "producto": 2,
-            "cantidad": 2
+            "cantidad": 2,
+            "precio_unitario": "4.99"
         }
     },
     {
@@ -223,7 +336,8 @@
         "fields": {
             "factura": 2,
             "producto": 1,
-            "cantidad": 1
+            "cantidad": 1,
+            "precio_unitario": "7.99"
         }
     },
     {
@@ -232,7 +346,8 @@
         "fields": {
             "factura": 2,
             "producto": 3,
-            "cantidad": 5
+            "cantidad": 5,
+            "precio_unitario": "10.99"
         }
     }
 ]

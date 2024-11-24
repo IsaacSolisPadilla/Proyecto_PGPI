@@ -1,5 +1,15 @@
 <h1>Crear pedido</h1>
 <style>
+    .mensaje-error {
+        color: white;
+        background-color: red;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        margin: 10px 0;
+    }
     /* Estilo general */
     body {
         font-family: 'Arial', sans-serif;
@@ -183,7 +193,8 @@
     }
 </style>
 
-<table class="cart">
+<div>
+<table id="cart" class="cart">
 
     <thead>
         <tr>
@@ -199,23 +210,38 @@
         <!-- Se rellena en el javascript -->
     </tbody>
     
+    
 </table>
+</div>
 <div style="display: flex; flex-direction: row;">
-    <button onclick="actualizarFactura()">Actualizar</button>
-    <button onclick="window.location.href = '/facturas/confirmar'">Confirmar</button>
-    <button onclick="window.location.href = '/' ">Volver</button>    
+    <button id="actualizar" onclick="actualizarFactura()">Actualizar</button>
+    <button id="confirmar" onclick="window.location.href = '/factura/confirmar'">Confirmar</button>
+    <button id="volver" onclick="window.location.href = '/' ">Volver</button>    
 </div>
 
 <script src="https://unpkg.com/feather-icons"></script>
 <script>
     feather.replace();
     var factura = null;
-    fetch("/factura/pendiente")
+    var facturaConProductos = true;
+    fetch("/factura/espera")
         .then(data => data.json())
         .then(json => factura = json)
         .then(_ => {
             const tbody = document.getElementById("lineas")
-            console.log(factura)
+            
+            if(factura === null || Object.keys(factura).length === 0) {
+                const carrito = document.getElementById("cart")
+                const facturaVacia = document.createElement("p");
+                facturaVacia.className = "mensaje-error"
+                facturaVacia.textContent = "No hay productos en factura"
+                carrito.parentNode.replaceChild(facturaVacia, carrito)
+                document.getElementById("confirmar").remove()
+                document.getElementById("actualizar").remove()
+                facturaConProductos = false;
+                return ;
+            }
+            
             for(const n_linea in factura) {
                 tbody.innerHTML += `
                 <tr id="linea-${n_linea}">

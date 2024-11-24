@@ -1,6 +1,67 @@
-<h1>Lista de Facturas</h1>
-<ul>
-    {% for factura in facturas %}
-        <li>Factura ID: {{ factura.id }} - Total: {{ factura.total }}</li>
-    {% endfor %}
-</ul>
+<h1 style="text-align: center; font-family: Arial, sans-serif; color: #2c3e50;">Lista de Facturas</h1>
+<div class="facturas-container">
+    <ul class="facturas-list">
+        {% for factura in facturas %}
+        <li class="factura-item" onclick="window.location.href = '/factura/' + '{{factura.id}}'">
+            <span class="factura-num">Nº {{ factura.numero_factura }}</span>
+            <span class="factura-estado">Estado: {{ factura.estado }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<script>
+    function verFactura(factura_id){ 
+        
+    }
+
+</script>
+
+<style>
+.facturas-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #1e824c; /* Verde oscuro */
+    border-radius: 8px;
+    background-color: #eafaf1; /* Verde muy claro */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.facturas-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.factura-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #1e824c; /* Verde oscuro */
+    border-radius: 6px;
+    background-color: #d5f5e3; /* Verde claro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.factura-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #b8e994; /* Verde más vibrante al pasar el mouse */
+}
+
+.factura-num {
+    font-weight: bold;
+    color: #145a32; /* Verde muy oscuro */
+}
+
+.factura-estado {
+    font-style: italic;
+    color: #2d7623; /* Verde intermedio */
+}
+
+
+</style>
