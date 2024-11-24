@@ -34,7 +34,8 @@ def confirmar_factura(request):
         if len(cart) > 0:
             form = FormFactura(request.POST)
             if form.is_valid():
-                request.user.facturas.filter(is_draft_mode=True).delete()
+                if request.user != None:
+                    request.user.facturas.filter(is_draft_mode=True).delete()
                 factura = Factura()
                 data = request.POST.copy()
                 factura.usuario = request.user
@@ -120,7 +121,8 @@ def crear_sesion_pago(request, factura: Factura):
     return HttpResponseRedirect(session.url)
 
 def cancelar_factura(request):
-    request.user.facturas.filter(is_draft_mode=True).delete()
+    if request.user != None:
+        request.user.facturas.filter(is_draft_mode=True).delete()
     return redirect("/")
     
 def procesar_pago(request):
