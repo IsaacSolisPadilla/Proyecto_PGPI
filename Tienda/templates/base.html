@@ -80,16 +80,18 @@
                     </a>
                     </li>
                 </li>
-                <a href="/cart"  style="position: absolute; right: 35%;  padding: 12px 18px; ">
-                    <i class="fas fa-shopping-cart" style="color: white;"></i>
-                </a>
+                
 
                 <li style="display: flex; align-items: center; position: absolute; right: 0;">
                     <button class="navbar-link">Estado Pedido Nº</button>
                     <input id="numero-factura" type="text"
                         style="margin-left: 5px; margin-right: 5px; padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
-                    <button class="navbar-link" onclick="mostrarEstadoPedido()">BUSCAR</button>
+                    <button class="navbar-link" onclick="mostrarEstadoPedido()">BUSCAR</button>        
                 </li>
+                <a href="/cart" class="floating-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" style="display: none;"></span> <!-- Oculto inicialmente -->
+                </a>                         
 
             </ul>
         </nav>
@@ -108,12 +110,103 @@
                 .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
                 .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
         }
+        // Función para obtener el número de productos en el carrito
+        function actualizarCartCount() {
+            fetch('/cart-count')
+                .then(response => response.json())
+                .then(data => {
+                    const cartCountElement = document.querySelector('.cart-count');
+                    
+                    // Actualiza el valor del contador
+                    if (data.cart_count > 0) {
+                        cartCountElement.textContent = data.cart_count;
+                        cartCountElement.style.display = 'inline-block'; // Muestra el contador
+                    } else {
+                        cartCountElement.style.display = 'none'; // Oculta el contador si es 0
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener el contador del carrito:', error);
+                });
+        }
+
+        // Llamada inicial al cargar la página
+        actualizarCartCount();
+
+        // Opcional: actualizar periódicamente cada 30 segundos
+        setInterval(actualizarCartCount, 30000);
+
     </script>
     
 </body>
 </html>
 </div>
 <style>
+    
+    /* Botón flotante */
+    .floating-cart {
+        position: fixed;
+        bottom: 30px; /* Distancia desde la parte inferior */
+        right: 30px; /* Distancia desde la derecha */
+        color: white;
+        width: 60px; /* Tamaño estándar */
+        background-color: #005557;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%; /* Redondeado */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+        z-index: 1000; /* Siempre encima */
+        cursor: pointer;
+        transition: all 0.3s ease; /* Transiciones suaves */
+        text-decoration: none; /* Sin subrayado */
+    }
+
+    /* Efecto al pasar el mouse */
+    .floating-cart:hover {
+        transform: translateY(-5px); /* Levanta el botón ligeramente */
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */ 
+    }
+
+    /* Ícono del carrito */
+    .floating-cart i {
+        font-size: 26px; /* Tamaño del ícono */
+    }
+
+    /* Contador del carrito */
+    .cart-count {
+        background-color: red;
+        color: white;
+        font-size: 12px;
+        border-radius: 50%;
+        padding: 5px 8px;
+        position: absolute;
+        top: -10px;
+        right: -10px;
+    }
+
+    /* Botón adaptado para pantallas pequeñas */
+    @media (max-width: 768px) {
+        .floating-cart {
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .floating-cart i {
+            font-size: 22px;
+        }
+
+        .cart-count {
+            font-size: 12px;
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+
     .container-input {
     position: relative;
 }

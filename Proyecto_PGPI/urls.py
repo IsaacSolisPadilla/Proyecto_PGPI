@@ -13,6 +13,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('cart/', include('cart.urls', namespace='cart')),
+    path('cart-count/', views.cart_count_view),
  
     path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
     path('login/', views.login_view, name='login'),
