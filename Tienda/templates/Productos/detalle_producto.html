@@ -19,10 +19,14 @@
             {% endif %}
         </div>
         {% if producto.fotografia %}
-        <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image';">
-        {% else %}
-        <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
-        {% endif %}
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <div style="position: relative; width: 300px; height: 300px;">
+                <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image';">
+                {% else %}
+                <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+                {% endif %}
+            </div>
+        </div>
         <h3>{{ producto.nombre }}</h3>
         <p><strong>Precio:</strong> ${{ producto.precio }}</p>
         <p><strong>Stock:</strong> {{ producto.stock }}</p>
