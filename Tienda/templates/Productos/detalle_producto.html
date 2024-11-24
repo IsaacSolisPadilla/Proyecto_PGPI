@@ -32,6 +32,12 @@
         <p><strong>Stock:</strong> {{ producto.stock }}</p>
         <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
         <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
+        <form action="{% url 'cart:cart_add' producto.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="add-to-cart-button">
+                <i class="fas fa-cart-plus"></i> Añadir al carrito
+            </button>
+        </form>
     </div>
 </section>
 {% endblock %}
