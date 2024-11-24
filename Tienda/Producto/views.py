@@ -1,3 +1,4 @@
+
 import json
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -50,13 +51,7 @@ def detalle_carro_pago(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     return render(request, 'Productos/carro.html', {'producto': producto})
 
-def lista_productos(request):
-    query = request.GET.get('search')
-    if query:
-        productos = Producto.objects.filter(nombre__icontains=query)
-    else:
-        productos = Producto.objects.all()
-    return render(request, 'Productos/lista_productos.html', {'productos': productos})
+#=====
 
 def crear_categoria_de_producto(request):
     if request.method == 'POST':
