@@ -1,80 +1,17 @@
-<!DOCTYPE html>
-<div class="container">
-<html lang="es">
-<body>
-<header>
-    <h1>{{ producto.nombre }}</h1>
-    <a href="{% url 'pagina_principal' %}" class="back-button">Volver</a>
-</header>
-<nav class="navbar">
-    <ul class="navbar-menu">
-        {% if user.is_authenticated %}
-            <li class="navbar-item" style="position: absolute; left: 1%;">
-                <button class="dropdown-button">
-                    Hola, {{ user.username }}
-                    <svg width="15px" height="10px" viewBox="0 0 13 10">
-                        <path d="M1,5 L11,5"></path>
-                        <polyline points="8 1 12 5 8 9"></polyline>
-                    </svg>
-                </button>
-                <div class="dropdown-menu">
-                    <form method="POST" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="dropdown-item">Cerrar Sesión</button>
-                    </form>
-                </div>
-            </li>
-        {% else %}
-        <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
-            <span>Iniciar Sesión</span>
-            <svg width="15px" height="10px" viewBox="0 0 13 10">
-                <path d="M1,5 L11,5"></path>
-                <polyline points="8 1 12 5 8 9"></polyline>
-            </svg>
-        </a>
-        {% endif %}
-        
-        <li class="container-input">
-            <form method="GET" action="{% url 'listar_productos' %}">
-                <input type="text" placeholder="Buscar productos..." name="search" class="input" value="{{ request.GET.search }}">
-                <button type="submit" style="background: none; border: none;">
-                    <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
-                    </svg>
-                </button>
-            </form>
-        </li>
-        
+{% extends 'base.html' %}
 
-        <li class="navbar-item">
-            <button class="navbar-link">Categorías</button>
-            <ul class="dropdown-menu">
-                <li><a href="#">Cristales</a></li>
-                <li><a href="#">Incienso</a></li>
-                <li><a href="#">Velas</a></li>
-            </ul>
-        </li>
-        {% if user.is_authenticated and not user.is_staff %}
-        
-        <a href="/carrito"  style="position: absolute; right: 1%;  padding: 12px 18px; ">
-            <i class="fas fa-shopping-cart" style="color: white;"></i>
-        </a>    
-        {% endif %}
+{% block title %}{{ producto.nombre }}{% endblock %}
 
-    </ul>
-</nav>
-
+{% block content %}
 <section class="hero" style="padding: 5px 5px;">
     <h2>Detalles del Producto</h2>
 </section>
 
 <section class="product-details">
-    
     <div class="product">
         <div style="margin-bottom: 20px;">
             {% if user.is_authenticated and user.is_staff %}
                 <a href="{% url 'actualizar_producto' producto.id %}" class="update-button" style="margin-right: 10px;">Actualizar Producto</a>
-                
                 <form action="{% url 'eliminar_producto' producto.id %}" method="post" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" class="delete-button">Eliminar Producto</button>
@@ -92,15 +29,8 @@
         <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
         <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
     </div>
-    
 </section>
-
-<footer>
-    <p>&copy; 2024 Perfumería de Lujo. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
-</footer>
-</body>
-</html>
-</div>
+{% endblock %}
 
 <style>
     .container-input {
@@ -128,6 +58,39 @@
     opacity: 1;
     width: 250px;
     }
+    /* Botón de añadir al carrito */
+    .add-to-cart-button {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 25px;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 15px;
+        margin-left: auto; /* Alinea a la derecha */
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .add-to-cart-button i {
+        margin-right: 10px;
+        font-size: 20px;
+    }
+
+    .add-to-cart-button:hover {
+        background-color: #218838;
+        transform: translateY(-2px);
+    }
+
+    .add-to-cart-button:active {
+        background-color: #1e7e34;
+        transform: translateY(0);
+    }
+
     .back-button {
     position: absolute;
     top: 20px;
@@ -425,51 +388,54 @@
     }
 
     .dropdown-button {
-        background: none;
-        border: none;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        color: #ffffff;
-        display: inline-flex;
-        align-items: center;
-        padding: 10px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
+            background: none;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
 
-    .dropdown-button:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-    }
+        .dropdown-button:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
 
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 40px;
-        right: 0;
-        background-color: #ffffff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        overflow: hidden;
-        z-index: 1000;
-        width: 132px;
-    }
+        /* Menú dropdown */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
 
-    .dropdown-menu li {
-        list-style: none;
-    }
+        .dropdown-menu .dropdown-item {
+            display: block;
+            padding: 10px 15px;
+            color: #006e6f;
+            background-color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
 
-    .dropdown-menu a {
-        display: block;
-        padding: 10px 15px;
-        color: #333;
-        text-decoration: none;
-        transition: background-color 0.3s ease;
-    }
+        .dropdown-menu .dropdown-item:hover {
+            background-color: rgba(0, 140, 142, 0.1);
+        }
 
-    .dropdown-menu a:hover {
-        background-color: rgba(0, 140, 142, 0.1);
-    }
+        /* Mostrar menú al hacer hover */
+        .user-info:hover .dropdown-menu {
+            display: block;
+        }
 
     .dropdown-menu .dropdown-item {
         display: block;
@@ -488,5 +454,185 @@
     .navbar-item:hover .dropdown-menu {
         display: block;
     }
+        .navbar {
+            background-color: #006e6f;
+            padding: 10px 20px;
+        }
+
+        .navbar-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar-item {
+            position: relative;
+            margin: 0 15px;
+        }
+
+        .navbar-link {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+            width: 132px;
+        }
+
+        .dropdown-menu li {
+            list-style: none;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: rgba(0, 140, 142, 0.1);
+        }
+
+        .navbar-item:hover .dropdown-menu {
+            display: block;
+        }
+
+        .navbar-item {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .dropdown-menu .dropdown-item {
+            display: block;
+            padding: 10px 15px;
+            color: #006e6f;
+            background-color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: rgba(0, 140, 142, 0.1);
+        }
+
+        /* Mostrar menú al hacer hover */
+        .user-info:hover .dropdown-menu {
+            display: block;
+        }
+
+        .navbar {
+            background-color: #006e6f;
+            padding: 10px 20px;
+        }
+
+        .navbar-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar-item {
+            position: relative;
+            margin: 0 15px;
+        }
+
+        .navbar-link {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+            width: 132px;
+        }
+
+        .dropdown-menu li {
+            list-style: none;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: rgba(0, 140, 142, 0.1);
+        }
+
+        .navbar-item:hover .dropdown-menu {
+            display: block;
+        }
+
+        .navbar-item {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 1000;
+        }
     
 </style>
