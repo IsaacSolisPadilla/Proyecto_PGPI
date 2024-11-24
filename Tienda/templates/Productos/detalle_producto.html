@@ -1,95 +1,17 @@
-<!DOCTYPE html>
-<div class="container">
-<html lang="es">
-<body>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<header>
-    <h1>{{ producto.nombre }}</h1>
-    <a href="{% url 'pagina_principal' %}" class="back-button">Volver</a>
-</header>
-<nav class="navbar">
-    <ul class="navbar-menu">
-        {% if user.is_authenticated %}
-            <li class="navbar-item" style="position: absolute; left: 1%;">
-                <button class="dropdown-button">
-                    Hola, {{ user.username }}
-                    <svg width="15px" height="10px" viewBox="0 0 13 10">
-                        <path d="M1,5 L11,5"></path>
-                        <polyline points="8 1 12 5 8 9"></polyline>
-                    </svg>
-                </button>
-                <div class="dropdown-menu">
-                    <form method="POST" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="dropdown-item">Cerrar Sesión</button>
-                    </form>
-                </div>
-            </li>
-        {% else %}
-        <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
-            <span>Iniciar Sesión</span>
-            <svg width="15px" height="10px" viewBox="0 0 13 10">
-                <path d="M1,5 L11,5"></path>
-                <polyline points="8 1 12 5 8 9"></polyline>
-            </svg>
-        </a>
-        {% endif %}
-        
-        <li class="container-input">
-            <form method="GET" action="{% url 'listar_productos' %}">
-                <input type="text" placeholder="Buscar productos..." name="search" class="input" value="{{ request.GET.search }}">
-                <button type="submit" style="background: none; border: none;">
-                    <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
-                    </svg>
-                </button>
-            </form>
-        </li>
-        
+{% extends 'base.html' %}
 
-        <li class="navbar-item">
-            <a href="/">
-            <button class="navbar-link">Home</button>
-            </a>
-        </li>
-        <li class="navbar-item">
-            <a href="/categorias">
-            <button class="navbar-link">Categorias</button>
-        </a>
-            <ul class="dropdown-menu">
-                {% for categoria in categorias %}
-                    <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-        {% if user.is_authenticated and user.is_staff %}
-        <li class="navbar-item">
-            <a href="/categorias/crear">
-            <button class="navbar-link">Crear categoria</button>
-            </a>
-        </li>
-        {% endif %}
-        {% if user.is_authenticated and not user.is_staff %}
-        <li style="display: flex; align-items: center;">
-            <a href="/carrito">
-                <i class="fas fa-shopping-cart" style="color: white;"></i>
-            </a>
-        </li>
-        {% endif %}
-    </ul>
-</nav>
+{% block title %}{{ producto.nombre }}{% endblock %}
 
+{% block content %}
 <section class="hero" style="padding: 5px 5px;">
     <h2>Detalles del Producto</h2>
 </section>
 
 <section class="product-details">
-    
     <div class="product">
         <div style="margin-bottom: 20px;">
             {% if user.is_authenticated and user.is_staff %}
                 <a href="{% url 'actualizar_producto' producto.id %}" class="update-button" style="margin-right: 10px;">Actualizar Producto</a>
-                
                 <form action="{% url 'eliminar_producto' producto.id %}" method="post" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" class="delete-button">Eliminar Producto</button>
@@ -106,21 +28,9 @@
         <p><strong>Stock:</strong> {{ producto.stock }}</p>
         <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
         <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
-        <form action="{% url 'agregar_producto_a_factura' producto.id %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="add-to-cart-button">
-                <i class="fas fa-cart-plus"></i> Añadir al carrito
-            </button>
-        </form>
     </div>
 </section>
-
-<footer>
-    <p>&copy; 2024 Perfumería de Lujo. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
-</footer>
-</body>
-</html>
-</div>
+{% endblock %}
 
 <style>
     .container-input {

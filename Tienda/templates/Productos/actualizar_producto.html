@@ -32,18 +32,9 @@
             </option>
             {% endfor %}
         </select>
-
-</nav>
-    <main>
-        <h2>Formulario de Actualización</h2>
-        <form method="POST" action="{% url 'actualizar_producto' producto.id %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <label for="nombre">Nombre:</label>
-            <input type="text" name="nombre" id="nombre" value="{{ producto.nombre }}" required>
-
         <div style="display: flex; justify-content: space-between;">
-            <button type="submit">Actualizar Producto</button>
-            <a href="{% url 'detalle_producto' producto.id %}" class="cancel-button" style="text-decoration: none; padding: 10px 15px; border-radius: 5px;">Cancelar</a>
+            <button type="submit" style="margin-right: 200px; padding: 10px 15px; border-radius: 5px;">Actualizar Producto</button>
+            <a href="javascript:history.back()" class="cancel-button" style="text-decoration: none; text-align: center; padding: 10px 15px;">Cancelar</a>
         </div>
     </form>
 </main>

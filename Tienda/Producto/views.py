@@ -57,7 +57,6 @@ def lista_productos(request):
     else:
         productos = Producto.objects.all()
     return render(request, 'Productos/lista_productos.html', {'productos': productos})
-#=====
 
 def crear_categoria_de_producto(request):
     if request.method == 'POST':

@@ -1,11 +1,55 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ categoria.nombre }} - Aromas del Mundo</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <style>
+{% extends 'base.html' %}
+
+{% block title %}{{ categoria.nombre }} - Aromas del Mundo{% endblock %}
+
+{% block content %}
+    <!-- Título de la categoría -->
+    <section class="category-title">
+        <div class="title-container">
+            {% if user.is_authenticated and user.is_staff %}
+            <h2 style="text-align: center;">Productos en la categoría: {{ categoria.nombre }}</h2>
+            <form method="POST" action="{% url 'eliminar_categoria' categoria.id %}" class="delete-form">
+                {% csrf_token %}
+                <button type="submit" class="delete-button" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <a href="{% url 'ver_actualizar_categoria' categoria.id %}" class="edit-button">
+                    <i class="fas fa-edit" style="color: #21af42;"></i>
+                </a>
+            </form>
+            {% endif %}
+        </div>
+    </section>
+    
+
+    <section class="featured-products" id="productos">
+        <div class="product-grid">
+            {% for producto in productos %}
+            <div class="product">
+                <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
+                    {% if producto.fotografia %}
+                    <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}">
+                    {% else %}
+                    <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+                    {% endif %}
+                    <h3>{{ producto.nombre }}</h3>
+                    <p>${{ producto.precio }}</p>
+                    <form action="{% url 'agregar_producto_a_factura' producto.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="add-to-cart-button">
+                            <i class="fas fa-cart-plus"></i> Añadir al carrito
+                        </button>
+                    </form>
+                </a>
+            </div>
+            {% empty %}
+            <p>No hay productos disponibles en esta categoría.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
+
+<style>
         html, body {
             height: 100%;
             margin: 0;
@@ -435,116 +479,3 @@
             background-color: rgba(189, 19, 19, 0.1);
         }
     </style>
-</head>
-<body>
-    <nav class="navbar">
-        <ul class="navbar-menu">
-            {% if user.is_authenticated %}
-                <li class="navbar-item" style="position: absolute; left: 1%;">
-                    <button class="dropdown-button">
-                        Hola, {{ user.username }}
-                        <svg width="15px" height="10px" viewBox="0 0 13 10">
-                            <path d="M1,5 L11,5"></path>
-                            <polyline points="8 1 12 5 8 9"></polyline>
-                        </svg>
-                    </button>
-                    <div class="dropdown-menu">
-                        <form method="POST" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="dropdown-item">Cerrar Sesión</button>
-                        </form>
-                    </div>
-                </li>
-            {% else %}
-            <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
-                <span>Iniciar Sesión</span>
-                <svg width="15px" height="10px" viewBox="0 0 13 10">
-                    <path d="M1,5 L11,5"></path>
-                    <polyline points="8 1 12 5 8 9"></polyline>
-                </svg>
-            </a>
-            {% endif %}
-            <li class="navbar-item">
-                <a href="/">
-                <button class="navbar-link">Home</button>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a href="/categorias">
-                <button class="navbar-link">Categorias</button>
-            </a>
-                <ul class="dropdown-menu">
-                    {% for categoria in categorias %}
-                        <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>
-                    {% endfor %}
-                </ul>
-            </li>
-            <li class="navbar-item">
-                <a href="/productos">
-                <button class="navbar-link">Productos</button>
-                </a>
-            </li>
-            {% if user.is_authenticated and user.is_staff %}
-            <li class="navbar-item">
-                <a href="/categorias/crear">
-                <button class="navbar-link">Crear categoria</button>
-                </a>
-            </li>
-            {% endif %}
-            {% if user.is_authenticated and not user.is_staff %}
-            <li style="display: flex; align-items: center;">
-                <a href="/carrito">
-                    <i class="fas fa-shopping-cart" style="color: white;"></i>
-                </a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
-    <div class="container">
-        <!-- Título de la categoría -->
-        <section class="category-title">
-            <div class="title-container">
-                <h2>Productos en la categoría: {{ categoria.nombre }}</h2>
-                {% if user.is_authenticated and user.is_staff %}
-                <form method="POST" action="{% url 'eliminar_categoria' categoria.id %}" class="delete-form">
-                    {% csrf_token %}
-                    <button type="submit" class="delete-button" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </form>
-                <a href="{% url 'ver_actualizar_categoria' categoria.id %}">
-                    <i class="fas fa-edit"></i>
-                </a>
-                {% endif %}
-            </div>
-        </section>
-
-        <section class="featured-products" id="productos">
-            <div class="product-grid">
-                {% for producto in productos %}
-                <div class="product">
-                    <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
-                        {% if producto.fotografia %}
-                        <img src="{{ producto.fotografia }}" alt="{{ producto.nombre }}">
-                        {% else %}
-                        <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
-                        {% endif %}
-                        <h3>{{ producto.nombre }}</h3>
-                        <p>${{ producto.precio }}</p>
-                        <form action="{% url 'agregar_producto_a_factura' producto.id %}" method="post" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="add-to-cart-button">
-                                <i class="fas fa-cart-plus"></i> Añadir al carrito
-                            </button>
-                        </form>
-                    </a>
-                </div>
-                {% empty %}
-                <p>No hay productos disponibles en esta categoría.</p>
-                {% endfor %}
-            </div>
-        </section>
-    </div>
-</body>
-</html>
-

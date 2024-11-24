@@ -1,76 +1,8 @@
-<!DOCTYPE html>
-<div class="container">
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Categoría</title>
-</head>
+{% extends 'base.html' %}
 
-<body>
-<header>
-    <h1>Crear Categoría</h1>
-    <a href="{% url 'pagina_principal' %}" class="back-button">Volver</a>
-</header>
+{% block title %}Crear Categoría{% endblock %}
 
-<nav class="navbar">
-    <ul class="navbar-menu">
-        {% if user.is_authenticated %}
-            <li class="navbar-item" style="position: absolute; left: 1%;">
-                <button class="dropdown-button">
-                    Hola, {{ user.username }}
-                    <svg width="15px" height="10px" viewBox="0 0 13 10">
-                        <path d="M1,5 L11,5"></path>
-                        <polyline points="8 1 12 5 8 9"></polyline>
-                    </svg>
-                </button>
-                <div class="dropdown-menu">
-                    <form method="POST" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="dropdown-item">Cerrar Sesión</button>
-                    </form>
-                </div>
-            </li>
-        {% else %}
-        <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
-            <span>Iniciar Sesión</span>
-            <svg width="15px" height="10px" viewBox="0 0 13 10">
-                <path d="M1,5 L11,5"></path>
-                <polyline points="8 1 12 5 8 9"></polyline>
-            </svg>
-        </a>
-        {% endif %}
-        <li class="navbar-item">
-            <a href="/">
-            <button class="navbar-link">Home</button>
-            </a>
-        </li>
-        <li class="navbar-item">
-            <a href="/categorias">
-                <button class="navbar-link">Categorias</button>
-            </a>
-            <ul class="dropdown-menu">
-                {% for categoria in categorias %}
-                    <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-        <li class="navbar-item">
-            <a href="/productos">
-            <button class="navbar-link">Productos</button>
-            </a>
-        </li>
-        
-        <li style="display: flex; align-items: center;">
-            <a href="/carrito">
-                <i class="fas fa-shopping-cart" style="color: white;"></i>
-            </a>
-            
-        </li>     
-    </ul>
-</nav>
-
-
+{% block content %}
 <section class="form-section">
     <div class="form-container">
         <form method="post">
@@ -83,18 +15,13 @@
 
             <div style="display: flex; justify-content: space-between;">
                 <button type="submit" class="submit-button" style="flex: 1; margin-right: 10px; padding: 10px 0;">Crear Categoría</button>
-                <a href="{% url 'pagina_principal' %}" class="cancel-button" style="flex: 1; text-align: center; padding: 10px 0; text-decoration: none;">Cancelar</a>
+                <a href="javascript:history.back()" class="cancel-button" style="flex: 1; text-align: center; padding: 10px 0; text-decoration: none;">Cancelar</a>
             </div>
         </form>
     </div>
 </section>
+{% endblock %}
 
-<footer>
-    <p>&copy; 2024 Perfumería de Lujo. Todos los derechos reservados. | <a href="#contacto">Contáctanos</a></p>
-</footer>
-</body>
-</html>
-</div>
 <style>
 
     .back-button {
