@@ -9,6 +9,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     </head>
 
+<<<<<<< HEAD
     <header>
         <div class="header-content">
 
@@ -134,6 +135,16 @@
                 {% endfor %}
             </div>
         </section>
+=======
+{% block content %}
+<section class="featured-products" id="productos">
+    
+    {% if user.is_authenticated and user.is_staff %}
+    <div class="create-button-container" style="margin-top: 20px;">
+        <a href="{% url 'crear_producto' %}" class="create-button">
+            Crear Producto
+        </a>
+>>>>>>> parent of 930e5c3 (dflkdajfañkfd)
     </div>
 
 <script>
