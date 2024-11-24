@@ -3,23 +3,32 @@
 {% block title %}Aromas del Mundo{% endblock %}
 
 {% block content %}
-<section class="hero" style="padding: 10px 10px;">
-    <h2>Descubre Nuestros Aromas Exclusivos</h2>
-</section>
-
-<section class="featured-products" id="productos" style="padding: 10px 10px;">
-    <h2>Productos Destacados</h2>
-    {% if user.is_authenticated and user.is_staff %}
-        <div class="create-button-container">
-            <a href="{% url 'crear_producto' %}" class="create-button">
-                Crear Producto
-            </a>
+<!--<section class="featured-products" id="productos">
+    <section class="hero" style="padding: 10px 10px;">
+        <div class="filters-container">
+            <div class="filters">
+                <input type="text" id="filter-name" placeholder="Filtrar por nombre..." oninput="filterProducts()">
+                <input type="number" id="filter-price" placeholder="Filtrar por precio máximo..." oninput="filterProducts()">
+                <select id="filter-category" onchange="filterProducts()">
+                    <option value="">Seleccionar categoría</option>
+                    {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
+    </section> -->
+    {% if user.is_authenticated and user.is_staff %}
+    <div class="create-button-container" style="margin-top: 20px;">
+        <a href="{% url 'crear_producto' %}" class="create-button">
+            Crear Producto
+        </a>
+    </div>
     {% endif %}
-    <div class="product-grid">
+    <div class="product-grid" id="product-grid">
         {% for producto in productos %}
-        <div class="product">
-            <a href="{% url 'detalle_producto' producto.id %}" style=" text-decoration: none;">
+        <div class="product" data-name="{{ producto.nombre }}" data-price="{{ producto.precio }}" data-category="{{ producto.categoria.id }}">
+            <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
                 {% if producto.fotografia %}
                 <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}">
                 {% else %}
@@ -27,6 +36,12 @@
                 {% endif %}
                 <h3>{{ producto.nombre }}</h3>
                 <p>${{ producto.precio }}</p>
+                <form action="{% url 'agregar_producto_a_factura' producto.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="add-to-cart-button">
+                        <i class="fas fa-cart-plus"></i> Añadir al carrito
+                    </button>
+                </form>
             </a>
         </div>
         {% empty %}
@@ -34,4 +49,42 @@
         {% endfor %}
     </div>
 </section>
+
+<script>
+    function filterProducts() {
+        // Obtener valores de los filtros
+        const filterName = document.getElementById('filter-name').value.toLowerCase();
+        const filterPrice = parseFloat(document.getElementById('filter-price').value) || Infinity;
+        const filterCategory = document.getElementById('filter-category').value;
+
+        // Obtener todos los productos
+        const products = document.querySelectorAll('.product');
+
+        // Filtrar productos
+        products.forEach(product => {
+            const productName = product.getAttribute('data-name').toLowerCase();
+            const productPrice = parseFloat(product.getAttribute('data-price'));
+            const productCategory = product.getAttribute('data-category');
+
+            // Verificar si el producto cumple con los filtros
+            const matchesName = productName.includes(filterName);
+            const matchesPrice = productPrice <= filterPrice;
+            const matchesCategory = filterCategory === '' || productCategory === filterCategory;
+
+            // Mostrar u ocultar el producto según los filtros
+            if (matchesName && matchesPrice && matchesCategory) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    }
+    function mostrarEstadoPedido() {
+        const numero_factura = document.getElementById("numero-factura").value
+        fetch("/factura/numero_factura/" + numero_factura)
+            .then(data => data.json())
+            .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
+            .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
+    }
+</script>
 {% endblock %}

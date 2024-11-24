@@ -32,10 +32,9 @@
             </option>
             {% endfor %}
         </select>
-
         <div style="display: flex; justify-content: space-between;">
-            <button type="submit">Actualizar Producto</button>
-            <a href="{% url 'detalle_producto' producto.id %}" class="cancel-button" style="text-decoration: none; padding: 10px 15px; border-radius: 5px;">Cancelar</a>
+            <button type="submit" style="margin-right: 200px; padding: 10px 15px; border-radius: 5px;">Actualizar Producto</button>
+            <a href="javascript:history.back()" class="cancel-button" style="text-decoration: none; text-align: center; padding: 10px 15px;">Cancelar</a>
         </div>
     </form>
 </main>
