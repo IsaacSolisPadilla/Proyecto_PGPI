@@ -66,15 +66,6 @@
                                 <label for="filter-price" style="font-weight: bold; color: #006e6f;">Filtrar por precio máximo:</label>
                                 <input type="number" id="filter-price" placeholder="Precio máximo..." oninput="filterProducts()" min="0" style="width: 205px; padding: 8px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
                             </div>
-                            <div>
-                                <label for="filter-category" style="font-weight: bold; color: #006e6f;">Seleccionar categoría:</label>
-                                <select id="filter-category" onchange="filterProducts()" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
-                                    <option value="">Seleccionar categoría</option>
-                                    {% for categoria in categorias %}
-                                    <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
                         </section>
                     </li>
                     
