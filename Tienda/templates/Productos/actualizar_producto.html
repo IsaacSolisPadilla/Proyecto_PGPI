@@ -3,7 +3,7 @@
 {% block title %}Actualizar Producto{% endblock %}
 
 {% block content %}
-<main>
+<main style="margin-top: 20vh;">
     <h2>Formulario de Actualización</h2>
     <form method="POST" action="{% url 'actualizar_producto' producto.id %}" enctype="multipart/form-data">
         {% csrf_token %}

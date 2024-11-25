@@ -19,24 +19,26 @@
             {% endif %}
         </div>
         {% if producto.fotografia %}
-        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
             <div style="position: relative; width: 300px; height: 300px;">
-                <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image';">
+                <img src="{{ producto.fotografia.url }}" style="width: 300px; height: 300px;"  alt="{{ producto.nombre }}" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image';">
                 {% else %}
                 <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
                 {% endif %}
             </div>
         </div>
         <h3>{{ producto.nombre }}</h3>
-        <p><strong>Precio:</strong> ${{ producto.precio }}</p>
+        <p><strong>Precio:</strong> {{ producto.precio }}€</p>
         <p><strong>Stock:</strong> {{ producto.stock }}</p>
         <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
         <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
         <form action="{% url 'cart:cart_add' producto.id 1 %}" method="post" style="display: inline;">
             {% csrf_token %}
-            <button type="submit" class="add-to-cart-button">
-                <i class="fas fa-cart-plus"></i> Añadir al carrito
-            </button>
+            <div style="display: flex; justify-content: center;">            
+                <button type="submit" class="add-to-cart-button">
+                    <i class="fas fa-cart-plus"></i> Añadir al carrito
+                </button>
+            </div>
         </form>
     </div>
 </section>
@@ -229,7 +231,7 @@
     }
 
     .product-details .product {
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(255, 255, 255, 0.3);
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

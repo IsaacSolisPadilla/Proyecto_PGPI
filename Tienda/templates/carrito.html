@@ -25,14 +25,14 @@
             <tr>
                 <td>{{ item.producto.nombre }}</td>
                 <td>{{ item.cantidad }}</td>
-                <td>${{ item.producto.precio }}</td>
-                <td>${{ item.total }}</td>
+                <td>{{ item.producto.precio }}€</td>
+                <td>{{ item.total }}€</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <div class="total">
-        <strong>Total a pagar: ${{ total }}</strong>
+        <strong>Total a pagar: {{ total }}€</strong>
     </div>
     <button type="submit" class="submit-button">Realizar Pedido</button>
 </form>
