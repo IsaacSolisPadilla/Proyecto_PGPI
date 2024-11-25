@@ -10,88 +10,90 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <div class="header-content"></div>
-            <h1>Aromas del Mundo</h1>
-            <p>Enciende tus sentidos, descubre la magia de lo exótico.</p>
-        </header>
+        <div class="header-navbar">
+            <header>
+                <div class="header-content"></div>
+                <h1>Aromas del Mundo</h1>
+                <p>Enciende tus sentidos, descubre la magia de lo exótico.</p>
+            </header>
 
-        <nav class="navbar">
-            <ul class="navbar-menu">
-                {% if user.is_authenticated %}
-                    <li class="navbar-item" style="position: absolute; left: 1%;">
-                        <button class="dropdown-button">
-                            Hola, {{ user.username }}
-                            <svg width="15px" height="10px" viewBox="0 0 13 10">
-                                <path d="M1,5 L11,5"></path>
-                                <polyline points="8 1 12 5 8 9"></polyline>
-                            </svg>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="{% url 'edit_profile' %}" class="dropdown-item">Editar Perfil</a>
+            <nav class="navbar">
+                <ul class="navbar-menu">
+                    {% if user.is_authenticated %}
+                        <li class="navbar-item" style="position: absolute; left: 1%;">
+                            <button class="dropdown-button">
+                                Hola, {{ user.username }}
+                                <svg width="15px" height="10px" viewBox="0 0 13 10">
+                                    <path d="M1,5 L11,5"></path>
+                                    <polyline points="8 1 12 5 8 9"></polyline>
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="{% url 'edit_profile' %}" class="dropdown-item">Editar Perfil</a>
 
-                            <form method="POST" action="{% url 'logout' %}">
-                                {% csrf_token %}
-                                <button type="submit" class="dropdown-item">Cerrar Sesión</button>
-                            </form>
-                        </div>
-                    </li>
-                {% else %}
-                <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
-                    <span>Iniciar Sesión</span>
-                    <svg width="15px" height="10px" viewBox="0 0 13 10">
-                        <path d="M1,5 L11,5"></path>
-                        <polyline points="8 1 12 5 8 9"></polyline>
-                    </svg>
-                </a>
-                {% endif %}
-                <li class="navbar-item">
-                    <a href="/"><button class="navbar-link">Página principal</button></a>
-                </li>
-                <li class="container-input">
-                    <form method="GET" action="{% url 'lista_productos' %}">
-                       </form> <input type="text" id="filter-name" placeholder="Buscar por nombre..." class="input" oninput="filterProducts()">
-                        <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+                                <form method="POST" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                                </form>
+                            </div>
+                        </li>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
+                        <span>Iniciar Sesión</span>
+                        <svg width="15px" height="10px" viewBox="0 0 13 10">
+                            <path d="M1,5 L11,5"></path>
+                            <polyline points="8 1 12 5 8 9"></polyline>
                         </svg>
-                    </form>
-                </li>
+                    </a>
+                    {% endif %}
+                    <li class="navbar-item">
+                        <a href="/"><button class="navbar-link">Página principal</button></a>
+                    </li>
+                    <li class="container-input">
+                        <form method="GET" action="{% url 'lista_productos' %}">
+                        </form> <input type="text" id="filter-name" placeholder="Buscar por nombre..." class="input" oninput="filterProducts()">
+                            <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+                            </svg>
+                        </form>
+                    </li>
 
-                <li class="navbar-item">
-                    <i class="fas fa-filter dropdown-button" style="cursor: pointer; color: white;"></i>
-                 
-                    <section class="dropdown-menu" style="width: 220px; padding: 10px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                        <div style="margin-bottom: 10px;">
-                            <label for="filter-price" style="font-weight: bold; color: #006e6f;">Filtrar por precio máximo:</label>
-                            <input type="number" id="filter-price" placeholder="Precio máximo..." oninput="filterProducts()" min="0" style="width: 205px; padding: 8px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
-                        </div>
-                        <div>
-                            <label for="filter-category" style="font-weight: bold; color: #006e6f;">Seleccionar categoría:</label>
-                            <select id="filter-category" onchange="filterProducts()" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
-                                <option value="">Seleccionar categoría</option>
-                                {% for categoria in categorias %}
-                                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </section>
-                </li>
-                
-                
+                    <li class="navbar-item">
+                        <i class="fas fa-filter dropdown-button" style="cursor: pointer; color: white;"></i>
+                    
+                        <section class="dropdown-menu" style="width: 220px; padding: 10px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                            <div style="margin-bottom: 10px;">
+                                <label for="filter-price" style="font-weight: bold; color: #006e6f;">Filtrar por precio máximo:</label>
+                                <input type="number" id="filter-price" placeholder="Precio máximo..." oninput="filterProducts()" min="0" style="width: 205px; padding: 8px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                            </div>
+                            <div>
+                                <label for="filter-category" style="font-weight: bold; color: #006e6f;">Seleccionar categoría:</label>
+                                <select id="filter-category" onchange="filterProducts()" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+                                    <option value="">Seleccionar categoría</option>
+                                    {% for categoria in categorias %}
+                                    <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </section>
+                    </li>
+                    
+                    
 
-                <li style="display: flex; align-items: center; position: absolute; right: 0;">
-                    <button class="navbar-link">Estado Pedido Nº</button>
-                    <input id="numero-factura" type="text"
-                        style="margin-left: 5px; margin-right: 5px; padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
-                    <button class="navbar-link" onclick="mostrarEstadoPedido()">BUSCAR</button>        
-                </li>
-                <a href="/cart" class="floating-cart">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count" style="display: none;"></span> <!-- Oculto inicialmente -->
-                </a>                         
+                    <li style="display: flex; align-items: center; position: absolute; right: 0;">
+                        <button class="navbar-link">Estado Pedido Nº</button>
+                        <input id="numero-factura" type="text"
+                            style="margin-left: 5px; margin-right: 5px; padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
+                        <button class="navbar-link" onclick="mostrarEstadoPedido()">BUSCAR</button>        
+                    </li>
+                    <a href="/cart" class="floating-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" style="display: none;"></span> <!-- Oculto inicialmente -->
+                    </a>                         
 
-            </ul>
-        </nav>
+                </ul>
+            </nav>
+    </div>
 
         {% block content %}{% endblock %}
 
@@ -1072,9 +1074,33 @@ transition: background-color 0.3s ease;
 .edit-button i {
     font-size: 20px; /* Tamaño de los iconos */
 }
+.header-navbar {
+    position: fixed; /* Fija el contenedor en la parte superior */
+    top: 0; /* Ubicación en la parte superior */
+    width: 100%; /* Ocupa todo el ancho de la ventana */
+    z-index: 1000; /* Asegura que esté por encima del contenido principal */
+    background-color: white; /* Fondo para evitar superposiciones transparentes */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Agrega sombra para resaltar */
+}
+
+header {
+    text-align: center; /* Centra el contenido */
+    padding: 10px 20px; /* Espaciado interno */
+    background-color: #f9f9f9; /* Fondo claro */
+}
+
+.navbar {
+    background-color: #006e6f; /* Fondo del navbar */
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para el navbar */
+}
+
+.main-content {
+    margin-top: 160px; /* Ajusta este valor a la altura combinada de header + navbar */
+}
 
 
-    
+
     
 </style>
 
