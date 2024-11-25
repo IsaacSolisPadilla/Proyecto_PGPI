@@ -93,7 +93,6 @@
         // Obtener valores de los filtros
         const filterName = document.getElementById('filter-name').value.toLowerCase();
         const filterPrice = parseFloat(document.getElementById('filter-price').value) || Infinity;
-        const filterCategory = document.getElementById('filter-category').value;
 
         // Obtener todos los productos
         const products = document.querySelectorAll('.product');
@@ -102,15 +101,13 @@
         products.forEach(product => {
             const productName = product.getAttribute('data-name').toLowerCase();
             const productPrice = parseFloat(product.getAttribute('data-price'));
-            const productCategory = product.getAttribute('data-category');
 
             // Verificar si el producto cumple con los filtros
             const matchesName = productName.includes(filterName);
             const matchesPrice = productPrice <= filterPrice;
-            const matchesCategory = filterCategory === '' || productCategory === filterCategory;
 
             // Mostrar u ocultar el producto según los filtros
-            if (matchesName && matchesPrice && matchesCategory) {
+            if (matchesName && matchesPrice) {
                 product.style.display = 'block';
             } else {
                 product.style.display = 'none';
