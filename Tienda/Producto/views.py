@@ -65,7 +65,7 @@ def crear_categoria_de_producto(request):
 @user_passes_test(lambda u: u.is_superuser)
 def eliminar_categoria_de_producto(request, categoria_de_producto_id):
     ProductoService.eliminar__categoria_de_producto(categoria_de_producto_id)
-    return redirect('lista_categorias')
+    return redirect('/')
 
 @user_passes_test(lambda u: u.is_superuser)
 def ver_actualizar_categoria_de_producto(request, categoria_de_producto_id):
