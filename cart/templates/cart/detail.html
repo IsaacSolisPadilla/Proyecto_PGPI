@@ -18,7 +18,9 @@
 
     /* Tabla */
     table.cart {
-        width: 100%;
+        width: 80%;
+        margin-right: 10%;
+        margin-left: 10%;
         border-collapse: collapse;
         overflow: hidden;
         border-radius: 8px;
@@ -27,7 +29,7 @@
     }
 
     thead {
-        background-color: #1a73e8;
+        background-color: #006e6f;
         color: #ffffff;
     }
 
@@ -85,15 +87,15 @@
         color: #555;
     }
     button:hover {
-        background-color: #155bb5;
+        background-color:#006e6f;
     }
 
     .icon {
-        color: #1a73e8;
+        color: #006e6f;
     }
 
     .icon:hover {
-        color: #155bb5;
+        color:#006e6f;
     }
 
     input[type="number"] {
@@ -149,6 +151,7 @@
         <th>Imagen</th>
         <th>Producto</th>
         <th>Cantidad</th>
+        <th>Editar</th>
         <th>Remover</th>
         <th>Precio Unitario</th>
         <th>Precio total</th>
@@ -164,7 +167,7 @@
           <form action="{% url 'cart:cart_add' producto.id %}" method="post">
             {{ item.update_quantity_form.cantidad }}
             {{ item.update_quantity_form.sobreescribir }}
-            <input type="submit" value="✏️">
+            <td><input type="submit" value="✏️"></td>
             {% csrf_token %}
           </form>
         </td>
