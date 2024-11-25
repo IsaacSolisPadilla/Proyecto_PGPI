@@ -7,7 +7,7 @@
     <h2>Detalles del Producto</h2>
 </section>
 
-<section class="product-details">
+<section class="product-details main-content">
     <div class="product">
         <div style="margin-bottom: 20px;">
             {% if user.is_authenticated and user.is_staff %}
@@ -19,8 +19,8 @@
             {% endif %}
         </div>
         {% if producto.fotografia %}
-        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-            <div style="position: relative; width: 300px; height: 300px;">
+        <div style="display: flex; justify-content: center; align-items: center; ">
+            <div style="position: relative; text-align: center;">
                 <img src="{{ producto.fotografia.url }}" alt="{{ producto.nombre }}" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image';">
                 {% else %}
                 <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
@@ -40,7 +40,7 @@
         </form>
     </div>
 </section>
-{% endblock %}
+
 
 <style>
     .container-input {
@@ -272,9 +272,9 @@
 
     .product {
         background-color: rgba(255, 255, 255, 0.9);
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         text-align: center;
     }
 
@@ -646,3 +646,4 @@
         }
     
 </style>
+{% endblock %}

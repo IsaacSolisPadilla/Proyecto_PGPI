@@ -3,202 +3,212 @@
 {% block title %}Aromas del Mundo{% endblock %}
 
 {% block content %}
-<div class="title-container" style="margin-top: 210px;"><h2>Crear pedido</h2></div>
-<style>
-    .mensaje-error {
-        color: white;
-        background-color: red;
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-        margin: 10px 0;
-    }
+<section class="main-content1">
+  <div class="title-container" style="margin-top: 210px;"><h2>Crear pedido</h2>
+    <div>
+      <table class="cart">
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Editar</th>
+            <th>Remover</th>
+            <th>Precio Unitario</th>
+            <th>Precio total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart %}
+          {% with producto=item.producto %}
+          <tr>
+            <td><a href="{{ product.get_absolute_url }}"></a></td>
+            <td>{{ producto.nombre }}</td>
+            <td>
+              <form action="{% url 'cart:cart_add' producto.id %}" method="post">
+                {{ item.update_quantity_form.cantidad }}
+                {{ item.update_quantity_form.sobreescribir }}
+                <td><input type="submit" value="✏️"></td>
+                {% csrf_token %}
+              </form>
+            </td>
+            <td>
+              <form action="{% url 'cart:cart_remove' producto.id %}"  method="post">
+                <input type="submit" value="🗑️">
+                {% csrf_token %}
+              </form>
+            </td>
+            <td class="num">{{ item.precio }}€</td>
+            <td class="num">{{ item.total_precio }}€</td>
+          </tr>
+          {% endwith %}
+          {% endfor %}
+          
+          <tr class="total">
+            <td>Total</td>
+            <td colspan="4"></td>
+            <td class="num">
+              {{ cart.get_total_precio|floatformat:2 }}€
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display: flex; flex-direction: row;">
+        {% if cart and cart|length > 0 %}
+        <button id="confirmar" onclick="window.location.href = '/factura/confirmar'">Confirmar</button>
+        {% endif %}
+        <button id="volver" onclick="window.location.href = '/' ">Volver</button>    
+    </div>
+  </div>
+  <style>
+      .mensaje-error {
+          color: white;
+          background-color: red;
+          padding: 10px 20px;
+          border-radius: 5px;
+          font-size: 16px;
+          font-weight: bold;
+          text-align: center;
+          margin: 10px 0;
+      }
 
-    /* Tabla */
-    table.cart {
-        width: 80%;
-        margin-right: 10%;
-        margin-left: 10%;
-        border-collapse: collapse;
-        overflow: hidden;
-        border-radius: 8px;
-        background-color: #ffffff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+      .main-content1 {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        min-height: 90vh;
+      }
 
-    thead {
-        background-color: #006e6f;
-        color: #ffffff;
-    }
+      /* Tabla */
+      table.cart {
+          width: 80%;
+          margin-right: 10%;
+          margin-left: 10%;
+          border-collapse: collapse;
+          overflow: hidden;
+          border-radius: 8px;
+          background-color: #ffffff;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
 
-    thead th {
-        padding: 15px;
-        font-weight: bold;
-        font-size: 1em;
-    }
+      thead {
+          background-color: #006e6f;
+          color: #ffffff;
+      }
 
-    tbody tr {
-        transition: background-color 0.3s;
-    }
+      thead th {
+          padding: 15px;
+          font-weight: bold;
+          font-size: 1em;
+      }
 
-    tbody tr:hover {
-        background-color: #f1f5f9;
-    }
+      tbody tr {
+          transition: background-color 0.3s;
+      }
 
-    /* Celdas */
-    td {
-        padding: 15px;
-        text-align: center;
-        font-size: 0.9em;
-        color: #333;
-    }
+      tbody tr:hover {
+          background-color: #f1f5f9;
+      }
 
-    td img {
-        max-width: 60px;
-        max-height: 60px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+      /* Celdas */
+      td {
+          padding: 15px;
+          text-align: center;
+          font-size: 0.9em;
+          color: #333;
+      }
 
-    /* Botón de remover */
-    td button {
-        width: 40px;
-        padding: 10px 15px;
-        background-color: #ff4c4c;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    }
+      td img {
+          max-width: 60px;
+          max-height: 60px;
+          border-radius: 5px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Botón de remover */
+      td button {
+          width: 40px;
+          padding: 10px 15px;
+          background-color: #ff4c4c;
+          color: #fff;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+      }
 
 
-    td button:hover {
-        background-color: #e62e2e;
-    }
+      td button:hover {
+          background-color: #e62e2e;
+      }
 
-    /* Precio */
-    td:last-child,
-    td:nth-last-child(2) {
-        font-weight: bold;
-        color: #555;
-    }
-    button:hover {
-        background-color:#006e6f;
-    }
+      /* Precio */
+      td:last-child,
+      td:nth-last-child(2) {
+          font-weight: bold;
+          color: #555;
+      }
+      button:hover {
+          background-color:#006e6f;
+      }
 
-    .icon {
-        color: #006e6f;
-    }
+      .icon {
+          color: #006e6f;
+      }
 
-    .icon:hover {
-        color:#006e6f;
-    }
+      .icon:hover {
+          color:#006e6f;
+      }
 
-    input[type="number"] {
-        font-size: 18px;
-        padding: 12px;
-        width: 100px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        outline: none;
-        background-color: #fafafa;
-        transition: border-color 0.3s, box-shadow 0.3s;
-    }
+      input[type="number"] {
+          font-size: 18px;
+          padding: 12px;
+          width: 100px;
+          border: 2px solid #ddd;
+          border-radius: 8px;
+          outline: none;
+          background-color: #fafafa;
+          transition: border-color 0.3s, box-shadow 0.3s;
+      }
 
-    input[type="number"]:focus {
-        border-color: #4caf50;
-        box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
-    }
+      input[type="number"]:focus {
+          border-color: #4caf50;
+          box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+      }
 
-    input[type="number"]:hover {
-        border-color: #888;
-    }
+      input[type="number"]:hover {
+          border-color: #888;
+      }
 
-    /* Ocultar las flechitas en los campos de tipo number */
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+      /* Ocultar las flechitas en los campos de tipo number */
+      input[type="number"]::-webkit-outer-spin-button,
+      input[type="number"]::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }
 
-    /* Estilo de la tabla en dispositivos móviles */
-    @media (max-width: 768px) {
-        .formulario input {
-            width: 80%;
-        }
+      /* Estilo de la tabla en dispositivos móviles */
+      @media (max-width: 768px) {
+          .formulario input {
+              width: 80%;
+          }
 
-        table,
-        thead tr,
-        tbody tr {
-            display: block;
-            width: 100%;
-        }
+          table,
+          thead tr,
+          tbody tr {
+              display: block;
+              width: 100%;
+          }
 
-        thead {
-            display: none;
-        }
-    }
-</style>
+          thead {
+              display: none;
+          }
+      }
+  </style>
 
-<div>
-  <table class="cart">
-    <thead>
-      <tr>
-        <th>Imagen</th>
-        <th>Producto</th>
-        <th>Cantidad</th>
-        <th>Editar</th>
-        <th>Remover</th>
-        <th>Precio Unitario</th>
-        <th>Precio total</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in cart %}
-      {% with producto=item.producto %}
-      <tr>
-        <td><a href="{{ product.get_absolute_url }}"></a></td>
-        <td>{{ producto.nombre }}</td>
-        <td>
-          <form action="{% url 'cart:cart_add' producto.id %}" method="post">
-            {{ item.update_quantity_form.cantidad }}
-            {{ item.update_quantity_form.sobreescribir }}
-            <td><input type="submit" value="✏️"></td>
-            {% csrf_token %}
-          </form>
-        </td>
-        <td>
-          <form action="{% url 'cart:cart_remove' producto.id %}"  method="post">
-            <input type="submit" value="🗑️">
-            {% csrf_token %}
-          </form>
-        </td>
-        <td class="num">{{ item.precio }}€</td>
-        <td class="num">{{ item.total_precio }}€</td>
-      </tr>
-      {% endwith %}
-      {% endfor %}
-      
-      <tr class="total">
-        <td>Total</td>
-        <td colspan="4"></td>
-        <td class="num">
-          {{ cart.get_total_precio|floatformat:2 }}€
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<div style="display: flex; flex-direction: row;">
-    {% if cart and cart|length > 0 %}
-    <button id="confirmar" onclick="window.location.href = '/factura/confirmar'">Confirmar</button>
-    {% endif %}
-    <button id="volver" onclick="window.location.href = '/' ">Volver</button>    
-</div>
-
-<script src="https://unpkg.com/feather-icons"></script>
+  
+  <script src="https://unpkg.com/feather-icons"></script>
+</section>
 {% endblock %}
