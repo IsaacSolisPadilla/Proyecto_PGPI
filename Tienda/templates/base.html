@@ -30,7 +30,6 @@
                             </button>
                             <div class="dropdown-menu">
                                 <a href="{% url 'edit_profile' %}" class="dropdown-item">Editar Perfil</a>
-
                                 <form method="POST" action="{% url 'logout' %}">
                                     {% csrf_token %}
                                     <button type="submit" class="dropdown-item">Cerrar Sesión</button>
@@ -46,18 +45,21 @@
                         </svg>
                     </a>
                     {% endif %}
-                    <img src="/media/favicon.png" style="z-index: 1001; width: 50px; height: 50px;">
+                    <img src="/media/favicon.png" style="height: 55px; position: relative; bottom: 5px;">
 
                     <li class="navbar-item">
-                        <a href="/"><button style="font-size: 20px;" class="navbar-link">PRESI-SHOP</button></a>
+                        <a href="/"><button style="font-size: 20px;" class="navbar-link">Tienda Presi</button></a>
                     </li>
                     <li class="container-input">
                         <form method="GET" action="{% url 'lista_productos' %}">
-                        </form> <input type="text" id="filter-name" placeholder="Buscar por nombre..." class="input" oninput="filterProducts()">
-                            <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                        </form> 
+                        <input type="text" id="filter-name" placeholder="Buscar por nombre..." class="input" oninput="filterProducts()">
+                        <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+                            <div style="position: relative; bottom: 20px;">
                                 <i data-feather="search"></i>
-                            </svg>
-                        </form>
+                            </div>
+                        </svg>
+                        </li>
                     </li>
 
                     <li class="navbar-item">
