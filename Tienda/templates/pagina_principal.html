@@ -12,6 +12,47 @@
         </a>
     </div>
     {% endif %}
+    <section class="category-title">
+        <div class="title-container">
+            <h2 style="color:white">Categorías</h2>
+            {% if user.is_authenticated and user.is_staff %}
+                <a href="{% url 'crear_categoria' %}" class="create-button">Crear nueva categoría</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Listado de categorías -->
+    <section class="category-list">
+        <div class="category-grid">
+            {% for categoria in categorias %}
+            <div class="category-item">
+                <a href="/categorias/{{ categoria.id }}" style="text-decoration: none;">
+                    <h3>{{ categoria.nombre }}</h3>
+                    <p>{{ categoria.descripcion|default:"Sin descripción" }}</p>
+                </a>
+                {% if user.is_authenticated and user.is_staff %}
+                <div class="category-actions">
+                    <a href="{% url 'ver_actualizar_categoria' categoria.id %}" class="edit-button">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <form method="POST" action="{% url 'eliminar_categoria' categoria.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p>No hay categorías disponibles.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <hr class="divider" style="border: 1px solid #ccc; margin: 40px 0;">
+    
+    <h2 style="color:white">Productos</h2>
     <div class="product-grid" id="product-grid" style="margin-top: 20px;">
         {% for producto in productos %}
         <div class="product" data-name="{{ producto.nombre }}" data-price="{{ producto.precio }}" data-category="{{ producto.categoria.id }}">

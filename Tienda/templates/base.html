@@ -14,7 +14,6 @@
             <div class="header-content"></div>
             <h1>Aromas del Mundo</h1>
             <p>Enciende tus sentidos, descubre la magia de lo exótico.</p>
-            <a href="{% url 'pagina_principal' %}" class="back-button">Volver</a>
         </header>
 
         <nav class="navbar">
@@ -46,7 +45,9 @@
                     </svg>
                 </a>
                 {% endif %}
-
+                <li class="navbar-item">
+                    <a href="/"><button class="navbar-link">Pagina principal</button></a>
+                </li>
                 <li class="container-input">
                     <form method="GET" action="{% url 'lista_productos' %}">
                        </form> <input type="text" id="filter-name" placeholder="Buscar por nombre..." class="input" oninput="filterProducts()">
@@ -74,12 +75,8 @@
                             </select>
                         </div>
                     </section>
-                    <li class="navbar-item" style="margin-left: 0px;">
-                        <a href="/categorias">
-                        <button class="navbar-link">Categorias</button>
-                    </a>
-                    </li>
                 </li>
+                
                 
 
                 <li style="display: flex; align-items: center; position: absolute; right: 0;">
