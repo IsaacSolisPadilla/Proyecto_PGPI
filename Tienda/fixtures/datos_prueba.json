@@ -80,6 +80,51 @@
         }
     },
     {
+        "model": "Tienda.datos",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "direccion": "Avenida de la Magia, 88",
+            "metodo_de_pago": "Pasarela"
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "direccion": "Avenida Siempreviva 742, Ciudad Espiritual",
+            "metodo_de_pago": "Contrareembolso"
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 3,
+        "fields": {
+            "user": 3,
+            "direccion": "Calle Falsa 123, Ciudad Esotérica",
+            "metodo_de_pago": "Pasarela"
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 4,
+        "fields": {
+            "user": 4,
+            "direccion": "Calle Sanación, 67",
+            "metodo_de_pago": "Contrareembolso"
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 5,
+        "fields": {
+            "user": 5,
+            "direccion": "Calle Sanación, 67",
+            "metodo_de_pago": "Pasarela"
+        }
+    },
+    {
         "model": "Tienda.datosempresa",
         "pk": 1,
         "fields": {
@@ -170,16 +215,16 @@
         }
     },
     {
-    "model": "Tienda.producto",
-    "pk": 4,
-    "fields": {
-        "nombre": "Vela de Eucalipto",
-        "categoria": 1,
-        "precio": "7.99",
-        "stock": 120,
-        "descripcion": "Vela de eucalipto para energizar el ambiente",
-        "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqEQodYBjharjn0WNLonSiN0tr9zk8YY6aw&s"
-    }
+        "model": "Tienda.producto",
+        "pk": 4,
+        "fields": {
+            "nombre": "Vela de Eucalipto",
+            "categoria": 1,
+            "precio": "7.99",
+            "stock": 120,
+            "descripcion": "Vela de eucalipto para energizar el ambiente",
+            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqEQodYBjharjn0WNLonSiN0tr9zk8YY6aw&s"
+        }
     },
     {
         "model": "Tienda.producto",
@@ -277,7 +322,6 @@
             "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
         }
     },
-
     {
         "model": "Tienda.factura",
         "pk": 1,
