@@ -131,6 +131,7 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'  # URL base para servir archivos multimedia
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Ruta del sistema de archivos para almacenar archivos multimedia
 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
