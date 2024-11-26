@@ -33,14 +33,13 @@ def eliminar_producto(request, producto_id):
 def actualizar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     categorias = CategoriaProducto.objects.all()
-
     if request.method == 'POST':
         data = request.POST
         fotografia = request.FILES.get('fotografia')
         ProductoService.actualizar_producto(producto_id, data, fotografia)
         return redirect('detalle_producto', producto_id=producto.id)  # Cambia la redirección según tu necesidad
 
-    return render(request, 'Productos/actualizar_producto.html', {'producto': producto, 'categorias': categorias})
+    return render(request, 'Productos/actualizar_producto.html', {'producto': producto.to_dict(), 'categorias': categorias})
 
 def detalle_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)

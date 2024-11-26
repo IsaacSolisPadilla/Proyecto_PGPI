@@ -43,10 +43,10 @@ class Producto(models.Model):
             "id": self.id,
             "nombre": self.nombre, 
             "categoria": self.categoria.to_dict(),
-            "precio": self.precio,
+            "precio": str(self.precio).replace(",","."),
             "stock": self.stock,
             "descripcion": self.descripcion,
-            "fotografia": str(self.fotografia)
+            "fotografia": self.fotografia
         }
     
 class Factura(models.Model):
