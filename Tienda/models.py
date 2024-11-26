@@ -50,7 +50,7 @@ class Producto(models.Model):
         }
     
 class Factura(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="facturas",null=True)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="facturas", null=True)
     numero_factura = models.CharField(unique=True, max_length=12)
     nombre = models.CharField(max_length=50, null=True)
     apellidos = models.CharField(max_length=50, null=True)
@@ -69,8 +69,8 @@ class Factura(models.Model):
         choices=[("Contrareembolso", "Contrareembolso"), ("Pasarela","Pasarela de pago")],
         null=True
     )
-
     COSTE_ENVIO = 10
+    session_id_stripe = models.CharField(max_length=255, null=True, blank=True)  # Nuevo campo para el session_id de Stripe
     
     def save(self, *args, **kwargs):
         if not self.numero_factura:
@@ -78,7 +78,7 @@ class Factura(models.Model):
         super().save(*args, **kwargs)
     
     def precio_total(self):
-        precio_total = sum(map(lambda linea: linea.precio_linea() ,self.lineas_factura.all()))
+        precio_total = sum(map(lambda linea: linea.precio_linea(), self.lineas_factura.all()))
         if precio_total < 50:
             precio_total += Factura.COSTE_ENVIO
         return precio_total
@@ -95,8 +95,10 @@ class Factura(models.Model):
             "direccion": self.direccion,
             "estado": self.estado,
             "metodo_de_pago": self.metodo_de_pago,
-            "precio_total": self.precio_total()
+            "precio_total": self.precio_total(),
+            "session_id_stripe": self.session_id_stripe  # Incluir el session_id en el diccionario
         }
+
 
 class Datos(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="datos", null=True)

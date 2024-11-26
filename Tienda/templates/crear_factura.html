@@ -3,7 +3,57 @@
 {% block title %}Aromas del Mundo{% endblock %}
 
 {% block content %}
-<div class="title-container main-content2" style="margin-top: 210px;"><h2>Crear pedido</h2></div>
+<div class="form-section main-content2 ">
+    <h2>Crear pedido</h2>
+
+    <div class="formulario">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}  
+            <table class="cart">
+                <thead>
+                    <tr style="color: white;">
+                        <th>Imagen</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Precio total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                    {% with producto=item.producto %}
+                    <tr>
+                      <td><a href="{{ product.get_absolute_url }}"></a></td>
+                      <td>{{ producto.nombre }}</td>
+                      <td>
+                          {{ item.cantidad }}
+                      </td>
+                      <td class="num">{{ item.precio }}€</td>
+                      <td class="num">{{ item.total_precio }}€</td>
+                    </tr>
+                    {% endwith %}
+                    {% endfor %}
+                    
+                    <tr class="total">
+                      <td>Total</td>
+                      <td colspan="3"></td>
+                      <td class="num">
+                        {{ cart.get_total_precio|floatformat:2 }}€
+                      </td>
+                    </tr>
+                  </tbody>
+                
+            </table>
+            <div style=" flex-direction: row; ">
+                <button type="submit" style="background-color: #4caf50;" >Aceptar</button>
+                <button type="button" onclick="window.history.back()">Volver</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
 <style>
     /* Estilo general */
 
@@ -185,60 +235,5 @@
 
 
 
-    <div class="formulario">
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}  
-            <table class="cart">
-                <thead>
-                    <tr style="color: white;">
-                        <th>Imagen</th>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio Unitario</th>
-                        <th>Precio total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in cart %}
-                    {% with producto=item.producto %}
-                    <tr>
-                      <td><a href="{{ product.get_absolute_url }}"></a></td>
-                      <td>{{ producto.nombre }}</td>
-                      <td>
-                          {{ item.cantidad }}
-                      </td>
-                      <td class="num">{{ item.precio }}€</td>
-                      <td class="num">{{ item.total_precio }}€</td>
-                    </tr>
-                    {% endwith %}
-                    {% endfor %}
-                    
-                    <tr class="total">
-                      <td>Total</td>
-                      <td colspan="3"></td>
-                      <td class="num">
-                        {{ cart.get_total_precio|floatformat:2 }}€
-                      </td>
-                    </tr>
-                  </tbody>
-                
-            </table>
-            <div style="display: flex; flex-direction: row;">
-                <button type="submit">Aceptar</button>
-                <button type="button" onclick="window.history.back()">Volver</button>
-            </div>
-        </form>
-    </div>
 
-
-
-
-
-
-
-<script src="https://unpkg.com/feather-icons"></script>
-<script>
-    feather.replace();
-</script>
 {% endblock %}

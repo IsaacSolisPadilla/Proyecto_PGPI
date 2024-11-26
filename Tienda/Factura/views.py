@@ -4,9 +4,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponseRedirect
 from Tienda.models import Factura, LineaFactura, Producto
 from Tienda.forms import AdminFormFactura, FormFactura
-from django.http import HttpResponse
 from django.core.mail import send_mail
-from django.conf import settings
 
 from cart.cart import Cart
 
@@ -54,7 +52,7 @@ def confirmar_factura(request):
                     linea_factura.precio_unitario = item["producto"].precio
                     linea_factura.save()
                 
-                return enviar_email(request, factura) if factura.metodo_de_pago == "Contrareembolso" else crear_sesion_pago(request, factura)
+                return enviar_email(request, factura, factura.email) if factura.metodo_de_pago == "Contrareembolso" else crear_sesion_pago(request, factura)
             return redirect("/factura/confirmar")
         else:
             return redirect("/cart")
@@ -63,9 +61,9 @@ def confirmar_factura(request):
         return render(request,'crear_factura.html',{'form': form, "cart":cart})
 
 # Cambiar para que se mande un email con los datos de la factura
-def enviar_email(request, factura):
+def enviar_email(request, factura, email):
     subject = "Factura de tu compra"
-    message = message = f"""
+    message = f"""
                 Hola {factura.nombre} {factura.apellidos},
 
                 Gracias por tu compra. El precio total de tu factura es {factura.precio_total()}€.
@@ -81,12 +79,11 @@ def enviar_email(request, factura):
                 Saludos,
                 El equipo de tu tienda
             """
-
     send_mail(
                 subject,
                 message,
                 'admin@tienda.com',  # Dirección del remitente
-                [factura.email],  # Dirección del destinatario
+                [email],  # Dirección del destinatario
                 fail_silently=False,
             )
     cart = Cart(request)
@@ -113,9 +110,13 @@ def crear_sesion_pago(request, factura: Factura):
             'quantity': 1,
         }],
         mode='payment',
-        success_url=request.build_absolute_uri('/procesar_pago/?session_id={CHECKOUT_SESSION_ID}'),  # Redirige a esta URL
+        customer_email=factura.email,
+        success_url=request.build_absolute_uri(f'/procesar_pago/{factura.numero_factura}'),  # Redirige a esta URL
         cancel_url=request.build_absolute_uri('/cancelar_factura'),  # URL de cancelación
     )
+
+    factura.session_id_stripe = session.id
+    factura.save() 
 
     # Redirige al usuario a la URL de la sesión de Stripe Checkout
     return HttpResponseRedirect(session.url)
@@ -125,8 +126,9 @@ def cancelar_factura(request):
         request.user.facturas.filter(is_draft_mode=True).delete()
     return redirect("/")
     
-def procesar_pago(request):
-    session_id = request.GET.get('session_id')
+def procesar_pago(request, numero_factura):
+    factura = Factura.objects.get(numero_factura=numero_factura)
+    session_id = factura.session_id_stripe
     stripe.api_key = 'sk_test_51Q2XBLRr6L8GxbwMtP9iKtu8hChihr12m1xHEGoTlGRQSZYCHR8APCuH2T2vA454IoYMwRBMEit7V9MxfSpOZouT00Re1Yl42n'
     try:
         # Obtener los detalles de la sesión de pago desde Stripe
@@ -135,44 +137,9 @@ def procesar_pago(request):
         # Verifica si el pago fue exitoso
         if session.payment_status == 'paid':
             # Obtener la información del cliente (correo, etc.)
-            customer_email = session.customer_email
-            
-            factura = request.user.facturas.filter(is_draft_mode=True).get()
-
-            cart = Cart(request)
-            cart.clear()
-            # Contenido del correo
-            subject = "Factura de tu compra"
-            message = message = f"""
-                Hola {factura.nombre} {factura.apellidos},
-
-                Gracias por tu compra. El precio total de tu factura es {factura.precio_total()} EUR.
-
-                Aquí están los detalles de tu pedido:
-
-                - Número de factura: {factura.numero_factura}
-                - Fecha del pedido: {factura.fecha_pedido.strftime('%d/%m/%Y %H:%M:%S')}
-                - Dirección de envío: {factura.direccion}
-
-                Gracias por confiar en nosotros. Si tienes alguna pregunta, no dudes en contactarnos.
-
-                Saludos,
-                El equipo de tu tienda
-            """
-
-            # Enviar el correo
-            send_mail(
-                subject,
-                message,
-                'admin@tienda.com',  # Dirección del remitente
-                [customer_email],  # Dirección del destinatario
-                fail_silently=False,
-            )
-
-            return HttpResponse("Pago completado y correo enviado.")
-        else:
-            return HttpResponse("El pago no se completó correctamente.")
+            enviar_email(request, factura, session.customer_email)
+        return redirect("/")
     
     except stripe.error.StripeError as e:
-        return HttpResponse(f"Hubo un error al procesar el pago: {str(e)}")
+        return redirect("/")
 

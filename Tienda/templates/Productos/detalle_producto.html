@@ -3,11 +3,12 @@
 {% block title %}{{ producto.nombre }}{% endblock %}
 
 {% block content %}
-<section class="hero" style="padding: 5px 5px;">
-    <h2>Detalles del Producto</h2>
-</section>
+
 
 <section class="product-details main-content">
+    <section style="padding: 5px 5px; margin-top: 60px;">
+        <h2>Detalles del Producto</h2>
+    </section>
     <div class="product">
         <div style="margin-bottom: 20px;">
             {% if user.is_authenticated and user.is_staff %}
@@ -231,7 +232,7 @@
     }
 
     .product-details .product {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: rgba(255, 255, 255, 0.857);
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

@@ -46,3 +46,20 @@ class EditPasswordForm(PasswordChangeForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
+            field.required = False  # Hacer que los campos no sean obligatorios
+
+    def clean(self):
+        cleaned_data = super().clean()
+        old_password = cleaned_data.get('old_password')
+        new_password1 = cleaned_data.get('new_password1')
+        new_password2 = cleaned_data.get('new_password2')
+
+        if old_password or new_password1 or new_password2:
+            if not old_password:
+                self.add_error('old_password', 'Este campo es obligatorio.')
+            if not new_password1:
+                self.add_error('new_password1', 'Este campo es obligatorio.')
+            if not new_password2:
+                self.add_error('new_password2', 'Este campo es obligatorio.')
+
+        return cleaned_data
