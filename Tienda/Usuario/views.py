@@ -7,7 +7,7 @@ from .forms import EditDatosUserForm, EditProfileForm, EditPasswordForm
 @login_required
 def edit_profile(request):
     user = request.user
-    datos = user.datos.get()
+    datos = user.datos.get_or_create(user=user)[0]
     if request.method == 'POST':
         profile_form = EditProfileForm(request.POST, instance=user)
         password_form = EditPasswordForm(user=user, data=request.POST)

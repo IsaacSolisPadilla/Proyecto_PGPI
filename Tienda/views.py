@@ -8,7 +8,7 @@ from django.contrib.auth import login
 from django.shortcuts import render
 
 from cart.cart import Cart
-from .models import CategoriaProducto, Producto, Factura, LineaFactura
+from .models import CategoriaProducto, Datos, Producto, Factura, LineaFactura
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from .Producto.service import ProductoService
@@ -99,8 +99,9 @@ def register_view(request):
             first_name=first_name,
             last_name=last_name
         )
+        
         user.save()
-
+        Datos.objects.create(user=user)
         # Iniciar sesión automáticamente después del registro
         login(request, user)
 

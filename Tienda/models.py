@@ -113,8 +113,9 @@ class Datos(models.Model):
     
     def to_dict(self):
         return {
-            "userId": self.user,
-            "location": self.direccion
+            "user": self.user,
+            "direccion": self.direccion,
+            "metodo_de_pago": self.metodo_de_pago
         }
 
 class LineaFactura(models.Model):
