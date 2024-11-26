@@ -52,6 +52,9 @@
                 </div>
             </section>
         </div>
+    <button id="toggle-sidebar" class="toggle-button">Mostrar/Ocultar Categorías</button>
+
+
     
         <div class="content" id="productos">
             {% if user.is_authenticated and user.is_staff %}
@@ -127,8 +130,37 @@
             .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
             .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
     }
+    document.getElementById('toggle-sidebar').addEventListener('click', function() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active');
+        });
 </script>
 <style>
+    .sidebar {
+        transition: transform 0.3s ease;
+        transform: translateX(-100%);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .toggle-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        padding: 10px 20px;
+        background-color: #007d7c;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .toggle-button:hover {
+        background-color: #006e6f;
+    }
     .main-content {
     display: flex;
     flex-direction: row;

@@ -4,9 +4,10 @@
 
 {% block content %}
 
-<section class="form-section">
+<div class="form-section main-content2">
+    <h2>Formulario de Crear Categoría</h2>
     <div class="form-container">
-        <form method="post">
+        <form method="post" class="form-container">
             {% csrf_token %}
             <label>Nombre de la Categoría:</label>
             <input type="text" name="nombre" required>
@@ -14,11 +15,11 @@
             <label>Descripción:</label>
             <textarea name="descripcion"></textarea>
 
-            <div style="display: flex; justify-content: space-between;">
-                <button type="submit" class="submit-button" style="flex: 1; margin-right: 10px; padding: 10px 0;">Crear Categoría</button>
-                <a href="{% url 'pagina_principal' %}" class="cancel-button" style="flex: 1; text-align: center; padding: 10px 0; text-decoration: none;">Cancelar</a>
+            <div style=" justify-content: space-between;">
+                <button type="submit" class="submit-button" style="margin-right: 190px; padding: 10px 15px; border-radius: 5px;">Crear Categoría</button>
+                <a href="{% url 'pagina_principal' %}" class="cancel-button" style="text-decoration: none; text-align: center; padding: 10px 15px; ">Cancelar</a>
             </div>
         </form>
     </div>
-</section>
+</div>
 {% endblock %}

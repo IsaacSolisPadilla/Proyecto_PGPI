@@ -3,7 +3,7 @@
 {% block title %}Aromas del Mundo{% endblock %}
 
 {% block content %}
-<div class="title-container" style="margin-top: 210px;"><h2>Crear pedido</h2></div>
+<div class="title-container main-content2" style="margin-top: 210px;"><h2>Crear pedido</h2></div>
 <style>
     /* Estilo general */
 
@@ -191,7 +191,7 @@
             {{ form.as_p }}  
             <table class="cart">
                 <thead>
-                    <tr>
+                    <tr style="color: white;">
                         <th>Imagen</th>
                         <th>Producto</th>
                         <th>Cantidad</th>
@@ -226,7 +226,7 @@
             </table>
             <div style="display: flex; flex-direction: row;">
                 <button type="submit">Aceptar</button>
-                <button onclick="window.location.href = '/' ">Volver</button>    
+                <button type="button" onclick="window.history.back()">Volver</button>
             </div>
         </form>
     </div>
