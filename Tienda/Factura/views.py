@@ -4,7 +4,6 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponseRedirect
 from Tienda.models import Factura, LineaFactura, Producto
 from Tienda.forms import AdminFormFactura, FormFactura
-from django.core.mail import send_mail
 import requests
 from cart.cart import Cart
 
