@@ -4,9 +4,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponseRedirect
 from Tienda.models import Factura, LineaFactura, Producto
 from Tienda.forms import AdminFormFactura, FormFactura
-from django.http import HttpResponse
 from django.core.mail import send_mail
-from django.conf import settings
 
 from cart.cart import Cart
 
@@ -54,7 +52,7 @@ def confirmar_factura(request):
                     linea_factura.precio_unitario = item["producto"].precio
                     linea_factura.save()
                 
-                return enviar_email(factura, factura.email) if factura.metodo_de_pago == "Contrareembolso" else crear_sesion_pago(request, factura)
+                return enviar_email(request, factura, factura.email) if factura.metodo_de_pago == "Contrareembolso" else crear_sesion_pago(request, factura)
             return redirect("/factura/confirmar")
         else:
             return redirect("/cart")
@@ -63,9 +61,9 @@ def confirmar_factura(request):
         return render(request,'crear_factura.html',{'form': form, "cart":cart})
 
 # Cambiar para que se mande un email con los datos de la factura
-def enviar_email(factura, email):
+def enviar_email(request, factura, email):
     subject = "Factura de tu compra"
-    message = message = f"""
+    message = f"""
                 Hola {factura.nombre} {factura.apellidos},
 
                 Gracias por tu compra. El precio total de tu factura es {factura.precio_total()}€.
@@ -81,9 +79,6 @@ def enviar_email(factura, email):
                 Saludos,
                 El equipo de tu tienda
             """
-    print("*"*100)
-    print(email)
-    print("*"*100)
     send_mail(
                 subject,
                 message,
@@ -91,6 +86,8 @@ def enviar_email(factura, email):
                 [email],  # Dirección del destinatario
                 fail_silently=False,
             )
+    cart = Cart(request)
+    cart.clear()
     return redirect("/")
 
 # En la vista que genera la sesión de pago de Stripe
@@ -140,10 +137,8 @@ def procesar_pago(request, numero_factura):
         # Verifica si el pago fue exitoso
         if session.payment_status == 'paid':
             # Obtener la información del cliente (correo, etc.)
-            enviar_email(factura, session.customer_email)
-            return redirect("/")
-        else:
-            return redirect("/")
+            enviar_email(request, factura, session.customer_email)
+        return redirect("/")
     
     except stripe.error.StripeError as e:
         return redirect("/")
