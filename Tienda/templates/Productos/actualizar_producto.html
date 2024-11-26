@@ -12,7 +12,7 @@
         <input type="text" name="nombre" id="nombre" value="{{ producto.nombre }}" required>
 
         <label for="precio">Precio:</label>
-        <input type="number" name="precio" id="precio" value="{{ producto.precio }}" required step="0.01" min="0">
+        <input id="precio" type="number" name="precio"  value="{{ producto.precio }}" required step="0.01" min="0">
 
         <label for="stock">Stock:</label>
         <input type="number" name="stock" id="stock" value="{{ producto.stock }}" required min="0">
