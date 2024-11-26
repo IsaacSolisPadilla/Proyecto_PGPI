@@ -98,17 +98,23 @@ class Factura(models.Model):
             "precio_total": self.precio_total()
         }
 
-class Direccion(models.Model):
-    userId = models.IntegerField()
-    location = models.CharField(max_length=255)
+class Datos(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="datos", null=True)
+    direccion = models.CharField(max_length=255, null=True, blank=True)
+    metodo_de_pago = models.CharField(
+        max_length=50,
+        choices=[("Contrareembolso", "Contrareembolso"), ("Pasarela","Pasarela de pago")],
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
-        return f"User ID: {self.userId} - Location: {self.location}"
+        return f"User ID: {self.user} - Location: {self.direccion}"
     
     def to_dict(self):
         return {
-            "userId": self.userId,
-            "location": self.location
+            "userId": self.user,
+            "location": self.direccion
         }
 
 class LineaFactura(models.Model):

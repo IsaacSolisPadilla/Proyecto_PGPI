@@ -80,6 +80,51 @@
         }
     },
     {
+        "model": "Tienda.datos",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "direccion": "Avenida de la Magia, 88",
+            "metodo_de_pago": "Pasarela"
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "direccion": "Avenida Siempreviva 742, Ciudad Espiritual",
+            "metodo_de_pago": "Contrareembolso"
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 3,
+        "fields": {
+            "user": 3,
+            "direccion": "Calle Falsa 123, Ciudad Esotérica",
+            "metodo_de_pago": "Pasarela"
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 4,
+        "fields": {
+            "user": 4,
+            "direccion": "Calle Sanación, 67",
+            "metodo_de_pago": "Contrareembolso"
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 5,
+        "fields": {
+            "user": 5,
+            "direccion": "Calle Sanación, 67",
+            "metodo_de_pago": "Pasarela"
+        }
+    },
+    {
         "model": "Tienda.datosempresa",
         "pk": 1,
         "fields": {
@@ -142,7 +187,7 @@
             "precio": "5.99",
             "stock": 100,
             "descripcion": "Vela de lavanda para calmar el espíritu",
-            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqEQodYBjharjn0WNLonSiN0tr9zk8YY6aw&s"
+            "fotografia": "productos/Vela_Lavanda.webp"
         }
     },
     {
@@ -154,7 +199,7 @@
             "precio": "15.99",
             "stock": 50,
             "descripcion": "Cristal de cuarzo para sanación espiritual",
-            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvf-KTR-7XikaYaovP7q9pXR8YLpWzBn-NeA&s"
+            "fotografia": "productos/Cristal_Cuarzo.webp"
         }
     },
     {
@@ -166,20 +211,20 @@
             "precio": "3.99",
             "stock": 75,
             "descripcion": "Incienso de sándalo para relajación y paz",
-            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+            "fotografia": "productos/Incienso_Sandalo.webp"
         }
     },
     {
-    "model": "Tienda.producto",
-    "pk": 4,
-    "fields": {
-        "nombre": "Vela de Eucalipto",
-        "categoria": 1,
-        "precio": "7.99",
-        "stock": 120,
-        "descripcion": "Vela de eucalipto para energizar el ambiente",
-        "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvqEQodYBjharjn0WNLonSiN0tr9zk8YY6aw&s"
-    }
+        "model": "Tienda.producto",
+        "pk": 4,
+        "fields": {
+            "nombre": "Vela de Eucalipto",
+            "categoria": 1,
+            "precio": "7.99",
+            "stock": 120,
+            "descripcion": "Vela de eucalipto para energizar el ambiente",
+            "fotografia": "productos/Vela_Eucalipto.webp"
+        }
     },
     {
         "model": "Tienda.producto",
@@ -190,7 +235,7 @@
             "precio": "25.99",
             "stock": 30,
             "descripcion": "Cristal de amatista para meditación profunda",
-            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+            "fotografia": "productos/Cristal_Amatista.webp"
         }
     },
     {
@@ -202,7 +247,7 @@
             "precio": "4.49",
             "stock": 80,
             "descripcion": "Incienso de rosa mosqueta para equilibrio emocional",
-            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+            "fotografia": "productos/Incienso_Rosa.webp"
         }
     },
     {
@@ -214,7 +259,7 @@
             "precio": "6.49",
             "stock": 150,
             "descripcion": "Vela de citronela para repeler insectos y aromatizar el ambiente",
-            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+            "fotografia": "productos/Vela_Citronela.webp"
         }
     },
     {
@@ -226,7 +271,7 @@
             "precio": "12.99",
             "stock": 40,
             "descripcion": "Cristal de selenita para limpieza energética",
-            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+            "fotografia": "productos/Crista_Selenita.webp"
         }
     },
     {
@@ -238,7 +283,7 @@
             "precio": "3.79",
             "stock": 60,
             "descripcion": "Incienso de lavanda para relajación y sueño profundo",
-            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+            "fotografia": "productos/Incienso_Lavanda.webp"
         }
     },
     {
@@ -250,7 +295,7 @@
             "precio": "8.99",
             "stock": 200,
             "descripcion": "Vela de jazmín para crear un ambiente relajante y floral",
-            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+            "fotografia": "productos/Vela_Jazmin.webp"
         }
     },
     {
@@ -262,7 +307,7 @@
             "precio": "18.49",
             "stock": 25,
             "descripcion": "Cristal de turmalina para protección energética",
-            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+            "fotografia": "productos/Cristal_Turmalina.webp"
         }
     },
     {
@@ -274,10 +319,9 @@
             "precio": "5.49",
             "stock": 90,
             "descripcion": "Incienso de mirra para meditación profunda y protección",
-            "fotografia": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUwXsHvSVY5w35X5N6BijtjA4XF6Zy7gaG4w&s"
+            "fotografia": "productos/Incienso_Mirra.webp"
         }
     },
-
     {
         "model": "Tienda.factura",
         "pk": 1,

@@ -25,7 +25,7 @@
             <td><a href="{{ product.get_absolute_url }}"></a></td>
             <td>{{ producto.nombre }}</td>
             <td>
-              <form action="{% url 'cart:cart_add' producto.id %}" method="post">
+              <form action="{% url 'cart:cart_add' producto.id 0 %}" method="post">
                 {{ item.update_quantity_form.cantidad }}
                 {{ item.update_quantity_form.sobreescribir }}
                 <td><input type="submit" value="✏️"></td>
@@ -211,4 +211,5 @@
   
   <script src="https://unpkg.com/feather-icons"></script>
 </section>
+
 {% endblock %}

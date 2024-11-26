@@ -100,7 +100,7 @@
                     <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
                     {% endif %}
                     <h3>{{ producto.nombre }}</h3>
-                    <p>${{ producto.precio }}</p>
+                    <p>{{ producto.precio }}€</p>
                 </a>
             </div>
             {% empty %}
@@ -652,13 +652,13 @@
                         <div class="product" data-name="{{ producto.nombre }}" data-price="{{ producto.precio }}" data-category="{{ producto.categoria.id }}">
                             <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
                                 {% if producto.fotografia %}
-                                    <img src="{{ producto.fotografia }}" alt="{{ producto.nombre }}">
+                                    <img src="{{ producto.fotografia }}" style="width: 300px; height: 300px;" alt="{{ producto.nombre }}">
                                 {% else %}
                                     <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
                                 {% endif %}
                                 <h3>{{ producto.nombre }}</h3>
-                                <p>${{ producto.precio }}</p>
-                                <form action="{% url 'cart:cart_add' producto.id %}" method="post" style="display: inline;">
+                                <p>{{ producto.precio }}€</p>
+                                <form action="{% url 'cart:cart_add' producto.id 0%}" method="post" style="display: inline;">
                                     {% csrf_token %}
                                     <button type="submit" class="add-to-cart-button">
                                         <i class="fas fa-cart-plus"></i> Añadir al carrito
