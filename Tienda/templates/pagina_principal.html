@@ -52,9 +52,6 @@
                 </div>
             </section>
         </div>
-    <button id="toggle-sidebar" class="toggle-button">Mostrar/Ocultar Categorías</button>
-
-
     
         <div class="content" id="productos"  >
             {% if user.is_authenticated and user.is_staff %}
@@ -70,7 +67,7 @@
                 <div class="product" data-name="{{ producto.nombre }}" data-price="{{ producto.precio }}" data-category="{{ producto.categoria.id }}">
                     <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
                         {% if producto.fotografia %}
-                        <img src="{{ producto.fotografia.url }}" style="width: 300px; height: 300px;" alt="{{ producto.nombre }}">
+                        <img src="{{ producto.fotografia.url }}" style="width: 250px; height: 250px;" alt="{{ producto.nombre }}">
                         {% else %}
                         <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
                         {% endif %}
@@ -83,12 +80,16 @@
                             </button>
                         </form>
                         {% if user.is_authenticated and user.is_staff %}
-                        <a href="{% url 'actualizar_producto' producto.id %}" class="update-button" style="margin-left: 10px; margin-top: 10px;">
-                            Actualizar Producto
-                        </a>
-                        <a href="{% url 'eliminar_producto' producto.id %}" class="delete-button" style="margin-left: 10px;">
-                            Eliminar Producto
-                        </a>
+                        <div style="margin-top: 10px;">
+                            <a href="{% url 'actualizar_producto' producto.id %}" class="update-button">
+                                Actualizar Producto
+                            </a>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <a href="{% url 'eliminar_producto' producto.id %}" class="delete-button">
+                                Eliminar Producto
+                            </a>
+                        </div>
                         {% endif %}
                     </a>
                 </div>
@@ -132,43 +133,13 @@
             .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
             .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
     }
-    document.getElementById('toggle-sidebar').addEventListener('click', function() {
-            const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('active');
-        });
 </script>
 <style>
-    .sidebar {
-        transition: transform 0.3s ease;
-        transform: translateX(-100%);
-    }
-
-    .sidebar.active {
-        transform: translateX(0);
-    }
-
-    .toggle-button {
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        z-index: 1000;
-        padding: 10px 20px;
-        background-color: #007d7c;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .toggle-button:hover {
-        background-color: #006e6f;
-    }
     .main-content {
     display: flex;
     flex-direction: row;
 }
-
-.sidebar {
+    .sidebar {
     width: 25%;
     height: 100vh; /* Hace que el sidebar ocupe toda la altura de la ventana */
     top: 0; /* Fija el sidebar en la parte superior */
@@ -204,6 +175,8 @@
     font-size: 1.8em;
     font-weight: bold;
 }
+
+
 
 .create-button {
     display: inline-block;
