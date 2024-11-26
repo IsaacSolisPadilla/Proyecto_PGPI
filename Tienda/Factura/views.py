@@ -54,7 +54,7 @@ def confirmar_factura(request):
                     linea_factura.precio_unitario = item["producto"].precio
                     linea_factura.save()
                 
-                return enviar_email(factura) if factura.metodo_de_pago == "Contrareembolso" else crear_sesion_pago(request, factura)
+                return enviar_email(request, factura) if factura.metodo_de_pago == "Contrareembolso" else crear_sesion_pago(request, factura)
             return redirect("/factura/confirmar")
         else:
             return redirect("/cart")
@@ -63,7 +63,7 @@ def confirmar_factura(request):
         return render(request,'crear_factura.html',{'form': form, "cart":cart})
 
 # Cambiar para que se mande un email con los datos de la factura
-def enviar_email(factura):
+def enviar_email(request, factura):
     subject = "Factura de tu compra"
     message = message = f"""
                 Hola {factura.nombre} {factura.apellidos},
@@ -81,9 +81,7 @@ def enviar_email(factura):
                 Saludos,
                 El equipo de tu tienda
             """
-    print("*"*100)
-    print(factura.email)
-    print("*"*100)
+
     send_mail(
                 subject,
                 message,
@@ -91,6 +89,8 @@ def enviar_email(factura):
                 [factura.email],  # Dirección del destinatario
                 fail_silently=False,
             )
+    cart = Cart(request)
+    cart.clear()
     return redirect("/")
 
 # En la vista que genera la sesión de pago de Stripe
@@ -139,6 +139,8 @@ def procesar_pago(request):
             
             factura = request.user.facturas.filter(is_draft_mode=True).get()
 
+            cart = Cart(request)
+            cart.clear()
             # Contenido del correo
             subject = "Factura de tu compra"
             message = message = f"""
@@ -150,8 +152,6 @@ def procesar_pago(request):
 
                 - Número de factura: {factura.numero_factura}
                 - Fecha del pedido: {factura.fecha_pedido.strftime('%d/%m/%Y %H:%M:%S')}
-                - Fecha de salida: {factura.fecha_salida.strftime('%d/%m/%Y %H:%M:%S') if factura.fecha_salida else 'No disponible'}
-                - Fecha de entrega: {factura.fecha_entrega.strftime('%d/%m/%Y %H:%M:%S') if factura.fecha_entrega else 'No disponible'}
                 - Dirección de envío: {factura.direccion}
 
                 Gracias por confiar en nosotros. Si tienes alguna pregunta, no dudes en contactarnos.
