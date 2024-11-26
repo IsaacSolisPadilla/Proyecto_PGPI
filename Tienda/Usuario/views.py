@@ -13,16 +13,15 @@ def edit_profile(request):
         password_form = EditPasswordForm(user=user, data=request.POST)
         datos_form = EditDatosUserForm(request.POST, instance=datos)
 
-        if profile_form.is_valid() and password_form.is_valid() and datos_form.is_valid():
+        if profile_form.is_valid() and datos_form.is_valid():
             # Guardar datos del perfil
             profile_form.save()
-
-            # Cambiar contraseña y mantener la sesión activa
-            password_form.save()
-            
-            # Guardar datos extras de usuario
             datos_form.save()
-            update_session_auth_hash(request, password_form.user)
+
+            # Cambiar contraseña si se proporcionaron los datos
+            if password_form.is_valid() and password_form.cleaned_data.get('old_password'):
+                password_form.save()
+                update_session_auth_hash(request, password_form.user)
 
             messages.success(request, 'Perfil actualizado exitosamente.')
             return redirect('/')

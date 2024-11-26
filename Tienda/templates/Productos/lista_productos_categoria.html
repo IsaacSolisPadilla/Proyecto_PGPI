@@ -3,7 +3,7 @@
 {% block title %}Aromas del Mundo{% endblock %}
 
 {% block content %}
-<section class="featured-products" id="productos">
+<section class="main-content1 featured-products" id="productos">
     {% if user.is_authenticated and user.is_staff %}
     <div class="create-button-container" style="margin-top: 20px;">
         <a href="{% url 'crear_producto' %}" class="create-button">
