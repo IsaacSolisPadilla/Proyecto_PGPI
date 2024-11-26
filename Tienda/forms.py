@@ -13,7 +13,7 @@ class FormFactura(forms.Form):
             del kwargs["user"]
         super().__init__(*args, **kwargs)
         if user != None and not user.is_anonymous:
-            datos = user.datos.get()
+            datos = user.datos.get_or_create()[0]
             self.fields["nombre"].initial = user.first_name
             self.fields["apellidos"].initial = user.last_name
             self.fields["direccion"].initial = datos.direccion
