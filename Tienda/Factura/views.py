@@ -64,6 +64,10 @@ def enviar_email(request, factura, email):
     API_URL = "https://api.mailersend.com/v1/email"
     API_KEY = "mlsn.cf9c9e1d21853d61be415a671f70d41b3a57425e7b77d67343e19931884d7b9a"  # Reemplaza con tu API Key de MailerSend
 
+    for ln in factura.lineas_factura.all():
+        cantidad, producto = ln.cantidad, ln.producto
+        producto.stock -= cantidad
+        producto.save()
     # Asunto y contenido del correo
     subject = "Factura de tu compra"
     text = f"""

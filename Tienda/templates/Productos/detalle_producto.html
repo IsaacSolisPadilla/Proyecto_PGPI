@@ -33,14 +33,19 @@
         <p><strong>Stock:</strong> {{ producto.stock }}</p>
         <p><strong>Categoría:</strong> {{ producto.categoria.nombre }}</p>
         <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
+
+        {% if producto.stock > 0 %}
         <form action="{% url 'cart:cart_add' producto.id 1 %}" method="post" style="display: inline;">
             {% csrf_token %}
-            <div style="display: flex; justify-content: center;">            
+            <div style="display: flex; justify-content: center;">   
                 <button type="submit" class="add-to-cart-button">
                     <i class="fas fa-cart-plus"></i> Añadir al carrito
                 </button>
             </div>
         </form>
+        {% else %}
+        <p style="color: red;">Sin stock</p>
+        {% endif %}
     </div>
 </section>
 
