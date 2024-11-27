@@ -4,8 +4,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponseRedirect
 from Tienda.models import Factura, LineaFactura, Producto
 from Tienda.forms import AdminFormFactura, FormFactura
-from django.core.mail import send_mail
-
+import requests
 from cart.cart import Cart
 
 # Modificación de facturas para cambiar el estado de la factura por parte de admin
@@ -62,30 +61,79 @@ def confirmar_factura(request):
 
 # Cambiar para que se mande un email con los datos de la factura
 def enviar_email(request, factura, email):
+    API_URL = "https://api.mailersend.com/v1/email"
+    API_KEY = "mlsn.cf9c9e1d21853d61be415a671f70d41b3a57425e7b77d67343e19931884d7b9a"  # Reemplaza con tu API Key de MailerSend
+
+    # Asunto y contenido del correo
     subject = "Factura de tu compra"
-    message = f"""
-                Hola {factura.nombre} {factura.apellidos},
+    text = f"""
+Hola {factura.nombre} {factura.apellidos},
 
-                Gracias por tu compra. El precio total de tu factura es {factura.precio_total()}€.
+Gracias por tu compra. El precio total de tu factura es {factura.precio_total()}€.
 
-                Aquí están los detalles de tu pedido:
+Aquí están los detalles de tu pedido:
 
-                - Número de factura: {factura.numero_factura}
-                - Fecha del pedido: {factura.fecha_pedido.strftime('%d/%m/%Y %H:%M:%S')}ç
-                - Dirección de envío: {factura.direccion}
+- Número de factura: {factura.numero_factura}
+- Fecha del pedido: {factura.fecha_pedido.strftime('%d/%m/%Y %H:%M:%S')}
+- Dirección de envío: {factura.direccion}
 
-                Gracias por confiar en nosotros. Si tienes alguna pregunta, no dudes en contactarnos.
+Gracias por confiar en nosotros. Si tienes alguna pregunta, no dudes en contactarnos.
 
-                Saludos,
-                El equipo de tu tienda
-            """
-    send_mail(
-                subject,
-                message,
-                'admin@tienda.com',  # Dirección del remitente
-                [email],  # Dirección del destinatario
-                fail_silently=False,
-            )
+Saludos,
+El equipo de tu tienda
+    """
+    html = f"""
+    <html>
+        <body>
+            <p>Hola {factura.nombre} {factura.apellidos},</p>
+            <p>Gracias por tu compra. El precio total de tu factura es <strong>{factura.precio_total()}€</strong>.</p>
+            <p>Aquí están los detalles de tu pedido:</p>
+            <ul>
+                <li>Número de factura: {factura.numero_factura}</li>
+                <li>Fecha del pedido: {factura.fecha_pedido.strftime('%d/%m/%Y %H:%M:%S')}</li>
+                <li>Dirección de envío: {factura.direccion}</li>
+            </ul>
+            <p>Gracias por confiar en nosotros. Si tienes alguna pregunta, no dudes en contactarnos.</p>
+            <p>Saludos,<br>El equipo de tu tienda</p>
+        </body>
+    </html>
+    """
+
+    # Configuración del remitente y destinatario
+    sender = {
+        "email": "mailgun@trial-pq3enl6wmmm42vwr.mlsender.net",  # Cambia a tu dominio verificado si es necesario
+        "name": "Aura Arcana"
+    }
+    recipients = [{"email": email}]
+
+    # Configuración del correo
+    data = {
+        "from": sender,
+        "to": recipients,
+        "subject": subject,
+        "text": text,
+        "html": html
+    }
+
+    # Encabezados de la solicitud
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    # Enviar la solicitud POST a la API de MailerSend
+    try:
+        response = requests.post(API_URL, json=data, headers=headers)
+
+        if response.status_code == 202:  # 202 indica que el correo fue aceptado para envío
+            print("Correo enviado exitosamente!")
+        else:
+            print(f"Error al enviar el correo: {response.status_code}")
+            print(response.json())  # Detalle del error
+    except Exception as e:
+        print(f"Error al enviar el correo: {e}")
+
+    # Redirigir a la página principal (opcional)
     cart = Cart(request)
     cart.clear()
     return redirect("/")
