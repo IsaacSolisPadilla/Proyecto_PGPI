@@ -185,7 +185,7 @@
             "nombre": "Vela de Lavanda",
             "categoria": 1,
             "precio": "5.99",
-            "stock": 100,
+            "stock": 0,
             "descripcion": "Vela de lavanda para calmar el espíritu",
             "fotografia": "productos/Vela_Lavanda.webp"
         }

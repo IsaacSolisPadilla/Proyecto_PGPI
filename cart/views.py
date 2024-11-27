@@ -38,7 +38,7 @@ def cart_detail(request):
     
     for item in cart:
         item['update_quantity_form'] = CartAddProductForm(
-            initial={'cantidad': item['cantidad'], 'sobreescribir': True}
+            initial={'cantidad': item['cantidad'], 'sobreescribir': True}, stock = item["producto"].stock
         )
         
     return render(
