@@ -4,10 +4,12 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponseRedirect
 from Tienda.models import Factura, LineaFactura, Producto
 from Tienda.forms import AdminFormFactura, FormFactura
+from django.contrib.auth.decorators import user_passes_test
 import requests
 from cart.cart import Cart
 
 # Modificación de facturas para cambiar el estado de la factura por parte de admin
+@user_passes_test(lambda u: u.is_superuser)
 def modificar_factura(request, factura_id):
     factura = get_object_or_404(Factura, id=factura_id)
     if request.method == 'POST':
@@ -22,9 +24,10 @@ def modificar_factura(request, factura_id):
         form = AdminFormFactura(instance=factura, is_disable=True)
         return render(request, 'factura.html', {"form": form})
     
+
 def obtener_factura_por_numero_factura(request, numero_factura):
     return JsonResponse({"estado_factura": get_object_or_404(Factura, numero_factura=numero_factura).estado} ,status=200)
- 
+
 def confirmar_factura(request):
     cart = Cart(request)
     if(request.method == "POST"):

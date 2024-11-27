@@ -76,9 +76,11 @@
                         {% if producto.stock > 0 %}
                         <form action="{% url 'cart:cart_add' producto.id 0 %}" method="post" style="display: inline;">
                             {% csrf_token %}
-                            <button type="submit" class="add-to-cart-button">
-                                <i class="fas fa-cart-plus"></i> Añadir al carrito
-                            </button>
+                            <div style="justify-items: center;">
+                                <button type="submit" class="add-to-cart-button">
+                                    <i class="fas fa-cart-plus"></i> Añadir al carrito
+                                </button>
+                            </div>
                         </form>
                         {% else %}
                         <p style="color: red;">Sin stock</p>
