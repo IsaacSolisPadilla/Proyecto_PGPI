@@ -2,7 +2,7 @@
 <div class="facturas-container">
     <ul class="facturas-list">
         {% for factura in facturas %}
-        <li class="factura-item" onclick="window.location.href = '/factura/' + '{{factura.id}}'">
+        <li class="factura-item-{{factura.estado}}" onclick="window.location.href = '/factura/' + '{{factura.id}}'">
             <span class="factura-num">Nº {{ factura.numero_factura }}</span>
             <span class="factura-estado">Estado: {{ factura.estado }}</span>
         </li>
@@ -34,7 +34,48 @@
     padding: 0;
 }
 
-.factura-item {
+/* Estado: Pendiente (Amarillo) */
+.factura-item-Pendiente {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #f5c542; /* Amarillo oscuro */
+    border-radius: 6px;
+    background-color: #fff8e1; /* Amarillo claro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.factura-item-Pendiente:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffe59d; /* Amarillo más vibrante al pasar el mouse */
+}
+
+/* Estado: Enviado (Azul) */
+.factura-item-Enviado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #42a5f5; /* Azul oscuro */
+    border-radius: 6px;
+    background-color: #e3f2fd; /* Azul claro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.factura-item-Enviado:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #90caf9; /* Azul más vibrante al pasar el mouse */
+}
+
+/* Estado: Entregado (Verde) */
+.factura-item-Entregado {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -42,16 +83,17 @@
     margin-bottom: 10px;
     border: 1px solid #1e824c; /* Verde oscuro */
     border-radius: 6px;
-    background-color: #d5f5e3; /* Verde claro */
+    background-color: #d9f2e6; /* Verde claro */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.factura-item:hover {
+.factura-item-Entregado:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #b8e994; /* Verde más vibrante al pasar el mouse */
+    background-color: #a5d6a7; /* Verde más vibrante al pasar el mouse */
 }
+
 
 .factura-num {
     font-weight: bold;

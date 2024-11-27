@@ -13,11 +13,12 @@ class FormFactura(forms.Form):
             del kwargs["user"]
         super().__init__(*args, **kwargs)
         if user != None and not user.is_anonymous:
+            datos = user.datos.get_or_create()[0]
             self.fields["nombre"].initial = user.first_name
             self.fields["apellidos"].initial = user.last_name
-            self.fields["direccion"].initial = None
+            self.fields["direccion"].initial = datos.direccion
             self.fields["email"].initial = user.email
-            self.fields["metodo_de_pago"].initial = None
+            self.fields["metodo_de_pago"].initial = datos.metodo_de_pago
 
     nombre = forms.CharField(max_length=50)
     apellidos = forms.CharField(max_length=50)
@@ -48,10 +49,10 @@ class AdminFormFactura(forms.ModelForm):
         match self.instance.estado:
             case "Pendiente":
                 self.fields['estado'].choices = [("Pendiente","Pendiente"), ("Enviado","Enviado")]
-                readonly('nombre', 'apellidos', 'direccion', 'metodo_de_pago')
+                readonly('nombre', 'apellidos', 'email', 'direccion', 'metodo_de_pago')
             case "Enviado":
                 self.fields['estado'].choices = [("Enviado","Enviado"), ("Entregado","Entregado")]
-                readonly('nombre', 'apellidos', 'direccion', 'metodo_de_pago')
+                readonly('nombre', 'apellidos', 'email', 'direccion', 'metodo_de_pago')
             case "Entregado":
                 disabled(*self.fields)
         

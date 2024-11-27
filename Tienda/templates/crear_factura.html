@@ -1,25 +1,67 @@
-<h1>Crear pedido</h1>
+{% extends 'base.html' %}
+
+{% block title %}Aura Arcana{% endblock %}
+
+{% block content %}
+<div class="form-section main-content2 ">
+    <h2>Crear pedido</h2>
+
+    <div class="formulario">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}  
+            <table class="cart">
+                <thead>
+                    <tr style="color: white;">
+                        <th>Imagen</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Precio total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                    {% with producto=item.producto %}
+                    <tr>
+                      <td><a href="{{ product.get_absolute_url }}"></a></td>
+                      <td>{{ producto.nombre }}</td>
+                      <td>
+                          {{ item.cantidad }}
+                      </td>
+                      <td class="num">{{ item.precio }}€</td>
+                      <td class="num">{{ item.total_precio }}€</td>
+                    </tr>
+                    {% endwith %}
+                    {% endfor %}
+                    
+                    <tr class="total">
+                      <td>Total</td>
+                      <td colspan="3"></td>
+                      <td class="num">
+                        {{ cart.get_total_precio|floatformat:2 }}€
+                      </td>
+                    </tr>
+                  </tbody>
+                
+            </table>
+            <div style=" flex-direction: row; ">
+                <button type="submit" style="background-color: #4caf50;" >Aceptar</button>
+                <button type="button" onclick="window.history.back()">Volver</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
 <style>
     /* Estilo general */
-    body {
-        font-family: 'Arial', sans-serif;
-        background: linear-gradient(135deg, #f0f3f5, #d9e2ec);
-        color: #333;
-        margin: 0;
-        padding: 20px;
-    }
-
-    /* Encabezado */
-    h1 {
-        text-align: center;
-        font-size: 2.5em;
-        color: #1a73e8;
-        margin-bottom: 20px;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    }
 
     /* Formulario de usuario */
     .formulario {
+        width: 80%;
+        margin-right: 10%;
+        margin-left: 10%;
         display: flex;
         flex-direction: column;
         background: #fff;
@@ -30,7 +72,9 @@
     }
 
     .formulario input {
-        width: 100%;
+        width: 80%;
+        margin-right: 10%;
+        margin-left: 10%;
         padding: 10px;
         margin: 8px 0;
         border: 1px solid #ccc;
@@ -44,17 +88,17 @@
 
     /* Tabla */
     table.cart {
-        width: 100%;
+        width: 80%;
+        margin-right: 10%;
+        margin-left: 10%;
         border-collapse: collapse;
         overflow: hidden;
         border-radius: 8px;
-        background-color: #ffffff;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     thead {
-        background-color: #1a73e8;
-        color: #ffffff;
+        background-color: #006e6f;
     }
 
     thead th {
@@ -110,34 +154,16 @@
         font-weight: bold;
         color: #555;
     }
-
-    /* Botón Aceptar */
-    button {
-        display: block;
-        width: 100%;
-        max-width: 200px;
-        margin: 20px auto;
-        padding: 12px 0;
-        font-size: 1em;
-        color: #fff;
-        background-color: #1a73e8;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
     button:hover {
-        background-color: #155bb5;
+        background-color: #006e6f;
     }
 
     .icon {
-        color: #1a73e8;
+        color:#006e6f;
     }
 
     .icon:hover {
-        color: #155bb5;
+        color:#006e6f;
     }
 
     input[type="number"] {
@@ -209,87 +235,5 @@
 
 
 
-    <div class="formulario">
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}  
-            <table class="cart">
-                <thead>
-                    <tr>
-                        <th>Imagen</th>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio Unitario</th>
-                        <th>Precio total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in cart %}
-                    {% with producto=item.producto %}
-                    <tr>
-                      <td><a href="{{ product.get_absolute_url }}"></a></td>
-                      <td>{{ producto.nombre }}</td>
-                      <td>
-                          {{ item.cantidad }}
-                      </td>
-                      <td class="num">{{ item.precio }}€</td>
-                      <td class="num">{{ item.total_precio }}€</td>
-                    </tr>
-                    {% endwith %}
-                    {% endfor %}
-                    
-                    <tr class="total">
-                      <td>Total</td>
-                      <td colspan="3"></td>
-                      <td class="num">
-                        {{ cart.get_total_precio|floatformat:2 }}€
-                      </td>
-                    </tr>
-                  </tbody>
-                
-            </table>
-            <div style="display: flex; flex-direction: row;">
-                <button type="submit">Aceptar</button>
-                <button onclick="window.location.href = '/' ">Volver</button>    
-            </div>
-        </form>
-    </div>
 
-
-
-
-
-
-
-<script src="https://unpkg.com/feather-icons"></script>
-<script>
-    feather.replace();
-
-    function obtenerForm() {
-        // const form = {}
-        // const ids = ["nombre", "apellidos", "email", "direccion"]
-        // for (const id of ids) {
-        //     form[id] = document.getElementById(id).value
-        // }
-        // let lineas_factura = []
-        // for (const n_linea in ln_factura) {
-        //     lineas_factura.push({
-        //         "producto": ln_factura[n_linea].producto,
-        //         "cantidad": Number(document.getElementById(`cantidad-${n_linea}`).value)
-        //     })
-        // }
-        // form["lineas_factura"]=lineas_factura
-        // return form
-    }
-
-    function crearFactura() {
-        // const form = obtenerForm()
-        // fetch("/facturas/crear", {
-        //     method: "POST", 
-        //     body: JSON.stringify(form),
-        //     headers: {
-        //             'X-CSRFToken': '{{csrf_token}}' // Incluir el token CSRF en los encabezados
-        //     }
-        // }).then(data => console.log(data))
-    }
-</script>
+{% endblock %}

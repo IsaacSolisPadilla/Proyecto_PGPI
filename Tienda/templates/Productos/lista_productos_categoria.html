@@ -1,550 +1,252 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ categoria.nombre }} - Aromas del Mundo</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-        }
+{% extends 'base.html' %}
 
-        /* Fondo de la página */
-        body {
-            background: linear-gradient(135deg, #f3e7e9, #e3eeff); 
-            color: #333;
-            background-size: cover;
-            background-position: center;
-        }
+{% block title %}Aura Arcana{% endblock %}
 
-        /* Contenedor principal */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            width: 100%;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #006e6f 25%, #008c8e 25%, #008c8e 50%, #006e6f 50%, #006e6f 75%, #008c8e 75%, #008c8e);
-            background-size: 40px 40px;
-        }
-
-        /* Título de Categoría */
-        .category-title h2 {
-            font-size: 36px;
-            color: #fff;
-            margin-bottom: 20px;
-        }
-
-        /* Cuadrícula de productos */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Producto individual */
-        .product {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-            padding: 20px;
-        }
-
-        /* Efecto al pasar el mouse */
-        .product:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Imagen del producto */
-        .product img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            transition: transform 0.3s ease;
-        }
-
-        .product img:hover {
-            transform: scale(1.05);
-        }
-
-        /* Nombre y precio del producto */
-        .product h3 {
-            font-size: 18px;
-            color: #333;
-            margin: 10px 0;
-        }
-
-        .product p {
-            color: #777;
-            font-size: 16px;
-            margin: 5px 0;
-        }
-
-        /* Botón de añadir al carrito */
-        .add-to-cart-button {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 25px;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 15px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .add-to-cart-button i {
-            margin-right: 10px;
-            font-size: 20px;
-        }
-
-        .add-to-cart-button:hover {
-            background-color: #218838;
-            transform: translateY(-2px);
-        }
-
-        .add-to-cart-button:active {
-            background-color: #1e7e34;
-            transform: translateY(0);
-        }
-
-        /* Contenedor para crear un nuevo producto */
-        .create-button-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .create-button {
-            background-color: #ffffff;
-            color: #006e6f;
-            text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .create-button:hover {
-            background-color: #006e6f;
-            color: white;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            width: 100%;
-            margin-top: 50px;
-        }
-
-        footer p {
-            font-size: 14px;
-        }
-
-        footer a {
-            color: royalblue;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        .dropdown-button {
-            background: none;
-            border: none;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #ffffff;
-            display: inline-flex;
-            align-items: center;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropdown-button:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        /* Menú dropdown */
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 40px;
-            right: 0;
-            background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            z-index: 1000;
-        }
-
-        .dropdown-menu .dropdown-item {
-            display: block;
-            padding: 10px 15px;
-            color: #006e6f;
-            background-color: #ffffff;
-            text-decoration: none;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropdown-menu .dropdown-item:hover {
-            background-color: rgba(0, 140, 142, 0.1);
-        }
-
-        /* Mostrar menú al hacer hover */
-        .user-info:hover .dropdown-menu {
-            display: block;
-        }
-
-        .navbar {
-            background-color: #006e6f;
-            padding: 10px 20px;
-        }
-
-        .navbar-menu {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        .navbar-item {
-            position: relative;
-            margin: 0 15px;
-        }
-
-        .navbar-link {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .navbar-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 40px;
-            left: 0;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            z-index: 1000;
-            width: 132px;
-        }
-
-        .dropdown-menu li {
-            list-style: none;
-        }
-
-        .dropdown-menu a {
-            display: block;
-            padding: 10px 15px;
-            color: #333;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropdown-menu a:hover {
-            background-color: rgba(0, 140, 142, 0.1);
-        }
-
-        .navbar-item:hover .dropdown-menu {
-            display: block;
-        }
-
-        .navbar-item {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 40px;
-            right: 0;
-            background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            z-index: 1000;
-        }
-
-        .dropdown-menu .dropdown-item {
-            display: block;
-            padding: 10px 15px;
-            color: #006e6f;
-            background-color: #ffffff;
-            text-decoration: none;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropdown-menu .dropdown-item:hover {
-            background-color: rgba(0, 140, 142, 0.1);
-        }
-
-        /* Mostrar menú al hacer hover */
-        .user-info:hover .dropdown-menu {
-            display: block;
-        }
-
-        .navbar {
-            background-color: #006e6f;
-            padding: 10px 20px;
-        }
-
-        .navbar-menu {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        .navbar-item {
-            position: relative;
-            margin: 0 15px;
-        }
-
-        .navbar-link {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .navbar-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 40px;
-            left: 0;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            z-index: 1000;
-            width: 132px;
-        }
-
-        .dropdown-menu li {
-            list-style: none;
-        }
-
-        .dropdown-menu a {
-            display: block;
-            padding: 10px 15px;
-            color: #333;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropdown-menu a:hover {
-            background-color: rgba(0, 140, 142, 0.1);
-        }
-
-        .navbar-item:hover .dropdown-menu {
-            display: block;
-        }
-
-        .navbar-item {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            z-index: 1000;
-        }
-
-        .category-title {
-            margin-bottom: 20px;
-        }
-
-        .title-container {
-            display: flex;
-            align-items: center; /* Centra el botón verticalmente con el texto */
-            justify-content: space-between; /* Añadir espacio extra entre el título y el botón si es necesario */
-        }
-
-        .title-container h2 {
-            margin: 0; /* Elimina márgenes para que se alinee correctamente */
-            flex: 1; /* Permite que el título ocupe el espacio disponible */
-        }
-
-        .delete-form {
-            margin-left: 10px; /* Añade un pequeño margen entre el título y el botón */
-        }
-
-        .delete-button {
-            background-color: transparent;
-            border: none;
-            color: #bd1313;
-            cursor: pointer;
-            font-size: 20px;
-            padding: 5px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .delete-button:hover {
-            background-color: rgba(189, 19, 19, 0.1);
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar">
-        <ul class="navbar-menu">
-            {% if user.is_authenticated %}
-                <li class="navbar-item" style="position: absolute; left: 1%;">
-                    <button class="dropdown-button">
-                        Hola, {{ user.username }}
-                        <svg width="15px" height="10px" viewBox="0 0 13 10">
-                            <path d="M1,5 L11,5"></path>
-                            <polyline points="8 1 12 5 8 9"></polyline>
-                        </svg>
-                    </button>
-                    <div class="dropdown-menu">
-                        <form method="POST" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="dropdown-item">Cerrar Sesión</button>
-                        </form>
-                    </div>
-                </li>
-            {% else %}
-            <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
-                <span>Iniciar Sesión</span>
-                <svg width="15px" height="10px" viewBox="0 0 13 10">
-                    <path d="M1,5 L11,5"></path>
-                    <polyline points="8 1 12 5 8 9"></polyline>
-                </svg>
-            </a>
-            {% endif %}
-            <li class="navbar-item">
-                <a href="/">
-                <button class="navbar-link">Home</button>
-                </a>
-            </li>
-            <li class="navbar-item">
-                <a>
-                <button class="navbar-link">Categorias</button>
-            </a>
-                <ul class="dropdown-menu">
+{% block content %}
+<section class="featured-products" id="productos">
+    {% if user.is_authenticated and user.is_staff %}
+    <div class="create-button-container">
+        <a href="{% url 'crear_producto' %}" class="create-button">
+            Crear Producto
+        </a>
+    </div>
+    {% endif %}
+    
+    <section class="main-content">
+        <div class="sidebar" id="categorias" style="margin-top: 40px;">
+            <section class="category-title">
+                <div class="title-container">
+                    <h2 style="color:white">Categorías</h2>
+                    {% if user.is_authenticated and user.is_staff %}
+                        <a href="{% url 'crear_categoria' %}" class="create-button">Crear nueva categoría</a>
+                    {% endif %}
+                </div>
+            </section>
+            <!-- Listado de categorías -->
+            <section class="category-list">
+                <div class="category-grid">
                     {% for categoria in categorias %}
-                        <li><a href="/categorias/{{ categoria.id }}">{{ categoria.nombre }}</a></li>
+                    <div class="category-item">
+                        <a href="/categorias/{{ categoria.id }}" style="text-decoration: none;">
+                            <h3>{{ categoria.nombre }}</h3>
+                            <p>{{ categoria.descripcion|default:"Sin descripción" }}</p>
+                        </a>
+                        {% if user.is_authenticated and user.is_staff %}
+                        <div class="category-actions">
+                            <a href="{% url 'ver_actualizar_categoria' categoria.id %}" class="edit-button">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <form method="POST" action="{% url 'eliminar_categoria' categoria.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="delete-button" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                </button>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <p>No hay categorías disponibles.</p>
                     {% endfor %}
-                </ul>
-            </li>
-            <li class="navbar-item">
-                <a href="/productos">
-                <button class="navbar-link">Productos</button>
-                </a>
-            </li>
+                </div>
+            </section>
+        </div>
+    
+        <div class="content" id="productos">
             {% if user.is_authenticated and user.is_staff %}
-            <li class="navbar-item">
-                <a href="/categorias/crear">
-                <button class="navbar-link">Crear categoria</button>
-                </a>
-            </li>
+            <a href="{% url 'crear_producto' %}" class="create-button" >
+                Crear Producto
+            </a>
             {% endif %}
-            {% if user.is_authenticated and not user.is_staff %}
-            <li style="display: flex; align-items: center;">
-                <a href="/carrito">
-                    <i class="fas fa-shopping-cart" style="color: white;"></i>
-                </a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
-    <div class="container">
-        <!-- Título de la categoría -->
-        <section class="category-title">
-            <div class="title-container">
-                <h2>Productos en la categoría: {{ categoria.nombre }}</h2>
-                {% if user.is_authenticated and user.is_staff %}
-                <form method="POST" action="{% url 'eliminar_categoria' categoria.id %}" class="delete-form">
-                    {% csrf_token %}
-                    <button type="submit" class="delete-button" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </form>
-                <a href="{% url 'ver_actualizar_categoria' categoria.id %}">
-                    <i class="fas fa-edit"></i>
-                </a>
-                {% endif %}
+            <div style="margin-top: 50px;">
+                <h2 style="color:white">Productos en la categoría: {{ categoria.nombre }}</h2>
             </div>
-        </section>
-
-        <section class="featured-products" id="productos">
-            <div class="product-grid">
+            <div class="product-grid" id="product-grid" style="margin-top: 20px;">
                 {% for producto in productos %}
-                <div class="product">
+                <div class="product" data-name="{{ producto.nombre }}" data-price="{{ producto.precio }}" data-category="{{ producto.categoria.id }}">
                     <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
                         {% if producto.fotografia %}
-                        <img src="{{ producto.fotografia }}" alt="{{ producto.nombre }}">
+                        <img src="{{ producto.fotografia.url }}" style="width: 250px; height: 250px;" alt="{{ producto.nombre }}">
                         {% else %}
                         <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
                         {% endif %}
                         <h3>{{ producto.nombre }}</h3>
-                        <p>${{ producto.precio }}</p>
-                        <form action="{% url 'cart:cart_add' producto.id %}" method="post" style="display: inline;">
+                        <p>{{ producto.precio }}€</p>
+                        <form action="{% url 'cart:cart_add' producto.id 0 %}" method="post" style="display: inline;">
                             {% csrf_token %}
                             <button type="submit" class="add-to-cart-button">
                                 <i class="fas fa-cart-plus"></i> Añadir al carrito
                             </button>
                         </form>
+                        {% if user.is_authenticated and user.is_staff %}
+                        <div style="margin-top: 10px;">
+                            <a href="{% url 'actualizar_producto' producto.id %}" class="update-button">
+                                Actualizar Producto
+                            </a>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <a href="{% url 'eliminar_producto' producto.id %}" class="delete-button">
+                                Eliminar Producto
+                            </a>
+                        </div>
+                        {% endif %}
                     </a>
                 </div>
                 {% empty %}
-                <p>No hay productos disponibles en esta categoría.</p>
+                <p>No hay productos disponibles en este momento.</p>
                 {% endfor %}
             </div>
-        </section>
-    </div>
-</body>
-</html>
+        </div>
+    </section>
+</section>
+<script>
+    function mostrarEstadoPedido() {
+        const numero_factura = document.getElementById("numero-factura").value
+        fetch("/factura/numero_factura/" + numero_factura)
+            .then(data => data.json())
+            .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
+            .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
+    }
+    
+    function filterProducts() {
+        // Obtener valores de los filtros
+        const filterName = document.getElementById('filter-name').value.toLowerCase();
+        const filterPrice = parseFloat(document.getElementById('filter-price').value) || Infinity;
 
+        // Obtener todos los productos
+        const products = document.querySelectorAll('.product');
+
+        // Filtrar productos
+        products.forEach(product => {
+            const productName = product.getAttribute('data-name').toLowerCase();
+            const productPrice = parseFloat(product.getAttribute('data-price'));
+
+            // Verificar si el producto cumple con los filtros
+            const matchesName = productName.includes(filterName);
+            const matchesPrice = productPrice <= filterPrice;
+
+            // Mostrar u ocultar el producto según los filtros
+            if (matchesName && matchesPrice) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    }
+</script>
+<style>
+    .main-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.sidebar {
+    width: 25%;
+    height: 100vh; /* Hace que el sidebar ocupe toda la altura de la ventana */
+    top: 0; /* Fija el sidebar en la parte superior */
+    overflow-y: auto; /* Permite el scroll si las categorías ocupan más espacio */
+    background-color: #006e6f; /* Color de fondo para diferenciar */
+    padding: 20px;
+}
+
+.content {
+    width: 75%;
+    padding: 20px;
+}
+.sidebar {
+    width: 25%; /* Ancho del sidebar */
+    height: 100vh; /* Hace que ocupe toda la altura de la ventana */
+    top: 25px; /* Fija el sidebar en la parte superior */
+    overflow-y: auto; /* Permite el scroll si las categorías ocupan más espacio */
+    background-color: #006e6f; /* Color de fondo para diferenciar */
+    padding: 10px; /* Espaciado interno */
+    border-radius: 15px; /* Bordes redondeados */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil alrededor */
+    position: relative; /* Asegura que los elementos internos se posicionen correctamente */
+}
+
+.sidebar .category-title {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #fff; /* Línea debajo del título */
+}
+
+.sidebar .title-container h2 {
+    color: #fff;
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+.create-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #007d7c;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 1em;
+}
+
+.create-button:hover {
+    background-color: #006e6f; /* Cambio de color en hover */
+}
+
+.category-list {
+    margin-top: 20px;
+}
+
+.category-item {
+    background-color: #fff;
+    border-radius: 10px; /* Bordes redondeados para cada categoría */
+    margin-bottom: 15px; /* Espaciado entre las categorías */
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave en las tarjetas */
+    transition: transform 0.3s, box-shadow 0.3s; /* Efectos visuales */
+}
+
+.category-item:hover {
+    transform: translateY(-5px); /* Efecto de elevación al pasar el cursor */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Aumento de sombra en hover */
+}
+
+.category-item h3 {
+    color: #006e6f;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.category-item p {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.category-actions {
+    display: flex;
+    justify-content: space-between; /* Alinea los botones de acción de manera horizontal */
+    gap: 10px;
+}
+
+.edit-button, .delete-button {
+    background-color: #007d7c;
+    color: #fff;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.edit-button:hover {
+    background-color: #006e6f;
+}
+
+.delete-button:hover {
+    background-color: #b30000; /* Rojo en el hover para eliminar */
+}
+
+
+
+</style>
+{% endblock %}

@@ -33,14 +33,13 @@ def eliminar_producto(request, producto_id):
 def actualizar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     categorias = CategoriaProducto.objects.all()
-
     if request.method == 'POST':
         data = request.POST
         fotografia = request.FILES.get('fotografia')
         ProductoService.actualizar_producto(producto_id, data, fotografia)
         return redirect('detalle_producto', producto_id=producto.id)  # Cambia la redirección según tu necesidad
 
-    return render(request, 'Productos/actualizar_producto.html', {'producto': producto, 'categorias': categorias})
+    return render(request, 'Productos/actualizar_producto.html', {'producto': producto.to_dict(), 'categorias': categorias})
 
 def detalle_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
@@ -57,7 +56,7 @@ def crear_categoria_de_producto(request):
     if request.method == 'POST':
         data = request.POST
         categoriaProducto = ProductoService.crear_categoria_de_producto(data)
-        return redirect('lista_categorias')
+        return redirect('pagina_principal')
     else:
         categorias = CategoriaProducto.objects.all()
         return render(request, 'Productos/crear_categoria_producto.html',{'categorias': categorias} )
@@ -65,7 +64,7 @@ def crear_categoria_de_producto(request):
 @user_passes_test(lambda u: u.is_superuser)
 def eliminar_categoria_de_producto(request, categoria_de_producto_id):
     ProductoService.eliminar__categoria_de_producto(categoria_de_producto_id)
-    return redirect('lista_categorias')
+    return redirect('/')
 
 @user_passes_test(lambda u: u.is_superuser)
 def ver_actualizar_categoria_de_producto(request, categoria_de_producto_id):
@@ -76,7 +75,7 @@ def ver_actualizar_categoria_de_producto(request, categoria_de_producto_id):
 def actualizar_categoria_de_producto(request, categoria_de_producto_id):   
     data = request.POST
     ProductoService.actualizar_categoria_de_producto(categoria_de_producto_id, data)
-    return redirect('lista_categorias')
+    return redirect('pagina_principal')
 
 def lista_productos_de_categoria(request, categoria_id):
     categoria = get_object_or_404(CategoriaProducto, id=categoria_id)

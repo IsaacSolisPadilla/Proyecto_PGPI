@@ -1,4 +1,8 @@
 Tienda/migrations
+<<<<<<< HEAD
 **/__pycache__/
+=======
+**/__pycache__
+>>>>>>> origin/develop
 db.sqlite3
 myvenv/

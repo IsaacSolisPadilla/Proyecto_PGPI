@@ -1,3 +1,4 @@
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from Tienda.models import Producto
@@ -7,7 +8,7 @@ from .forms import CartAddProductForm
 
 
 @require_POST
-def cart_add(request, product_id):
+def cart_add(request, product_id, llevar_a_carrito):
     cart = Cart(request)
     product = get_object_or_404(Producto, id=product_id)
     form = CartAddProductForm(request.POST)
@@ -18,7 +19,10 @@ def cart_add(request, product_id):
             cantidad=cd["cantidad"] if cd["cantidad"] != None else 1,
             sobreescribir_cantidad=cd["sobreescribir"],
         )
-    return redirect('cart:cart_detail')
+    if llevar_a_carrito == 0:
+        return redirect('/')
+    else:
+        return redirect('cart:cart_detail')
 
 
 @require_POST
@@ -34,7 +38,7 @@ def cart_detail(request):
     
     for item in cart:
         item['update_quantity_form'] = CartAddProductForm(
-            initial={'cantidad': item['cantidad'], 'sobreescribir': True}
+            initial={'cantidad': item['cantidad'], 'sobreescribir': True}, stock = item["producto"].stock
         )
         
     return render(

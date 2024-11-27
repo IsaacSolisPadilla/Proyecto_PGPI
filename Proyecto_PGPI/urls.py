@@ -13,6 +13,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('cart/', include('cart.urls', namespace='cart')),
+    path('cart-count/', views.cart_count_view),
  
     path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
     path('login/', views.login_view, name='login'),
@@ -27,7 +28,7 @@ urlpatterns = [
     
     # path('crear-sesion-pago/', viewsFactura.crear_sesion_pago, name='crear_sesion_pago'),
     path('cancelar_factura', viewsFactura.cancelar_factura, name='cancelar_factura'),
-    path('procesar_pago/', viewsFactura.procesar_pago, name="procesar_pago"),
+    path('procesar_pago/<str:numero_factura>', viewsFactura.procesar_pago, name="procesar_pago"),
     
     path('productos/', views.lista_productos, name='lista_productos'),
     path('productos/<int:producto_id>/', producto_views.detalle_producto, name='detalle_producto'),

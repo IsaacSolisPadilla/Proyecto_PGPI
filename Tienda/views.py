@@ -6,7 +6,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.shortcuts import redirect, render
 from django.contrib.auth import login
 from django.shortcuts import render
-from .models import CategoriaProducto, Producto, Factura, LineaFactura
+
+from cart.cart import Cart
+from .models import CategoriaProducto, Datos, Producto, Factura, LineaFactura
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from .Producto.service import ProductoService
@@ -97,8 +99,9 @@ def register_view(request):
             first_name=first_name,
             last_name=last_name
         )
+        
         user.save()
-
+        Datos.objects.create(user=user)
         # Iniciar sesión automáticamente después del registro
         login(request, user)
 
@@ -111,3 +114,8 @@ def pagina_principal(request):
     productos = Producto.objects.all()
     categorias = CategoriaProducto.objects.all()
     return render(request, 'pagina_principal.html', {'productos': productos, 'categorias': categorias})
+ # O donde sea que esté implementada la lógica del carrito
+
+def cart_count_view(request):
+    cart = Cart(request)
+    return JsonResponse({"cart_count": len(cart)})
