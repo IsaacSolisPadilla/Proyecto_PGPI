@@ -63,10 +63,12 @@ def confirmar_factura(request):
         return render(request,'crear_factura.html',{'form': form, "cart":cart})
 
 # Cambiar para que se mande un email con los datos de la factura
-def enviar_email(request, factura, email):
+def enviar_email(request, factura: Factura, email):
     API_URL = "https://api.mailersend.com/v1/email"
     API_KEY = "mlsn.cf9c9e1d21853d61be415a671f70d41b3a57425e7b77d67343e19931884d7b9a"  # Reemplaza con tu API Key de MailerSend
-
+    factura.is_draft_mode = False
+    factura.save()
+    print(factura.to_dict())
     for ln in factura.lineas_factura.all():
         cantidad, producto = ln.cantidad, ln.producto
         producto.stock -= cantidad
