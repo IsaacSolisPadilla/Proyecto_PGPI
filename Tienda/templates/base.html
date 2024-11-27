@@ -35,6 +35,9 @@
                                     <button type="submit" class="dropdown-item">Cerrar Sesión</button>
                                 </form>
                             </div>
+                            {% if user.is_staff %}
+                            <a href="/facturas"><button class="navbar-link">Facturas</button></a>
+                            {% endif %}
                         </li>
                     {% else %}
                     <a href="{% url 'login' %}" class="cta" style="left: 1%; text-decoration: none;">
