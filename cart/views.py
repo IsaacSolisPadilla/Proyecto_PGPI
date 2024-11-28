@@ -21,7 +21,7 @@ def cart_add(request, product_id, llevar_a_carrito):
 
     if form.is_valid():
         cd = form.cleaned_data  
-        cantidad = int(request.POST.get("cantidad"))
+        cantidad = int(request.POST.get("cantidad")) if request.POST.get("cantidad") is not None else 0
         if cantidad == None:
             cantidad = 1
         if cantidad + cantidad_actual <= product.stock:
