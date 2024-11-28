@@ -1,50 +1,56 @@
 <div class="container">
-    <a href="{% url 'pagina_principal' %}" class="back-button">Volver a la pantalla principal</a>
-    <form class="form" method="post">
-        {% csrf_token %}
-        <p class="title">Registro</p>
-        
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
-        
-        <div class="flex">
-            <label>
-                <input required="" placeholder=" " type="text" name="first_name" class="input">
-                <span>Nombre</span>
-            </label>
-            <label>
-                <input required="" placeholder=" " type="text" name="last_name" class="input">
-                <span>Apellido</span>
-            </label>
-        </div>  
-                
-        <label>
-            <input required="" placeholder=" " type="email" name="email" class="input">
-            <span>Correo Electrónico</span>
-        </label> 
-        
-        <label>
-            <input required="" placeholder=" " type="text" name="username" class="input">
-            <span>Nombre de Usuario</span>
-        </label>
+    <div class="container1">
+        <div style="margin-left: 45px;">
+            <img src="/media/favicon.png" alt="Logo" style="width: 80px; height: 80px; display: inline-block; vertical-align: middle;">
+            <h1 style="display: inline-block; vertical-align: middle; color: white;">Aura Arcana</h1>
+        </div>
+        <a href="{% url 'pagina_principal' %}" class="back-button">Volver a la pantalla principal</a>
+        <form class="form" method="post">
+            {% csrf_token %}
+            <p class="title">Registro</p>
             
-        <label>
-            <input required="" placeholder=" " type="password" name="password" class="input">
-            <span>Contraseña</span>
-        </label>
-        <label>
-            <input required="" placeholder=" " type="password" name="confirm_password" class="input">
-            <span>Confirmar Contraseña</span>
-        </label>
-        
-        <button class="submit" type="submit">Registrarse</button>
-        <p class="signin">¿Ya tienes una cuenta? <a href="{% url 'login' %}">Iniciar Sesión</a></p>
-    </form>
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <div class="flex">
+                <label>
+                    <input required="" placeholder=" " type="text" name="first_name" class="input">
+                    <span>Nombre</span>
+                </label>
+                <label>
+                    <input required="" placeholder=" " type="text" name="last_name" class="input">
+                    <span>Apellido</span>
+                </label>
+            </div>  
+                    
+            <label>
+                <input required="" placeholder=" " type="email" name="email" class="input">
+                <span>Correo Electrónico</span>
+            </label> 
+            
+            <label>
+                <input required="" placeholder=" " type="text" name="username" class="input">
+                <span>Nombre de Usuario</span>
+            </label>
+                
+            <label>
+                <input required="" placeholder=" " type="password" name="password" class="input">
+                <span>Contraseña</span>
+            </label>
+            <label>
+                <input required="" placeholder=" " type="password" name="confirm_password" class="input">
+                <span>Confirmar Contraseña</span>
+            </label>
+            
+            <button class="submit" type="submit">Registrarse</button>
+            <p class="signin">¿Ya tienes una cuenta? <a href="{% url 'login' %}">Iniciar Sesión</a></p>
+        </form>
+    </div>
 </div>
 
 

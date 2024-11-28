@@ -1,55 +1,61 @@
 <div class="container">
-    <a href="{% url 'pagina_principal' %}" class="back-button">Volver a la pantalla principal</a>
-    <form class="form" method="post">
-        {% csrf_token %}
-        <p class="title">Crear Nuevo Usuario</p>
-        
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
-        
-        <div class="flex">
+    <div class="container1">
+        <div style="margin-left: 45px;">
+            <img src="/media/favicon.png" alt="Logo" style="width: 80px; height: 80px; display: inline-block; vertical-align: middle;">
+            <h1 style="display: inline-block; vertical-align: middle; color: white;">Aura Arcana</h1>
+        </div>
+        <a href="{% url 'pagina_principal' %}" class="back-button">Volver a la pantalla principal</a>
+        <form class="form" method="post">
+            {% csrf_token %}
+            <p class="title">Crear Nuevo Usuario</p>
+            
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <div class="flex">
+                <label>
+                    <input required="" placeholder=" " type="text" name="first_name" class="input">
+                    <span>Nombre</span>
+                </label>
+                <label>
+                    <input required="" placeholder=" " type="text" name="last_name" class="input">
+                    <span>Apellido</span>
+                </label>
+            </div>  
+                    
             <label>
-                <input required="" placeholder=" " type="text" name="first_name" class="input">
-                <span>Nombre</span>
-            </label>
+                <input required="" placeholder=" " type="email" name="email" class="input">
+                <span>Correo Electrónico</span>
+            </label> 
+            
             <label>
-                <input required="" placeholder=" " type="text" name="last_name" class="input">
-                <span>Apellido</span>
+                <input required="" placeholder=" " type="text" name="username" class="input">
+                <span>Nombre de Usuario</span>
             </label>
-        </div>  
                 
-        <label>
-            <input required="" placeholder=" " type="email" name="email" class="input">
-            <span>Correo Electrónico</span>
-        </label> 
-        
-        <label>
-            <input required="" placeholder=" " type="text" name="username" class="input">
-            <span>Nombre de Usuario</span>
-        </label>
+            <label>
+                <input required="" placeholder=" " type="password" name="password" class="input">
+                <span>Contraseña</span>
+            </label>
+            <label>
+                <input required="" placeholder=" " type="password" name="confirm_password" class="input">
+                <span>Confirmar Contraseña</span>
+            </label>
             
-        <label>
-            <input required="" placeholder=" " type="password" name="password" class="input">
-            <span>Contraseña</span>
-        </label>
-        <label>
-            <input required="" placeholder=" " type="password" name="confirm_password" class="input">
-            <span>Confirmar Contraseña</span>
-        </label>
-        
-        <label>
+            <label>
+                
+                <span style="display: flex; align-items: center;"><input type="checkbox" name="is_staff" class="input" style="width: auto; margin-right: 10px;">Asignarar como Administrador</span>
+            </label>
             
-            <span style="display: flex; align-items: center;"><input type="checkbox" name="is_staff" class="input" style="width: auto; margin-right: 10px;">Asignarar como Administrador</span>
-        </label>
-        
-        <button class="submit" type="submit">Crear Usuario</button>
-        <a href="{% url 'user_list' %}" class="cancel" style="text-decoration: none; text-align: center;">Volver a la lista de usuarios</a>
-    </form>
+            <button class="submit" type="submit">Crear Usuario</button>
+            <a href="{% url 'user_list' %}" class="cancel" style="text-decoration: none; text-align: center;">Volver a la lista de usuarios</a>
+        </form>
+    </div>
 </div>
 
 <style>

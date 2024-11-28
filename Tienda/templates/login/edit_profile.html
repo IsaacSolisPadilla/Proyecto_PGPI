@@ -1,58 +1,64 @@
 <div class="container">
-    <a href="{% url 'pagina_principal' %}" class="back-button">Volver a la pantalla principal</a>
-    <form class="form" method="post">
-        <p class="title">Editar Perfil</p>
-        {% csrf_token %}
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <p>{{ message }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        <div class="flex">
-            <label>
-                <input required="" placeholder=" " type="text" name="first_name" class="input"
-                    value="{{ profile_form.first_name.value }}">
-                <span>Nombre</span>
-            </label>
-            <label>
-                <input required="" placeholder=" " type="text" name="last_name" class="input"
-                    value="{{ profile_form.last_name.value }}">
-                <span>Apellido</span>
-            </label>
+    <div class="container1">
+        <div style="margin-left: 45px;">
+            <img src="/media/favicon.png" alt="Logo" style="width: 80px; height: 80px; display: inline-block; vertical-align: middle;">
+            <h1 style="display: inline-block; vertical-align: middle; color: white;">Aura Arcana</h1>
         </div>
+        <a href="{% url 'pagina_principal' %}" class="back-button">Volver a la pantalla principal</a>
+        <form class="form" method="post">
+            <p class="title">Editar Perfil</p>
+            {% csrf_token %}
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
 
-        <label>
-            <input required="" placeholder=" " type="email" name="email" class="input"
-                value="{{ profile_form.email.value }}">
-            <span>Correo Electrónico</span>
-        </label>
+            <div class="flex">
+                <label>
+                    <input required="" placeholder=" " type="text" name="first_name" class="input"
+                        value="{{ profile_form.first_name.value }}">
+                    <span>Nombre</span>
+                </label>
+                <label>
+                    <input required="" placeholder=" " type="text" name="last_name" class="input"
+                        value="{{ profile_form.last_name.value }}">
+                    <span>Apellido</span>
+                </label>
+            </div>
 
-        <label>
-            <input required="" placeholder=" " type="text" name="username" class="input"
-                value="{{ profile_form.username.value }}">
-            <span>Nombre de Usuario</span>
-        </label>
+            <label>
+                <input required="" placeholder=" " type="email" name="email" class="input"
+                    value="{{ profile_form.email.value }}">
+                <span>Correo Electrónico</span>
+            </label>
 
-        {{datos_form.as_custom}}
+            <label>
+                <input required="" placeholder=" " type="text" name="username" class="input"
+                    value="{{ profile_form.username.value }}">
+                <span>Nombre de Usuario</span>
+            </label>
 
-        <label>
-            <input placeholder=" " type="password" name="old_password" class="input">
-            <span>Contraseña actual</span>
-        </label>
-        <label>
-            <input placeholder=" " type="password" name="new_password1" class="input">
-            <span>Nueva contraseña</span>
-        </label>
-        <label>
-            <input placeholder=" " type="password" name="new_password2" class="input">
-            <span>Confirmar nueva contraseña</span>
-        </label>
+            {{datos_form.as_custom}}
 
-        <button class="submit" type="submit">Guardar cambios</button>
-    </form>
+            <label>
+                <input placeholder=" " type="password" name="old_password" class="input">
+                <span>Contraseña actual</span>
+            </label>
+            <label>
+                <input placeholder=" " type="password" name="new_password1" class="input">
+                <span>Nueva contraseña</span>
+            </label>
+            <label>
+                <input placeholder=" " type="password" name="new_password2" class="input">
+                <span>Confirmar nueva contraseña</span>
+            </label>
+
+            <button class="submit" type="submit">Guardar cambios</button>
+        </form>
+    </div>
 </div>
 
 <style>
