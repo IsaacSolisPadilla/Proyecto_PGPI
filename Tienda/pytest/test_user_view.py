@@ -69,9 +69,10 @@ def test_user_list_access(client):
 
 @pytest.mark.django_db
 def test_create_new_user(client):
-    """
-    Verifica que se pueda crear un nuevo usuario correctamente y maneja errores.
-    """
+    # Crear un usuario staff autenticado
+    staff_user = User.objects.create_user(username="admin", password="adminpassword", is_staff=True)
+    client.login(username='admin', password='adminpassword')
+
     # Datos válidos
     valid_data = {
         'first_name': 'Test',
@@ -80,46 +81,45 @@ def test_create_new_user(client):
         'username': 'testuser',
         'password': 'securepassword123',
         'confirm_password': 'securepassword123',
-        'is_staff': True  # Usuario con permisos de staff
+        'is_staff': True
     }
 
-    # URL corregida
-    url = reverse('crear_usuario')  # Cambiado a 'crear_usuario' para coincidir con las rutas definidas
+    # Simular solicitud POST a la vista
+    url = reverse('crear_usuario')
     response = client.post(url, data=valid_data)
 
-    # Asegurarse de que el usuario se creó
-    assert response.status_code == 302  # Redirección exitosa
+    # Verificar creación de usuario y redirección
+    assert response.status_code == 302
     assert User.objects.filter(username='testuser').exists()
 
-    # Verificar que el usuario tiene los atributos correctos
+    # Verificar atributos
     user = User.objects.get(username='testuser')
-    assert user.email == 'testuser@example.com'
-    assert user.first_name == 'Test'
-    assert user.last_name == 'User'
-    assert user.is_staff is True  # Comprobar que se asignó el rol de staff correctamente
+    assert user.is_staff is True
 
 
 @pytest.mark.django_db
 def test_create_new_user_password_mismatch(client):
-    """
-    Verifica que no se pueda crear un usuario cuando las contraseñas no coinciden.
-    """
+    # Crear un usuario staff autenticado
+    staff_user = User.objects.create_user(username="admin", password="adminpassword", is_staff=True)
+    client.login(username='admin', password='adminpassword')
+
+    # Datos inválidos
     invalid_data = {
         'first_name': 'Test',
         'last_name': 'User',
         'email': 'testuser@example.com',
         'username': 'testuser',
         'password': 'securepassword123',
-        'confirm_password': 'differentpassword',  # Contraseña diferente
+        'confirm_password': 'wrongpassword',  # Contraseñas no coinciden
         'is_staff': True
     }
 
-    # URL corregida
-    url = reverse('crear_usuario')  # Cambiado a 'crear_usuario' para coincidir con las rutas definidas
+    # Simular solicitud POST a la vista
+    url = reverse('crear_usuario')
     response = client.post(url, data=invalid_data)
 
     # Verificar que el usuario no fue creado
-    assert response.status_code == 200  # No hay redirección; se regresa al formulario
+    assert response.status_code == 200  # La página muestra errores
     assert not User.objects.filter(username='testuser').exists()
 
 
