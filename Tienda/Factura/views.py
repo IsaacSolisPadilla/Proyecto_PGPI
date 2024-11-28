@@ -62,17 +62,80 @@ def confirmar_factura(request):
         form = FormFactura(user=request.user)
         return render(request,'crear_factura.html',{'form': form, "cart":cart})
 
+def html_de_factura(factura):
+    listado_productos_html = """
+    <ul>
+        <li>
+            <span><strong>Cantidad</strong></span>
+            <span class="item-name"><strong>Producto</strong></span>
+            <span class="item-price"><strong>Precio</strong></span>
+            <span class="item-total"><strong>Total</strong></span>
+        </li>
+    """
+    for ln in factura.lineas_factura.all():
+        cantidad, producto = ln.cantidad, ln.producto
+        listado_productos_html += f"""
+        <li>
+            <span >{cantidad}</span>
+            <span class="item-name">{producto.nombre}</span>
+            <span class="item-price">{producto.precio} €</span>
+            <span class="item-total">{ln.precio_linea()} €</span>
+        </li>
+        """
+    listado_productos_html += "</ul>"
+    style = """
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        li strong {
+            font-weight: bold;
+        }
+        .item-name {
+            width: 60%;
+        }
+        .item-price, .item-total {
+            width: 15%;
+            text-align: right;
+        }
+        .total-row {
+            font-weight: bold;
+            border-top: 2px solid #000;
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+    </style>
+    """
+    return listado_productos_html + style
 # Cambiar para que se mande un email con los datos de la factura
 def enviar_email(request, factura: Factura, email):
     API_URL = "https://api.mailersend.com/v1/email"
     API_KEY = "mlsn.cf9c9e1d21853d61be415a671f70d41b3a57425e7b77d67343e19931884d7b9a"  # Reemplaza con tu API Key de MailerSend
     factura.is_draft_mode = False
     factura.save()
-    print(factura.to_dict())
+    listado_productos = ""
+    
     for ln in factura.lineas_factura.all():
         cantidad, producto = ln.cantidad, ln.producto
         producto.stock -= cantidad
+        listado_productos += f" • {cantidad} {producto.nombre} {producto.precio} {ln.precio_linea()}€\n"
         producto.save()
+    
     # Asunto y contenido del correo
     subject = "Factura de tu compra"
     text = f"""
@@ -86,6 +149,8 @@ Aquí están los detalles de tu pedido:
 - Fecha del pedido: {factura.fecha_pedido.strftime('%d/%m/%Y %H:%M:%S')}
 - Dirección de envío: {factura.direccion}
 
+{listado_productos}
+
 Gracias por confiar en nosotros. Si tienes alguna pregunta, no dudes en contactarnos.
 
 Saludos,
@@ -97,6 +162,7 @@ El equipo de tu tienda
             <p>Hola {factura.nombre} {factura.apellidos},</p>
             <p>Gracias por tu compra. El precio total de tu factura es <strong>{factura.precio_total()}€</strong>.</p>
             <p>Aquí están los detalles de tu pedido:</p>
+            {html_de_factura(factura)}
             <ul>
                 <li>Número de factura: {factura.numero_factura}</li>
                 <li>Fecha del pedido: {factura.fecha_pedido.strftime('%d/%m/%Y %H:%M:%S')}</li>
