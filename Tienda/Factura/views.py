@@ -64,68 +64,37 @@ def confirmar_factura(request):
 
 def html_de_factura(factura):
     listado_productos_html = """
-    <ul>
-        <li>
-            <span><strong>Cantidad</strong></span>
-            <span class="item-name"><strong>Producto</strong></span>
-            <span class="item-price"><strong>Precio</strong></span>
-            <span class="item-total"><strong>Total</strong></span>
-        </li>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+            <tr style="background-color: #f8f8f8; text-align: left; border-bottom: 2px solid #ddd;">
+                <th style="padding: 8px; border-bottom: 1px solid #ddd;">Cantidad</th>
+                <th style="padding: 8px; border-bottom: 1px solid #ddd;">Producto</th>
+                <th style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">Precio</th>
+                <th style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">Total</th>
+            </tr>
+        </thead>
+        <tbody>
     """
     for ln in factura.lineas_factura.all():
         cantidad, producto = ln.cantidad, ln.producto
         listado_productos_html += f"""
-        <li>
-            <span >{cantidad}</span>
-            <span class="item-name">{producto.nombre}</span>
-            <span class="item-price">{producto.precio} €</span>
-            <span class="item-total">{ln.precio_linea()} €</span>
-        </li>
+        <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{cantidad}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">{producto.nombre}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">{producto.precio} €</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">{ln.precio_linea()} €</td>
+        </tr>
         """
-    listado_productos_html += "</ul>"
-    style = """
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            line-height: 1.6;
-            margin: 20px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            width: 100%;
-        }
-        li {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #ddd;
-        }
-        li strong {
-            font-weight: bold;
-        }
-        .item-name {
-            width: 60%;
-        }
-        .item-price, .item-total {
-            width: 15%;
-            text-align: right;
-        }
-        .total-row {
-            font-weight: bold;
-            border-top: 2px solid #000;
-            margin-top: 10px;
-            padding-top: 10px;
-        }
-    </style>
+    listado_productos_html += """
+        </tbody>
+    </table>
     """
-    return listado_productos_html + style
+    return listado_productos_html
+
 # Cambiar para que se mande un email con los datos de la factura
 def enviar_email(request, factura: Factura, email):
     API_URL = "https://api.mailersend.com/v1/email"
-    API_KEY = "mlsn.cf9c9e1d21853d61be415a671f70d41b3a57425e7b77d67343e19931884d7b9a"  # Reemplaza con tu API Key de MailerSend
+    API_KEY = "mlsn.5064fa8def5d34991649294ce407417438efb5e24978bb8445508bfa1f754369"  # Reemplaza con tu API Key de MailerSend
     factura.is_draft_mode = False
     factura.save()
     listado_productos = ""
@@ -154,29 +123,44 @@ Aquí están los detalles de tu pedido:
 Gracias por confiar en nosotros. Si tienes alguna pregunta, no dudes en contactarnos.
 
 Saludos,
-El equipo de tu tienda
+El equipo de Aura Arcana
     """
     html = f"""
-    <html>
-        <body>
-            <p>Hola {factura.nombre} {factura.apellidos},</p>
-            <p>Gracias por tu compra. El precio total de tu factura es <strong>{factura.precio_total()}€</strong>.</p>
-            <p>Aquí están los detalles de tu pedido:</p>
-            {html_de_factura(factura)}
-            <ul>
-                <li>Número de factura: {factura.numero_factura}</li>
-                <li>Fecha del pedido: {factura.fecha_pedido.strftime('%d/%m/%Y %H:%M:%S')}</li>
-                <li>Dirección de envío: {factura.direccion}</li>
-            </ul>
-            <p>Gracias por confiar en nosotros. Si tienes alguna pregunta, no dudes en contactarnos.</p>
-            <p>Saludos,<br>El equipo de tu tienda</p>
-        </body>
-    </html>
-    """
+        <html>
+            <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: #f9f9f9;">
+                <div style="max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <header style="text-align: center; margin-bottom: 20px;">
+                        <h1 style="margin: 0; font-size: 20px; color: #333;">Factura de tu compra</h1>
+                        <p style="margin: 5px 0; font-size: 16px; color: #333;">Coste Total: {factura.precio_total()} €</p>
+                        <p style="margin: 5px 0; font-size: 14px; color: #666;">Número de factura: {factura.numero_factura}</p>
+                        <p style="margin: 0; font-size: 14px; color: #666;">Fecha: {factura.fecha_pedido.strftime('%d/%m/%Y %H:%M:%S')}</p>
+                    </header>
+                    <section>
+                        <h2 style="font-size: 18px; color: #333; margin-bottom: 10px;">Detalles del pedido</h2>
+                        {html_de_factura(factura)}
+                        <p style="margin-top: 10px; font-size: 14px; color: #333;">
+                            <strong>Dirección de envío:</strong><br>
+                            {factura.direccion}
+                        </p>
+                        <p style="margin-top: 10px; font-size: 14px; color: #333;">
+                            <strong>Nota:</strong> El coste total incluye <strong>10 €</strong> en gastos de envío.
+                        </p>
+                    </section>
+                    <footer style="margin-top: 20px; text-align: center; font-size: 12px; color: #888;">
+                        <p>Gracias por confiar en nosotros.</p>
+                        <p>El equipo de tu tienda</p>
+                    </footer>
+                </div>
+            </body>
+        </html>
+        """
+
+
+
 
     # Configuración del remitente y destinatario
     sender = {
-        "email": "mailgun@trial-pq3enl6wmmm42vwr.mlsender.net",  # Cambia a tu dominio verificado si es necesario
+        "email": "mailgun@trial-3zxk54vxdj1gjy6v.mlsender.net",  # Cambia a tu dominio verificado si es necesario
         "name": "Aura Arcana"
     }
     recipients = [{"email": email}]
