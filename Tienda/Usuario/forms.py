@@ -63,3 +63,16 @@ class EditPasswordForm(PasswordChangeForm):
                 self.add_error('new_password2', 'Este campo es obligatorio.')
 
         return cleaned_data
+
+class EditUserForm(forms.ModelForm):
+    is_staff = forms.BooleanField(required=False, label='Es Staff', widget=forms.CheckboxInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'is_staff']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
