@@ -83,7 +83,7 @@ class Factura(models.Model):
     
     def precio_total(self):
         precio_total = sum(map(lambda linea: linea.precio_linea(), self.lineas_factura.all()))
-        if precio_total < 50:
+        if precio_total < 50 and self.forma_entrega == "Envío":
             precio_total += Factura.COSTE_ENVIO
         return precio_total
 
