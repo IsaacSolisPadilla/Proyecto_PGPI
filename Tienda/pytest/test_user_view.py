@@ -44,3 +44,106 @@ def test_edit_profile(client):
 
     # Verificar que se haya mostrado un mensaje de éxito
     messages = list(get_messages(response.wsgi_request))
+
+@pytest.mark.django_db
+def test_user_list_access(client):
+    """
+    Verifica que solo los usuarios con permisos de administrador puedan acceder a la lista de usuarios.
+    """
+    # Crear usuarios
+    admin_user = User.objects.create_user(username="admin", password="adminpassword", is_staff=True)
+    regular_user = User.objects.create_user(username="user", password="userpassword", is_staff=False)
+
+    # Verificar acceso para usuario regular
+    client.login(username='user', password='userpassword')
+    url = reverse('user_list')
+    response = client.get(url)
+    assert response.status_code == 403  # Prohibido
+
+    # Verificar acceso para administrador
+    client.logout()
+    client.login(username='admin', password='adminpassword')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert 'users' in response.context
+
+@pytest.mark.django_db
+def test_create_new_user(client):
+    """
+    Verifica que se pueda crear un nuevo usuario correctamente y maneja errores.
+    """
+    # Datos válidos
+    valid_data = {
+        'first_name': 'Test',
+        'last_name': 'User',
+        'email': 'testuser@example.com',
+        'username': 'testuser',
+        'password': 'securepassword123',
+        'confirm_password': 'securepassword123',
+        'is_staff': True  # Usuario con permisos de staff
+    }
+
+    # URL corregida
+    url = reverse('crear_usuario')  # Cambiado a 'crear_usuario' para coincidir con las rutas definidas
+    response = client.post(url, data=valid_data)
+
+    # Asegurarse de que el usuario se creó
+    assert response.status_code == 302  # Redirección exitosa
+    assert User.objects.filter(username='testuser').exists()
+
+    # Verificar que el usuario tiene los atributos correctos
+    user = User.objects.get(username='testuser')
+    assert user.email == 'testuser@example.com'
+    assert user.first_name == 'Test'
+    assert user.last_name == 'User'
+    assert user.is_staff is True  # Comprobar que se asignó el rol de staff correctamente
+
+
+@pytest.mark.django_db
+def test_create_new_user_password_mismatch(client):
+    """
+    Verifica que no se pueda crear un usuario cuando las contraseñas no coinciden.
+    """
+    invalid_data = {
+        'first_name': 'Test',
+        'last_name': 'User',
+        'email': 'testuser@example.com',
+        'username': 'testuser',
+        'password': 'securepassword123',
+        'confirm_password': 'differentpassword',  # Contraseña diferente
+        'is_staff': True
+    }
+
+    # URL corregida
+    url = reverse('crear_usuario')  # Cambiado a 'crear_usuario' para coincidir con las rutas definidas
+    response = client.post(url, data=invalid_data)
+
+    # Verificar que el usuario no fue creado
+    assert response.status_code == 200  # No hay redirección; se regresa al formulario
+    assert not User.objects.filter(username='testuser').exists()
+
+
+@pytest.mark.django_db
+def test_delete_user(client, django_user_model):
+    """
+    Verifica que se pueda eliminar un usuario correctamente.
+    """
+    # Crear un usuario de prueba
+    user = django_user_model.objects.create_user(
+        username='testuser', password='securepassword123', email='testuser@example.com'
+    )
+
+    # Crear un usuario staff autenticado para eliminar al usuario
+    staff_user = django_user_model.objects.create_user(
+        username='adminuser', password='securepassword123', is_staff=True
+    )
+    client.login(username='adminuser', password='securepassword123')
+
+    # URL para eliminar al usuario
+    url = reverse('delete_user', args=[user.id])
+    response = client.post(url)
+
+    # Asegurarse de que el usuario fue eliminado
+    assert response.status_code == 302  # Redirección exitosa
+    assert not User.objects.filter(username='testuser').exists()
+
