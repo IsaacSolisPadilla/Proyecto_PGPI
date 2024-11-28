@@ -18,7 +18,7 @@ class TestFdsa():
   def teardown_method(self, method):
     self.driver.quit()
   
-  def test_fdsa(self):
+  def test_login(self):
     self.driver.get("http://localhost:8000/")
     self.driver.set_window_size(1510, 695)
     self.driver.find_element(By.CSS_SELECTOR, "span:nth-child(1)").click()
