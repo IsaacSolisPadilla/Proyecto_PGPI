@@ -10,7 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-class TestFdsa():
+class TestLogin():
   def setup_method(self, method):
     self.driver = webdriver.Firefox()
     self.vars = {}
@@ -20,10 +20,10 @@ class TestFdsa():
   
   def test_login(self):
     self.driver.get("http://localhost:8000/")
-    self.driver.set_window_size(1510, 695)
-    self.driver.find_element(By.CSS_SELECTOR, "span:nth-child(1)").click()
-    self.driver.find_element(By.NAME, "email").click()
-    self.driver.find_element(By.NAME, "email").send_keys("grupo17@gmail.com")
+    self.driver.set_window_size(1510, 697)
+    self.driver.find_element(By.CSS_SELECTOR, ".cta > span").click()
+    self.driver.find_element(By.CSS_SELECTOR, "label:nth-child(3) > span").click()
+    self.driver.find_element(By.NAME, "email").send_keys("isaacsolis@gmail.com")
     self.driver.find_element(By.NAME, "password").send_keys("1234")
     self.driver.find_element(By.CSS_SELECTOR, ".submit").click()
   

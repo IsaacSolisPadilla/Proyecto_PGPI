@@ -10,7 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-class TestEditarProducto():
+class TestVisualizarPedidos():
   def setup_method(self, method):
     self.driver = webdriver.Firefox()
     self.vars = {}
@@ -18,21 +18,23 @@ class TestEditarProducto():
   def teardown_method(self, method):
     self.driver.quit()
   
-  def test_editarProducto(self):
+  def test_visualizarPedidos(self):
     self.driver.get("http://localhost:8000/")
-    self.driver.set_window_size(1510, 695)
-    self.driver.find_element(By.CSS_SELECTOR, "span:nth-child(1)").click()
+    self.driver.set_window_size(1510, 697)
+    self.driver.find_element(By.CSS_SELECTOR, ".cta > span").click()
     self.driver.find_element(By.NAME, "email").click()
     self.driver.find_element(By.NAME, "email").send_keys("grupo17@gmail.com")
     self.driver.find_element(By.NAME, "password").send_keys("1234")
     self.driver.find_element(By.CSS_SELECTOR, ".submit").click()
-    self.driver.find_element(By.CSS_SELECTOR, ".product:nth-child(4) .update-button").click()
-    self.driver.find_element(By.ID, "descripcion").click()
-    self.driver.find_element(By.ID, "descripcion").click()
-    element = self.driver.find_element(By.ID, "descripcion")
-    actions = ActionChains(self.driver)
-    actions.double_click(element).perform()
-    self.driver.find_element(By.ID, "descripcion").click()
-    self.driver.find_element(By.ID, "descripcion").send_keys("Esta es una descripcion de prueba en la edicion")
-    self.driver.find_element(By.CSS_SELECTOR, "div > button").click()
+
+        # Espera y maneja el pop-up (alerta) que aparece después de iniciar sesión
+    WebDriverWait(self.driver, 10).until(
+        expected_conditions.alert_is_present()
+    )
+    alert = self.driver.switch_to.alert
+    alert.accept()  # Hace clic en "OK" en el pop-up
+    
+    self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(3) > .navbar-link").click()
+    self.driver.find_element(By.CSS_SELECTOR, ".factura-item-Pendiente").click()
+    self.driver.find_element(By.LINK_TEXT, "Volver").click()
   

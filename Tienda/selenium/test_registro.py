@@ -20,8 +20,8 @@ class TestRegistro():
   
   def test_registro(self):
     self.driver.get("http://localhost:8000/")
-    self.driver.set_window_size(1510, 695)
-    self.driver.find_element(By.CSS_SELECTOR, "span:nth-child(1)").click()
+    self.driver.set_window_size(1510, 697)
+    self.driver.find_element(By.CSS_SELECTOR, ".cta > span").click()
     self.driver.find_element(By.LINK_TEXT, "Registrarse").click()
     self.driver.find_element(By.NAME, "first_name").click()
     self.driver.find_element(By.NAME, "first_name").send_keys("Isaac")
