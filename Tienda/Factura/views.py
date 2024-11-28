@@ -4,10 +4,12 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponseRedirect
 from Tienda.models import Factura, LineaFactura, Producto
 from Tienda.forms import AdminFormFactura, FormFactura
+from django.contrib.auth.decorators import user_passes_test
 import requests
 from cart.cart import Cart
 
 # Modificación de facturas para cambiar el estado de la factura por parte de admin
+@user_passes_test(lambda u: u.is_superuser)
 def modificar_factura(request, factura_id):
     factura = get_object_or_404(Factura, id=factura_id)
     if request.method == 'POST':
@@ -22,9 +24,10 @@ def modificar_factura(request, factura_id):
         form = AdminFormFactura(instance=factura, is_disable=True)
         return render(request, 'factura.html', {"form": form})
     
+
 def obtener_factura_por_numero_factura(request, numero_factura):
     return JsonResponse({"estado_factura": get_object_or_404(Factura, numero_factura=numero_factura).estado} ,status=200)
- 
+
 def confirmar_factura(request):
     cart = Cart(request)
     if(request.method == "POST"):
@@ -60,10 +63,16 @@ def confirmar_factura(request):
         return render(request,'crear_factura.html',{'form': form, "cart":cart})
 
 # Cambiar para que se mande un email con los datos de la factura
-def enviar_email(request, factura, email):
+def enviar_email(request, factura: Factura, email):
     API_URL = "https://api.mailersend.com/v1/email"
     API_KEY = "mlsn.cf9c9e1d21853d61be415a671f70d41b3a57425e7b77d67343e19931884d7b9a"  # Reemplaza con tu API Key de MailerSend
-
+    factura.is_draft_mode = False
+    factura.save()
+    print(factura.to_dict())
+    for ln in factura.lineas_factura.all():
+        cantidad, producto = ln.cantidad, ln.producto
+        producto.stock -= cantidad
+        producto.save()
     # Asunto y contenido del correo
     subject = "Factura de tu compra"
     text = f"""

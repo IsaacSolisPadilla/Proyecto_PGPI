@@ -1,14 +1,22 @@
-<h1 style="text-align: center; font-family: Arial, sans-serif; color: #2c3e50;">Lista de Facturas</h1>
-<div class="facturas-container">
-    <ul class="facturas-list">
-        {% for factura in facturas %}
-        <li class="factura-item-{{factura.estado}}" onclick="window.location.href = '/factura/' + '{{factura.id}}'">
-            <span class="factura-num">Nº {{ factura.numero_factura }}</span>
-            <span class="factura-estado">Estado: {{ factura.estado }}</span>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
+{% extends 'base.html' %}
+
+{% block title %}Lista de Facturas{% endblock %}
+
+{% block content %}
+<section class="main-content3 featured-products" id="productos">
+    <h1 style="text-align: center; font-family: Arial, sans-serif; color: white;">Lista de Facturas</h1>
+    <div class="facturas-container">
+        <ul class="facturas-list">
+            {% for factura in facturas %}
+            <li class="factura-item-{{factura.estado}}" onclick="window.location.href = '/factura/' + '{{factura.id}}'">
+                <span class="factura-num">Nº {{ factura.numero_factura }}</span>
+                <span class="factura-estado">Estado: {{ factura.estado }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</section>
 
 <script>
     function verFactura(factura_id){ 
@@ -107,3 +115,4 @@
 
 
 </style>
+{% endblock %}

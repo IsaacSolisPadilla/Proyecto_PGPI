@@ -51,7 +51,7 @@ def detalle_carro_pago(request, producto_id):
     return render(request, 'Productos/carro.html', {'producto': producto})
 
 #=====
-
+@user_passes_test(lambda u: u.is_superuser)
 def crear_categoria_de_producto(request):
     if request.method == 'POST':
         data = request.POST

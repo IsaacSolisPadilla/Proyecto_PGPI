@@ -96,7 +96,8 @@ class Factura(models.Model):
             "estado": self.estado,
             "metodo_de_pago": self.metodo_de_pago,
             "precio_total": self.precio_total(),
-            "session_id_stripe": self.session_id_stripe  # Incluir el session_id en el diccionario
+            "session_id_stripe": self.session_id_stripe,
+            "is_draft_mode": self.is_draft_mode
         }
 
 

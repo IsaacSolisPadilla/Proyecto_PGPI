@@ -49,10 +49,10 @@ class AdminFormFactura(forms.ModelForm):
         match self.instance.estado:
             case "Pendiente":
                 self.fields['estado'].choices = [("Pendiente","Pendiente"), ("Enviado","Enviado")]
-                readonly('nombre', 'apellidos', 'direccion', 'metodo_de_pago')
+                readonly('nombre', 'apellidos', 'email', 'direccion', 'metodo_de_pago')
             case "Enviado":
                 self.fields['estado'].choices = [("Enviado","Enviado"), ("Entregado","Entregado")]
-                readonly('nombre', 'apellidos', 'direccion', 'metodo_de_pago')
+                readonly('nombre', 'apellidos', 'email', 'direccion', 'metodo_de_pago')
             case "Entregado":
                 disabled(*self.fields)
         
