@@ -12,13 +12,22 @@ def cart_add(request, product_id, llevar_a_carrito):
     cart = Cart(request)
     product = get_object_or_404(Producto, id=product_id)
     form = CartAddProductForm(request.POST)
+
+    cantidad_actual = cart.cart.get(str(product_id))
+    if cantidad_actual is None:
+        cantidad_actual = 0
+    else:
+        cantidad_actual = cantidad_actual["cantidad"]
+
     if form.is_valid():
-        cd = form.cleaned_data
-        cantidad = cd["cantidad"] if cd["cantidad"] != None else 1
-        if cantidad <= product.stock:
+        cd = form.cleaned_data  
+        cantidad = int(request.POST.get("cantidad"))
+        if cantidad == None:
+            cantidad = 1
+        if cantidad + cantidad_actual <= product.stock:
             cart.add(
                 producto=product,
-                cantidad=cd["cantidad"] if cd["cantidad"] != None else 1,
+                cantidad=cantidad,
                 sobreescribir_cantidad=cd["sobreescribir"],
             )
     if llevar_a_carrito == 0:
