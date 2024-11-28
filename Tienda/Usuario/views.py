@@ -1,8 +1,13 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.http import HttpResponseForbidden
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from .forms import EditDatosUserForm, EditProfileForm, EditPasswordForm
+from django.contrib.auth.models import User
+from .forms import EditUserForm
+from django.contrib.auth.decorators import user_passes_test
 
 @login_required
 def edit_profile(request):
@@ -37,3 +42,84 @@ def edit_profile(request):
         'password_form': password_form,
         'datos_form': datos_form
     })
+
+@login_required
+def user_list(request):
+    # Verifica si el usuario logueado tiene is_staff=True
+    if not request.user.is_staff:
+        return HttpResponseForbidden("No tienes permiso para ver esta página.")
+    
+    # Obtén todos los usuarios
+    users = User.objects.all()
+    return render(request, 'login/user_list.html', {'users': users})
+
+def user_is_staff(user):
+    return user.is_staff
+
+@user_passes_test(user_is_staff)
+def edit_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)  # Obtener al usuario por su ID
+    if request.method == 'POST':
+        form = EditUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()  # Guardar los cambios en el usuario
+            messages.success(request, 'Usuario actualizado exitosamente.')
+            return redirect('user_list')  # Redirigir a la lista de usuarios o a la vista deseada
+        else:
+            messages.error(request, 'Por favor, corrige los errores en el formulario.')
+    else:
+        form = EditUserForm(instance=user)  # Cargar el formulario con los datos actuales del usuario
+
+    return render(request, 'login/edit_user.html', {
+        'form': form,
+        'user': user
+    })
+
+def create_new_user(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        is_staff = request.POST.get('is_staff')  # Obtén el valor del checkbox
+
+        if password == confirm_password:
+            try:
+                user = User.objects.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name)
+                
+                # Asigna el rol de staff si el checkbox está marcado
+                if is_staff:
+                    user.is_staff = True
+                else:
+                    user.is_staff = False
+
+                user.save()
+
+                messages.success(request, "¡Te has registrado correctamente!")
+                return redirect('user_list')  # Redirige a la página principal
+
+            except Exception as e:
+                messages.error(request, "Hubo un error al registrarse: " + str(e))
+        else:
+            messages.error(request, "Las contraseñas no coinciden.")
+    
+    return render(request, 'login/create_new_user.html')
+
+
+def delete_user(request, user_id):
+    # Verificar si el usuario está autenticado y tiene permisos para eliminar usuarios
+    if not request.user.is_authenticated or not request.user.is_staff:
+        messages.error(request, "No tienes permiso para eliminar usuarios.")
+        return redirect('user_list')  # Redirige a la lista de usuarios si no tiene permisos
+    
+    user = get_object_or_404(User, id=user_id)
+    
+    try:
+        user.delete()
+        messages.success(request, f"El usuario {user.username} ha sido eliminado exitosamente.")
+    except Exception as e:
+        messages.error(request, f"Hubo un error al intentar eliminar al usuario: {e}")
+
+    return redirect('user_list')

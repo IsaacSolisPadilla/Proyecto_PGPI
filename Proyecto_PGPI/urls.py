@@ -20,6 +20,10 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('register/', views.register_view, name='register'),
     path('editar-perfil/', usuario_views.edit_profile, name='edit_profile'),
+    path('lista-usuarios/', usuario_views.user_list, name='user_list'),
+    path('editar-usuario/<int:user_id>/', usuario_views.edit_user, name='edit_user'),
+    path('crear-usuario/', usuario_views.create_new_user, name='crear_usuario'),
+    path('eliminar_usuario/<int:user_id>/', usuario_views.delete_user, name='delete_user'),
 
     path('facturas/', views.lista_facturas, name='lista_facturas'),
     path('factura/<int:factura_id>/', viewsFactura.modificar_factura, name="factura_admin"),

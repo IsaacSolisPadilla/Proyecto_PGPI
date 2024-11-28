@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Usuario{% endblock %}
+
+{% block content %}
+<section class="main-content3 featured-products" id="editar-usuario">
+    <h1 class="title">Editar Usuario</h1>
+    <div class="form-container">
+        <a href="{% url 'user_list' %}" class="back-button">Volver a la lista de usuarios</a>
+        <form class="form" method="post">
+            {% csrf_token %}
+            
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="input-group">
+                <label>
+                    <input required="" placeholder=" " type="text" name="first_name" class="input" value="{{ form.first_name.value }}">
+                    <span>Nombre</span>
+                </label>
+                <label>
+                    <input required="" placeholder=" " type="text" name="last_name" class="input" value="{{ form.last_name.value }}">
+                    <span>Apellido</span>
+                </label>
+            </div>
+
+            <label>
+                <input required="" placeholder=" " type="email" name="email" class="input" value="{{ form.email.value }}">
+                <span>Correo Electrónico</span>
+            </label>
+
+            <label>
+                <input required="" placeholder=" " type="text" name="username" class="input" value="{{ form.username.value }}">
+                <span>Nombre de Usuario</span>
+            </label>
+
+            <label>
+                <input placeholder=" " type="password" name="password" class="input">
+                <span>Contraseña (si deseas cambiarla)</span>
+            </label>
+
+            <!-- Campo is_staff (checkbox) -->
+            <label>
+                
+                <span style="display: flex;"><input type="checkbox" name="is_staff" class="input" {% if form.is_staff.value %}checked{% endif %}>Es Staff</span>
+            </label>
+
+            <button class="submit" type="submit">Guardar cambios</button>
+        </form>
+    </div>
+</section>
+
+<style>
+    .form-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 30px;
+        border-radius: 8px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .title {
+        text-align: center;
+        font-size: 28px;
+        color: #006e6f;
+        font-weight: 600;
+        margin-bottom: 30px;
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .input-group {
+        display: flex;
+        width: 100%;
+        gap: 6px;
+    }
+
+    .form label {
+        position: relative;
+        width: 100%;
+    }
+
+    .form label .input {
+        width: 100%;
+        padding: 10px 10px 20px 10px;
+        outline: 0;
+        border: 1px solid rgba(105, 105, 105, 0.397);
+        border-radius: 10px;
+    }
+    .form label .input + span {
+        position: absolute;
+        left: 10px;
+        top: 15px;
+        color: grey;
+        font-size: 0.9em;
+        cursor: text;
+        transition: 0.3s ease;
+    }
+    .form label .input:placeholder-shown + span {
+        top: 15px;
+        font-size: 0.9em;
+    }
+    .form label .input:focus + span,.form label .input:valid + span {
+        top: 30px;
+        font-size: 0.7em;
+        font-weight: 600;
+    }
+    .form label .input:valid + span {
+        color: green;
+    }
+
+    .submit {
+        border: none;
+        outline: none;
+        background-color: #006e6f;
+        padding: 10px;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 16px;
+        transform: .3s ease;
+    }
+
+    .submit:hover {
+        background-color: #005a5b;
+    }
+
+    .messages {
+        color: red;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #ffffff;
+        color: #006e6f;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .back-button:hover {
+        background-color: #005a5b;
+        color: #ffffff;
+    }
+</style>
+{% endblock %}
