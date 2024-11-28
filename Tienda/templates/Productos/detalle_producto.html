@@ -35,12 +35,24 @@
         <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
 
         {% if producto.stock > 0 %}
-        <form action="{% url 'cart:cart_add' producto.id 1 %}" method="post" style="display: inline;">
+        <form action="{% url 'cart:cart_add' producto.id 0 %}" method="post" style="display: inline;">
             {% csrf_token %}
-            <div style="display: flex; justify-content: center;">   
-                <button type="submit" class="add-to-cart-button">
-                    <i class="fas fa-cart-plus"></i> Añadir al carrito
-                </button>
+            <div style="justify-items: center;">
+                <div style="display: flex; flex-direction: row;">
+                    <button type="submit" class="add-to-cart-button">
+                        <i class="fas fa-cart-plus" style="margin-left: 7px;"></i> 
+                    </button>
+                    <input style="width: 60px; height: 20px; margin-top: 12px; margin-left: 5px;" 
+                            type="number" 
+                            name="cantidad"
+                            min="1" 
+                            max="{{ producto.stock }}" 
+                            value="1"
+                            required>
+                </div> 
+                
+                
+                
             </div>
         </form>
         {% else %}
