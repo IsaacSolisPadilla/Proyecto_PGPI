@@ -44,11 +44,11 @@
         
         <label>
             
-            <span style="display: flex;"><input type="checkbox" name="is_staff" class="input">Asignar como Staff</span>
+            <span style="display: flex; align-items: center;"><input type="checkbox" name="is_staff" class="input" style="width: auto; margin-right: 10px;">Asignarar como Administrador</span>
         </label>
         
         <button class="submit" type="submit">Crear Usuario</button>
-        <p class="signin">¿Ya tienes una cuenta? <a href="{% url 'login' %}">Iniciar Sesión</a></p>
+        <a href="{% url 'user_list' %}" class="cancel" style="text-decoration: none; text-align: center;">Volver a la lista de usuarios</a>
     </form>
 </div>
 
@@ -189,6 +189,21 @@
     .submit {
         border: none;
         outline: none;
+        background-color: #4caf50;
+        padding: 10px;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 16px;
+        transform: .3s ease;
+    }
+
+    .submit:hover {
+        background-color: #397d3b;
+    }
+
+    .cancel {
+        border: none;
+        outline: none;
         background-color: #006e6f;
         padding: 10px;
         border-radius: 10px;
@@ -196,8 +211,9 @@
         font-size: 16px;
         transform: .3s ease;
     }
-    .submit:hover {
-        background-color: #006e6f;
+
+    .cancel:hover {
+        background-color: #005a5b;
     }
 
     @keyframes pulse {

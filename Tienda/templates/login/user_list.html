@@ -15,6 +15,7 @@
     <div class="usuarios-container">
         <ul class="usuarios-list">
             {% for user in users %}
+            {% if user.id != request.user.id %}
             <li class="usuario-item-{% if user.is_staff %}Admin{% else %}Cliente{% endif %}" 
                 onclick="window.location.href = '/editar-usuario/' + '{{user.id}}'">
                 <span class="usuario-nombre">{{ user.username }}</span>
@@ -22,6 +23,14 @@
                 <span class="usuario-rol">Rol: {% if user.is_staff %}Administrador{% else %}Cliente{% endif %}</span>
                 <a href="{% url 'delete_user' user.id %}" class="delete-button" onclick="return confirm('¿Estás seguro de que quieres eliminar este usuario?')">Eliminar</a>
             </li>
+            {% endif %}
+            {% if user.id == request.user.id %}
+            <li class="usuario-item-{% if user.is_staff %}Admin{% else %}Cliente{% endif %}" >
+                <span class="usuario-nombre">{{ user.username }}</span>
+                <span class="usuario-email">{{ user.email }}</span>
+                <span class="usuario-rol">Rol: {% if user.is_staff %}Administrador{% else %}Cliente{% endif %}</span>
+            </li>
+            {% endif %}
             {% endfor %}
         </ul>
     </div>

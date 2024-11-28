@@ -66,7 +66,6 @@ def edit_user(request, user_id):
         form = EditUserForm(request.POST, instance=user)
         if form.is_valid():
             form.save()  # Guardar los cambios en el usuario
-            messages.success(request, 'Usuario actualizado exitosamente.')
             return redirect('user_list')  # Redirigir a la lista de usuarios o a la vista deseada
         else:
             messages.error(request, 'Por favor, corrige los errores en el formulario.')
@@ -104,7 +103,6 @@ def create_new_user(request):
 
                 user.save()
 
-                messages.success(request, "¡Te has registrado correctamente!")
                 return redirect('user_list')  # Redirige a la página principal
 
             except Exception as e:
@@ -128,7 +126,6 @@ def delete_user(request, user_id):
     
     try:
         user.delete()
-        messages.success(request, f"El usuario {user.username} ha sido eliminado exitosamente.")
     except Exception as e:
         messages.error(request, f"Hubo un error al intentar eliminar al usuario: {e}")
 

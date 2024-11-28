@@ -3,10 +3,10 @@
 {% block title %}Editar Usuario{% endblock %}
 
 {% block content %}
-<section class="main-content3 featured-products" id="editar-usuario">
-    <h1 class="title">Editar Usuario</h1>
+<section class="main-content2 featured-products" id="editar-usuario">
+    <h1 class="title" style="color: white;">Editar Usuario</h1>
     <div class="form-container">
-        <a href="{% url 'user_list' %}" class="back-button">Volver a la lista de usuarios</a>
+        
         <form class="form" method="post">
             {% csrf_token %}
             
@@ -19,38 +19,35 @@
             {% endif %}
 
             <div class="input-group">
-                <label>
-                    <input required="" placeholder=" " type="text" name="first_name" class="input" value="{{ form.first_name.value }}">
-                    <span>Nombre</span>
+                <label >
+                    <span>Nombre</span> 
+                    <input required="" placeholder=" " type="text" name="first_name" readonly="readonly" value="{{ form.first_name.value }}">
+                    
                 </label>
                 <label>
-                    <input required="" placeholder=" " type="text" name="last_name" class="input" value="{{ form.last_name.value }}">
                     <span>Apellido</span>
+                    <input required="" placeholder=" " type="text" name="last_name" readonly="readonly" value="{{ form.last_name.value }}">
                 </label>
             </div>
 
             <label>
-                <input required="" placeholder=" " type="email" name="email" class="input" value="{{ form.email.value }}">
-                <span>Correo Electrónico</span>
+                <span>Correo Electrónico</span><br>
+                <input required="" placeholder=" " type="text" name="email" readonly="readonly" value="{{ form.email.value }}">
             </label>
 
             <label>
-                <input required="" placeholder=" " type="text" name="username" class="input" value="{{ form.username.value }}">
                 <span>Nombre de Usuario</span>
-            </label>
-
-            <label>
-                <input placeholder=" " type="password" name="password" class="input">
-                <span>Contraseña (si deseas cambiarla)</span>
+                <input required="" placeholder=" " type="text" name="username" readonly="readonly" value="{{ form.username.value }}">
             </label>
 
             <!-- Campo is_staff (checkbox) -->
             <label>
                 
-                <span style="display: flex;"><input type="checkbox" name="is_staff" class="input" {% if form.is_staff.value %}checked{% endif %}>Es Staff</span>
+                <span style="display: flex; align-items: center;"><input type="checkbox" name="is_staff" class="input" style="width: auto; margin-right: 10px;" {% if form.is_staff.value %}checked{% endif %}>Es Administrador</span>
             </label>
 
             <button class="submit" type="submit">Guardar cambios</button>
+            <a href="{% url 'user_list' %}" class="cancel" style="text-decoration: none; text-align: center;">Volver a la lista de usuarios</a>
         </form>
     </div>
 </section>
@@ -122,7 +119,7 @@
     .submit {
         border: none;
         outline: none;
-        background-color: #006e6f;
+        background-color: #4caf50;
         padding: 10px;
         border-radius: 10px;
         color: #fff;
@@ -131,6 +128,21 @@
     }
 
     .submit:hover {
+        background-color: #397d3b;
+    }
+
+    .cancel {
+        border: none;
+        outline: none;
+        background-color: #006e6f;
+        padding: 10px;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 16px;
+        transform: .3s ease;
+    }
+
+    .cancel:hover {
         background-color: #005a5b;
     }
 
