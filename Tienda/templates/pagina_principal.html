@@ -3,8 +3,24 @@
 {% block title %}Aura Arcana{% endblock %}
 
 {% block content %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alerta = document.getElementById("alerta");
+        if (alerta) {
+            alert(alerta.textContent);
+        }
+    });
+</script>
+
 <section class="featured-products" id="productos">
     
+    {% if messages %}
+    {% for message in messages %}
+        <div id="alerta" style="display:none;">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
     {% if user.is_authenticated and user.is_staff %}
     <div class="create-button-container">
         <a href="{% url 'crear_producto' %}" class="create-button">

@@ -1,6 +1,6 @@
-from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
+from django.contrib import messages
 from Tienda.models import Producto
 
 from .cart import Cart
@@ -30,8 +30,11 @@ def cart_add(request, product_id, llevar_a_carrito):
                 cantidad=cantidad,
                 sobreescribir_cantidad=cd["sobreescribir"],
             )
+        else:
+            messages.error(request, f"El limite de cantidad del producto {product.nombre} es {product.stock}")
     if llevar_a_carrito == 0:
-        return redirect('/')
+        referer_url = request.META.get('HTTP_REFERER', '')
+        return redirect(referer_url)
     else:
         return redirect('cart:cart_detail')
 
