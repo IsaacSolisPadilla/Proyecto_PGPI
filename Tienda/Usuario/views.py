@@ -56,8 +56,11 @@ def user_list(request):
 def user_is_staff(user):
     return user.is_staff
 
-@user_passes_test(user_is_staff)
+@login_required
 def edit_user(request, user_id):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("No tienes permiso para ver esta página.")
+    
     user = get_object_or_404(User, id=user_id)  # Obtener al usuario por su ID
     if request.method == 'POST':
         form = EditUserForm(request.POST, instance=user)
@@ -75,7 +78,11 @@ def edit_user(request, user_id):
         'user': user
     })
 
+@login_required
 def create_new_user(request):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("No tienes permiso para ver esta página.")
+    
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -107,8 +114,11 @@ def create_new_user(request):
     
     return render(request, 'login/create_new_user.html')
 
-
+@login_required
 def delete_user(request, user_id):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("No tienes permiso para ver esta página.")
+    
     # Verificar si el usuario está autenticado y tiene permisos para eliminar usuarios
     if not request.user.is_authenticated or not request.user.is_staff:
         messages.error(request, "No tienes permiso para eliminar usuarios.")
