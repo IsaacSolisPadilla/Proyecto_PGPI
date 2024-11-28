@@ -125,8 +125,15 @@ USE_TZ = True
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'  # Redirige a la página principal
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
+# Si estás en desarrollo, asegúrate de tener esto configurado:
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# Si estás en producción, asegúrate de tener el siguiente campo:
+STATIC_ROOT = BASE_DIR / "staticfiles"
 # Media files (uploaded images, etc.)
 MEDIA_URL = '/media/'  # URL base para servir archivos multimedia
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Ruta del sistema de archivos para almacenar archivos multimedia
