@@ -65,21 +65,35 @@
             <div class="product-grid" id="product-grid" style="margin-top: 20px;">
                 {% for producto in productos %}
                 <div class="product" data-name="{{ producto.nombre }}" data-price="{{ producto.precio }}" data-category="{{ producto.categoria.id }}">
-                    <a href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
+                    <div>
                         {% if producto.fotografia %}
-                        <img src="{{ producto.fotografia.url }}" style="width: 250px; height: 250px;" alt="{{ producto.nombre }}">
-                        {% else %}
-                        <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
-                        {% endif %}
-                        <h3>{{ producto.nombre }}</h3>
-                        <p>{{ producto.precio }}€</p>
+                        <a  href="{% url 'detalle_producto' producto.id %}" style="text-decoration: none;">
+                            <img src="{{ producto.fotografia.url }}" style="width: 250px; height: 250px;" alt="{{ producto.nombre }}">
+                            {% else %}
+                            <img src="https://via.placeholder.com/300x300?text=No+Image" alt="Imagen no disponible">
+                            {% endif %}
+                            <h3>{{ producto.nombre }}</h3>
+                            <p>{{ producto.precio }}€</p>
+                        </a>
                         {% if producto.stock > 0 %}
                         <form action="{% url 'cart:cart_add' producto.id 0 %}" method="post" style="display: inline;">
                             {% csrf_token %}
                             <div style="justify-items: center;">
-                                <button type="submit" class="add-to-cart-button">
-                                    <i class="fas fa-cart-plus"></i> Añadir al carrito
-                                </button>
+                                <div style="display: flex; flex-direction: row;">
+                                    <button type="submit" class="add-to-cart-button">
+                                        <i class="fas fa-cart-plus" style="margin-left: 7px;"></i> 
+                                    </button>
+                                    <input style="width: 60px; height: 20px; margin-top: 12px; margin-left: 5px;" 
+                                           type="number" 
+                                           name="cantidad"
+                                           min="1" 
+                                           max="{{ producto.stock }}" 
+                                           value="1"
+                                           required>
+                                </div> 
+                                
+                                
+                                
                             </div>
                         </form>
                         {% else %}
@@ -97,7 +111,7 @@
                             </a>
                         </div>
                         {% endif %}
-                    </a>
+                    </div>
                 </div>
                 {% empty %}
                 <p>No hay productos disponibles en este momento.</p>
@@ -107,6 +121,7 @@
     </section>    
 </section>  
 <script>
+
     function filterProducts() {
         // Obtener valores de los filtros
         const filterName = document.getElementById('filter-name').value.toLowerCase();
@@ -141,6 +156,7 @@
     }
 </script>
 <style>
+
     .main-content {
     display: flex;
     flex-direction: row;
