@@ -15,7 +15,6 @@ def modificar_factura(request, factura_id):
     if request.method == 'POST':
         data = request.POST.copy()
         data['metodo_de_pago'] = factura.metodo_de_pago  # Forzar el valor original
-        form = AdminFormFactura(data, instance=factura)
         form = AdminFormFactura(request.POST, instance=factura)
         if form.is_valid():
             form.save()
@@ -45,6 +44,7 @@ def confirmar_factura(request):
                 factura.email = data["email"]
                 factura.metodo_de_pago = data["metodo_de_pago"]
                 factura.estado = "Pendiente"
+                factura.forma_entrega = data["forma_entrega"]
                 factura.save()
                 for item in cart:
                     linea_factura = LineaFactura()

@@ -337,7 +337,8 @@
             "nombre": "Daniel",
             "apellidos": "Cancio Trigo",
             "is_draft_mode": "False",
-            "email": "fernando.diaz@example.com"
+            "email": "fernando.diaz@example.com",
+            "forma_entrega": "Envío"
         }
     },
     {
@@ -356,7 +357,8 @@
             "apellidos": "Gonzalez",
             "is_draft_mode": "False",
             "email": "carlos.ramos@example.com"
-        }
+        },
+        "forma_entrega": "Presencialmente"
     },
     {
         "model": "Tienda.lineafactura",

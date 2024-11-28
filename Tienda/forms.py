@@ -27,11 +27,14 @@ class FormFactura(forms.Form):
     metodo_de_pago = forms.TypedChoiceField(
         choices=[("Contrareembolso", "Contrareembolso"), ("Pasarela","Pasarela de pago")]
     )
+    forma_entrega = forms.TypedChoiceField(
+        choices=[("Presencialmente", "Presencialmente"), ("Envío","Envío")]
+    )
 
 class AdminFormFactura(forms.ModelForm):
     class Meta:
         model = Factura
-        fields = ['nombre', 'apellidos', 'direccion', 'email', 'metodo_de_pago', 'estado']
+        fields = ['nombre', 'apellidos', 'direccion', 'email', 'metodo_de_pago', 'forma_entrega', 'estado']
 
     # Personalizando el campo 'email' para que sea 'disabled'
     def __init__(self, *args, **kwargs):
@@ -45,14 +48,16 @@ class AdminFormFactura(forms.ModelForm):
             for atr in args:
                 self.fields[atr].widget.attrs['disabled'] = 'disabled'
 
+        self.fields['email'].widget = forms.TextInput()
         self.fields['metodo_de_pago'].widget = forms.TextInput()
+        self.fields['forma_entrega'].widget = forms.TextInput()
         match self.instance.estado:
             case "Pendiente":
                 self.fields['estado'].choices = [("Pendiente","Pendiente"), ("Enviado","Enviado")]
-                readonly('nombre', 'apellidos', 'email', 'direccion', 'metodo_de_pago')
+                readonly('nombre', 'apellidos', 'email', 'direccion', 'metodo_de_pago', 'forma_entrega')
             case "Enviado":
                 self.fields['estado'].choices = [("Enviado","Enviado"), ("Entregado","Entregado")]
-                readonly('nombre', 'apellidos', 'email', 'direccion', 'metodo_de_pago')
+                readonly('nombre', 'apellidos', 'email', 'direccion', 'metodo_de_pago', 'forma_entrega')
             case "Entregado":
                 disabled(*self.fields)
         

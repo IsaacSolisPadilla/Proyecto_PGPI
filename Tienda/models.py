@@ -64,6 +64,10 @@ class Factura(models.Model):
         max_length=50,
         choices=[("Pendiente", "Pendiente"), ("Enviado","Enviado") ,("Entregado","Entregado")]
     )
+    forma_entrega = models.CharField(
+        max_length=50,
+        choices=[("Presencialmente", "Presencialmente"), ("Envío","Envío")]
+    )
     metodo_de_pago = models.CharField(
         max_length=50,
         choices=[("Contrareembolso", "Contrareembolso"), ("Pasarela","Pasarela de pago")],
@@ -95,6 +99,7 @@ class Factura(models.Model):
             "direccion": self.direccion,
             "estado": self.estado,
             "metodo_de_pago": self.metodo_de_pago,
+            "forma_entrega": self.forma_entrega,
             "precio_total": self.precio_total(),
             "session_id_stripe": self.session_id_stripe,
             "is_draft_mode": self.is_draft_mode

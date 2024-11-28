@@ -14,11 +14,13 @@ def cart_add(request, product_id, llevar_a_carrito):
     form = CartAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
-        cart.add(
-            producto=product,
-            cantidad=cd["cantidad"] if cd["cantidad"] != None else 1,
-            sobreescribir_cantidad=cd["sobreescribir"],
-        )
+        cantidad = cd["cantidad"] if cd["cantidad"] != None else 1
+        if cantidad <= product.stock:
+            cart.add(
+                producto=product,
+                cantidad=cd["cantidad"] if cd["cantidad"] != None else 1,
+                sobreescribir_cantidad=cd["sobreescribir"],
+            )
     if llevar_a_carrito == 0:
         return redirect('/')
     else:
