@@ -29,9 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost','aura-arcana.onrender.com','*']
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://aura-arcana.onrender.com",
-    'localhost',
-    '127.0.0.1'
+    "https://aura-arcana.onrender.com"
 ]
 
 # Application definition
