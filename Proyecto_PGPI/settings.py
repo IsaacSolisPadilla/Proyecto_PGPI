@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-v8-ec*es737c)7he1=y+j_dqtdt&&2p7&_wp8q7ywk9j8_)x+2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','aura-arcana.onrender.com']
 
 
 # Application definition
@@ -138,7 +138,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = '/media/'  # URL base para servir archivos multimedia
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Ruta del sistema de archivos para almacenar archivos multimedia
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0','aura-arcana.onrender.com']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
