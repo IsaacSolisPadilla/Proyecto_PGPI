@@ -139,7 +139,7 @@
     function filterProducts() {
         // Obtener valores de los filtros
         const filterName = document.getElementById('filter-name').value.toLowerCase();
-        const filterPrice = parseFloat(document.getElementById('filter-price').value) || Infinity;
+        const filterPrice = parseFloat(document.getElementById('filter-price').value.replace(',','.')) || Infinity;
 
         // Obtener todos los productos
         const products = document.querySelectorAll('.product');
@@ -147,7 +147,7 @@
         // Filtrar productos
         products.forEach(product => {
             const productName = product.getAttribute('data-name').toLowerCase();
-            const productPrice = parseFloat(product.getAttribute('data-price'));
+            const productPrice = parseFloat(product.getAttribute('data-price').replace(',','.'));
 
             // Verificar si el producto cumple con los filtros
             const matchesName = productName.includes(filterName);
