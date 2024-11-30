@@ -1,14 +1,16 @@
-{% extends 'base.html' %}
-
-{% block title %}Editar Usuario{% endblock %}
-
-{% block content %}
-<section class="main-content2 featured-products" id="editar-usuario">
-    <h1 class="title" style="color: white;">Editar Usuario</h1>
-    <div class="form-container">
-        
+{% load static %}
+<link rel="icon" type="image/x-ico" href="{% static 'myfavicon.ico' %}">
+<title>Editar Usuario</title>
+<div class="container">
+    <div class="container1">
+        <div style="margin-left: 45px;">
+            <img src="/media/favicon.png" alt="Logo" style="width: 80px; height: 80px; display: inline-block; vertical-align: middle;">
+            <h1 style="display: inline-block; vertical-align: middle; color: white;">Aura Arcana</h1>
+        </div>
+        <a href="{% url 'pagina_principal' %}" class="back-button">Volver a la pantalla principal</a>
         <form class="form" method="post">
             {% csrf_token %}
+            <p class="title">Editar Usuario</p>
             
             {% if messages %}
                 <div class="messages">
@@ -17,66 +19,132 @@
                     {% endfor %}
                 </div>
             {% endif %}
-
+            
             <div class="input-group">
                 <label >
                     <span>Nombre</span> 
-                    <input required="" placeholder=" " type="text" name="first_name" readonly="readonly" value="{{ form.first_name.value }}">
+                    <input required="" placeholder=" " type="text" name="first_name" class="input" readonly="readonly" value="{{ form.first_name.value }}">
                     
                 </label>
                 <label>
                     <span>Apellido</span>
-                    <input required="" placeholder=" " type="text" name="last_name" readonly="readonly" value="{{ form.last_name.value }}">
+                    <input required="" placeholder=" " type="text" name="last_name" class="input" readonly="readonly" value="{{ form.last_name.value }}">
                 </label>
             </div>
 
             <label>
                 <span>Correo Electrónico</span><br>
-                <input required="" placeholder=" " type="text" name="email" readonly="readonly" value="{{ form.email.value }}">
+                <input required="" placeholder=" " type="text" name="email" class="input" readonly="readonly" value="{{ form.email.value }}">
             </label>
 
             <label>
                 <span>Nombre de Usuario</span>
-                <input required="" placeholder=" " type="text" name="username" readonly="readonly" value="{{ form.username.value }}">
+                <input required="" placeholder=" " type="text" name="username" class="input" readonly="readonly" value="{{ form.username.value }}">
             </label>
 
-            <!-- Campo is_staff (checkbox) -->
-            <label>
                 
+            <label>
                 <span style="display: flex; align-items: center;"><input type="checkbox" name="is_staff" class="input" style="width: auto; margin-right: 10px;" {% if form.is_staff.value %}checked{% endif %}>Es Administrador</span>
             </label>
-
+            
             <button class="submit" type="submit">Guardar cambios</button>
             <a href="{% url 'user_list' %}" class="cancel" style="text-decoration: none; text-align: center;">Volver a la lista de usuarios</a>
         </form>
     </div>
-</section>
+</div>
 
 <style>
-    .form-container {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 30px;
-        border-radius: 8px;
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
         background-color: #ffffff;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        color: #006e6f;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .back-button:hover {
+        background-color: #005a5b;
+        color: #ffffff;
     }
 
-    .title {
-        text-align: center;
-        font-size: 28px;
-        color: #006e6f;
-        font-weight: 600;
-        margin-bottom: 30px;
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background: #006e6f; /* Fallback for browsers that don't support gradients */
+        background: linear-gradient(
+            135deg,
+            #006e6f 25%,
+            #008c8e 25%,
+            #008c8e 50%,
+            #006e6f 50%,
+            #006e6f 75%,
+            #008c8e 75%,
+            #008c8e
+        );
+        background-size: 40px 40px;
     }
 
     .form {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 10px;
+        max-width: 350px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 20px;
+        position: relative;
     }
 
-    .input-group {
+    .title {
+        font-size: 28px;
+        color: #006e6f;
+        font-weight: 600;
+        letter-spacing: -1px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding-left: 30px;
+    }
+    .title::before,.title::after {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        left: 0px;
+        background-color: #006e6f;
+    }
+    .title::before {
+        width: 18px;
+        height: 18px;
+        background-color: #006e6f;
+    }
+    .title::after {
+        width: 18px;
+        height: 18px;
+        animation: pulse 1s linear infinite;
+    }
+    .message, .signin {
+        color: rgba(88, 87, 87, 0.822);
+        font-size: 14px;
+    }
+    .signin {
+        text-align: center;
+    }
+    .signin a {
+        color: #006e6f;
+    }
+    .signin a:hover {
+        text-decoration: underline #006e6f;
+    }
+
+    .flex {
         display: flex;
         width: 100%;
         gap: 6px;
@@ -84,7 +152,6 @@
 
     .form label {
         position: relative;
-        width: 100%;
     }
 
     .form label .input {
@@ -94,6 +161,7 @@
         border: 1px solid rgba(105, 105, 105, 0.397);
         border-radius: 10px;
     }
+
     .form label .input + span {
         position: absolute;
         left: 10px;
@@ -103,15 +171,18 @@
         cursor: text;
         transition: 0.3s ease;
     }
+
     .form label .input:placeholder-shown + span {
         top: 15px;
         font-size: 0.9em;
     }
+
     .form label .input:focus + span,.form label .input:valid + span {
         top: 30px;
         font-size: 0.7em;
         font-weight: 600;
     }
+
     .form label .input:valid + span {
         color: green;
     }
@@ -146,27 +217,36 @@
         background-color: #005a5b;
     }
 
+    @keyframes pulse {
+        from {
+            transform: scale(0.9);
+            opacity: 1;
+        }
+        to {
+            transform: scale(1.8);
+            opacity: 0;
+        }
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #f3e7e9, #e3eeff);
+        color: #333;
+    }
+
     .messages {
         color: red;
-        margin-bottom: 15px;
+        font-size: 14px;
         text-align: center;
+        margin-bottom: 10px;
+    }
+    .input-group {
+        display: flex;
+        width: 100%;
+        gap: 6px;
     }
 
-    .back-button {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        background-color: #ffffff;
-        color: #006e6f;
-        padding: 10px 15px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .back-button:hover {
-        background-color: #005a5b;
-        color: #ffffff;
-    }
+    
 </style>
-{% endblock %}
