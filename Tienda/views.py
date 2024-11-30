@@ -12,6 +12,8 @@ from .models import CategoriaProducto, Datos, Producto, Factura, LineaFactura
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from .Producto.service import ProductoService
+
+import re
 # from .forms import PedidoCreateForm
 
 def pagina_principal(request):
@@ -75,7 +77,11 @@ def register_view(request):
         if not first_name or not last_name or not email or not username or not password or not confirm_password:
             messages.error(request, 'Todos los campos son obligatorios.')
             return redirect('register')
-
+        
+        if not re.match(r"^[\w.@+-]+\Z", username):
+            messages.error(request, 'El nombre de usuario puede contener únicamente letras, números y los caracteres @/./+/-/_') 
+            return redirect('register')
+        
         # Validar si el correo electrónico ya existe
         if User.objects.filter(email=email).exists():
             messages.error(request, 'El correo electrónico ya está en uso.')
