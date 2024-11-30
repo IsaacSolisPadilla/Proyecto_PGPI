@@ -11,6 +11,8 @@ class ProductoService:
 
     @staticmethod
     def crear_producto(data, fotografia):
+        if fotografia == None:
+            fotografia = 'productos/defaultImage.jpeg'
         categoria = CategoriaProducto.objects.get(id=data.get('categoria'))
         producto = Producto(
             nombre=data.get('nombre'),
