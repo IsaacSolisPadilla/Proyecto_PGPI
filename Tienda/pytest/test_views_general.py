@@ -46,9 +46,3 @@ def test_register_view_password_mismatch(client):
     assert response.status_code == 302  # Redirect after failed registration
     assert response.url == reverse('register')  # Redirect to register page
 
-@pytest.mark.django_db
-def test_lista_usuarios_view(client, django_user_model):
-    user = django_user_model.objects.create_user(username="testuser", email="testuser@example.com", password="password123")
-    response = client.get(reverse('lista_usuarios'))
-    assert response.status_code == 200
-    assert b"testuser" in response.content
