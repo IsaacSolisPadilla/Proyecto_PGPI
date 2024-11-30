@@ -1,4 +1,5 @@
 import json
+import re
 from typing import List
 from django.contrib import messages
 from django.http import JsonResponse
@@ -76,6 +77,10 @@ def register_view(request):
             messages.error(request, 'Todos los campos son obligatorios.')
             return redirect('register')
 
+        if not re.match(r"^[\w.@+-]+\Z", username):
+            messages.error(request, 'El nombre de usuario puede contener únicamente letras, números y los caracteres @/./+/-/_') 
+            return redirect('register')
+        
         # Validar si el correo electrónico ya existe
         if User.objects.filter(email=email).exists():
             messages.error(request, 'El correo electrónico ya está en uso.')
