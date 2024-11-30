@@ -20,21 +20,21 @@ class TestVisualizarPedidos():
   
   def test_visualizarPedidos(self):
     self.driver.get("http://localhost:8000/")
-    self.driver.set_window_size(1510, 697)
-    self.driver.find_element(By.CSS_SELECTOR, ".cta > span").click()
+    self.driver.set_window_size(1550, 830)
+    self.driver.find_element(By.LINK_TEXT, "Iniciar Sesión").click()
     self.driver.find_element(By.NAME, "email").click()
     self.driver.find_element(By.NAME, "email").send_keys("grupo17@gmail.com")
     self.driver.find_element(By.NAME, "password").send_keys("1234")
     self.driver.find_element(By.CSS_SELECTOR, ".submit").click()
-
-        # Espera y maneja el pop-up (alerta) que aparece después de iniciar sesión
+    # Espera y maneja el pop-up (alerta) que aparece después de iniciar sesión
     WebDriverWait(self.driver, 10).until(
-        expected_conditions.alert_is_present()
-    )
+          expected_conditions.alert_is_present()
+        )
     alert = self.driver.switch_to.alert
     alert.accept()  # Hace clic en "OK" en el pop-up
-    
-    self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(3) > .navbar-link").click()
+    self.driver.find_element(By.CSS_SELECTOR, ".navbar-item:nth-child(2) > a:nth-child(1) > .navbar-link").click()
     self.driver.find_element(By.CSS_SELECTOR, ".factura-item-Pendiente").click()
+    self.driver.find_element(By.LINK_TEXT, "Volver").click()
+    self.driver.find_element(By.CSS_SELECTOR, ".factura-item-Enviado").click()
     self.driver.find_element(By.LINK_TEXT, "Volver").click()
   

@@ -10,7 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-class TestCRUDProducto():
+class TestCRUDProductos():
   def setup_method(self, method):
     self.driver = webdriver.Firefox()
     self.vars = {}
@@ -18,9 +18,9 @@ class TestCRUDProducto():
   def teardown_method(self, method):
     self.driver.quit()
   
-  def test_cRUDProducto(self):
+  def test_cRUDProductos(self):
     self.driver.get("http://localhost:8000/")
-    self.driver.set_window_size(1510, 697)
+    self.driver.set_window_size(1550, 830)
     self.driver.find_element(By.CSS_SELECTOR, ".cta > span").click()
     self.driver.find_element(By.NAME, "email").click()
     self.driver.find_element(By.NAME, "email").send_keys("grupo17@gmail.com")
@@ -28,32 +28,23 @@ class TestCRUDProducto():
     self.driver.find_element(By.CSS_SELECTOR, ".submit").click()
     # Espera y maneja el pop-up (alerta) que aparece después de iniciar sesión
     WebDriverWait(self.driver, 10).until(
-        expected_conditions.alert_is_present()
-    )
+          expected_conditions.alert_is_present()
+        )
     alert = self.driver.switch_to.alert
     alert.accept()  # Hace clic en "OK" en el pop-up
     self.driver.find_element(By.CSS_SELECTOR, "#productos > .create-button").click()
     self.driver.find_element(By.NAME, "nombre").click()
     self.driver.find_element(By.NAME, "nombre").send_keys("Prueba")
-    self.driver.find_element(By.NAME, "categoria").click()
-    dropdown = self.driver.find_element(By.NAME, "categoria")
-    dropdown.find_element(By.XPATH, "//option[. = 'Cristales']").click()
-    self.driver.find_element(By.CSS_SELECTOR, "option:nth-child(2)").click()
-    self.driver.find_element(By.NAME, "precio").click()
-    self.driver.find_element(By.NAME, "precio").send_keys("52")
-    self.driver.find_element(By.NAME, "stock").click()
-    self.driver.find_element(By.NAME, "stock").send_keys("120")
-    self.driver.find_element(By.NAME, "descripcion").click()
-    self.driver.find_element(By.NAME, "descripcion").send_keys("Esto es una descipcion de prueba")
+    self.driver.find_element(By.NAME, "precio").send_keys("50")
+    self.driver.find_element(By.NAME, "stock").send_keys("520")
+    self.driver.find_element(By.NAME, "descripcion").send_keys("Esto es una descipcion de prueba de creacion")
     self.driver.find_element(By.CSS_SELECTOR, ".submit-button").click()
-    self.driver.find_element(By.CSS_SELECTOR, ".product:nth-child(2) .update-button").click()
+    self.driver.find_element(By.CSS_SELECTOR, ".product:nth-child(13) .update-button").click()
     self.driver.find_element(By.ID, "nombre").click()
-    self.driver.find_element(By.ID, "nombre").send_keys("Cristal de Cuarzo Prueba de actualizar")
-    self.driver.find_element(By.ID, "precio").click()
-    self.driver.find_element(By.ID, "precio").send_keys("150")
-    self.driver.find_element(By.ID, "stock").click()
-    self.driver.find_element(By.ID, "stock").send_keys("2400")
+    self.driver.find_element(By.ID, "nombre").send_keys("Prueba edicion")
+    self.driver.find_element(By.ID, "descripcion").click()
+    self.driver.find_element(By.ID, "descripcion").send_keys("Esto es una descipcion de prueba de edicion")
     self.driver.find_element(By.CSS_SELECTOR, "div > button").click()
-    self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(1) > .navbar-link").click()
-    self.driver.find_element(By.CSS_SELECTOR, "div:nth-child(6) > .delete-button").click()
+    self.driver.find_element(By.CSS_SELECTOR, ".navbar-item:nth-child(4) .navbar-link").click()
+    self.driver.find_element(By.CSS_SELECTOR, ".product:nth-child(13) .delete-button").click()
   
