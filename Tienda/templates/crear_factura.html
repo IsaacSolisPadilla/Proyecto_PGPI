@@ -24,7 +24,7 @@
                     {% for item in cart %}
                     {% with producto=item.producto %}
                     <tr>
-                      <td><a href="{{ product.get_absolute_url }}"></a></td>
+                      <td><img src="{{ producto.fotografia.url }}"></td>
                       <td>{{ producto.nombre }}</td>
                       <td>
                           {{ item.cantidad }}

@@ -13,7 +13,7 @@
             <th>Producto</th>
             <th>Cantidad</th>
             <th>Editar</th>
-            <th>Remover</th>
+            <th>Eliminar</th>
             <th>Precio Unitario</th>
             <th>Precio total</th>
           </tr>
@@ -22,7 +22,7 @@
           {% for item in cart %}
           {% with producto=item.producto %}
           <tr>
-            <td><a href="{{ product.get_absolute_url }}"></a></td>
+            <td><img src="{{ producto.fotografia.url }}"></td>
             <td>{{ producto.nombre }}</td>
             <td>
               <form action="{% url 'cart:cart_add' producto.id 0 %}" method="post">
