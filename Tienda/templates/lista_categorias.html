@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Aura Arcana{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <!-- Título de las categorías -->
+        <section class="category-title">
+            <div class="title-container">
+                <h2 style="color:white">Categorias disponibles:</h2>
+                {% if user.is_authenticated and user.is_staff %}
+                    <a href="{% url 'crear_categoria' %}" class="create-button">Crear nueva categoría</a>
+                {% endif %}
+            </div>
+        </section>
+    
+        <!-- Listado de categorías -->
+        <section class="category-list">
+            <div class="category-grid">
+                {% for categoria in categorias %}
+                <div class="category-item">
+                    <a href="/categorias/{{ categoria.id }}" style="text-decoration: none;">
+                        <h3>{{ categoria.nombre }}</h3>
+                        <p>{{ categoria.descripcion|default:"Sin descripción" }}</p>
+                    </a>
+                    {% if user.is_authenticated and user.is_staff %}
+                    <div class="category-actions">
+                        <a href="{% url 'ver_actualizar_categoria' categoria.id %}" class="edit-button">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <form method="POST" action="{% url 'eliminar_categoria' categoria.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-button" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <p>No hay categorías disponibles.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+    
+</body>
+</html>
+<script>
+    function mostrarEstadoPedido() {
+        const numero_factura = document.getElementById("numero-factura").value
+        fetch("/factura/numero_factura/" + numero_factura)
+            .then(data => data.json())
+            .then(json => alert("LA FACTURA CON NÚMERO " + numero_factura + " TIENE ESTADO: " + json["estado_factura"]))
+            .catch(error => alert("FACTURA CON NÚMERO " + numero_factura + " NO ENCONTRADO"))
+    }
+</script>
+{% endblock %}

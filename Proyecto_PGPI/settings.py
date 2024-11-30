@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,8 +26,11 @@ SECRET_KEY = 'django-insecure-v8-ec*es737c)7he1=y+j_dqtdt&&2p7&_wp8q7ywk9j8_)x+2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','aura-arcana.onrender.com','*']
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://aura-arcana.onrender.com"
+]
 
 # Application definition
 
@@ -37,8 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cart.apps.CartConfig',
     'Tienda',
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+CART_SESSION_ID = 'cart'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -116,7 +126,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'  # Redirige a la página principal
+STATIC_URL = '/static/'
+
+# Si estás en desarrollo, asegúrate de tener esto configurado:
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# Si estás en producción, asegúrate de tener el siguiente campo:
+STATIC_ROOT = BASE_DIR / "staticfiles"
+# Media files (uploaded images, etc.)
+MEDIA_URL = '/media/'  # URL base para servir archivos multimedia
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Ruta del sistema de archivos para almacenar archivos multimedia
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0','aura-arcana.onrender.com','*']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

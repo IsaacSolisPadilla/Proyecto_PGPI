@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Producto{% endblock %}
+
+{% block content %}
+<div class="form-section main-content2">
+    <h2>Formulario de Crear producto</h2>
+    <div class="form-container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label>Nombre:</label>
+            <input type="text" name="nombre" required>
+
+            <label>Categoría:</label>
+            <select name="categoria">
+                {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Precio:</label>
+            <input type="number" name="precio" required step="0.01" min="0">
+
+            <label>Stock:</label>
+            <input type="number" name="stock" required min="0">
+
+            <label>Descripción:</label>
+            <textarea name="descripcion"></textarea>
+
+            <label>Fotografía:</label>
+            <input type="file" name="fotografia" accept="image/*" onchange="previewImage(event)">
+            
+            <!-- Vista previa de la imagen seleccionada -->
+            <div class="image-preview" id="imagePreview">
+                <img id="previewImage" src="" alt="Vista previa de la imagen">
+            </div>
+
+            <div style=" justify-content: space-between;">
+                <button type="submit" class="submit-button" style="margin-right: 200px; padding: 10px 15px; border-radius: 5px;">Crear Producto</button>
+                <a href="javascript:history.back()" class="cancel-button" style="text-decoration: none; text-align: center; padding: 10px 15px; margin-left: 50px;">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

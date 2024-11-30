@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Edición de Factura{% endblock %}
+
+{% block content %}
+<div class="form-section main-content2">
+    <h1 class="form-title" style="color: white;">Editar Factura</h1>
+    <div class="form-container">
+        <form method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <div class="text-danger">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            <div style="display: flex; justify-content: space-around; gap: 20px; margin-top: 20px;">
+                
+                <button id="confirmar" type="submit" style="background-color: #4caf50;">Guardar Cambios</button>
+                
+                <button id="volver" type="button" >
+                    <a href="/facturas" style="text-decoration: none; color: white;">Volver</a>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_styles %}
+<style>
+    /* Contenedor general */
+    .container {
+        max-width: 800px;
+        background-color: #e6f5ea; /* Verde muy suave */
+        padding: 20px;
+        border-radius: 10px; /* Bordes redondeados */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+        margin-top: 30px;
+    }
+
+    /* Títulos del formulario */
+    .form-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    /* Estilo base para todos los campos */
+    .form-control {
+        background-color: #fff; /* Fondo blanco */
+        border: 1px solid #56b18b; /* Verde oscuro */
+        border-radius: 5px; /* Bordes redondeados */
+        padding: 10px; /* Espaciado interno */
+        font-size: 16px; /* Tamaño de texto */
+        color: #333; /* Color del texto */
+    }
+
+    /* Campos deshabilitados */
+    .form-control[disabled] {
+        background-color: #d0e8dc; /* Verde grisáceo */
+        color: #999; /* Texto apagado */
+    }
+
+    /* Botones */
+    .btn-primary {
+        background-color: #56b18b; /* Fondo verde oscuro */
+        color: white; /* Texto blanco */
+        border: none; /* Sin borde */
+        border-radius: 5px; /* Bordes redondeados */
+        padding: 10px 20px; /* Tamaño del botón */
+        cursor: pointer; /* Icono de puntero */
+        font-size: 16px; /* Tamaño de texto */
+        width: 100%; /* Ocupa todo el ancho */
+        text-align: center; /* Asegura que el texto esté centrado */
+        display: block; /* Garantiza comportamiento similar entre <a> y <button> */
+        margin-bottom: 15px; /* Espaciado entre botones */
+    }
+
+    .btn-primary:hover {
+        background-color: #3e8b6e; /* Más oscuro al pasar el ratón */
+    }
+
+    .btn-secondary {
+        background-color: #e6f5ea; /* Fondo claro */
+        color: #333; /* Texto oscuro */
+        border: 1px solid #56b18b; /* Verde oscuro */
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        width: 100%; /* Ancho completo */
+        margin-top: 10px;
+    }
+
+    .btn-secondary:hover {
+        background-color: #d0e8dc; /* Verde grisáceo */
+    }
+</style>
+{% endblock %}

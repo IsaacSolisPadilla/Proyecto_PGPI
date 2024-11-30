@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Actualizar Producto{% endblock %}
+
+{% block content %}
+
+<div class="form-section main-content2">
+    <h2 style="margin-top: 20px;">Formulario de Actualización</h2>
+    <form method="POST" action="{% url 'actualizar_producto' producto.id %}" class="form-container" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" value="{{ producto.nombre }}" required>
+
+        <label for="precio">Precio:</label>
+        <input type="number" name="precio" id="precio" value="{{producto.precio}}" required step="0.01" min="0">
+
+        <label for="stock">Stock:</label>
+        <input type="number" name="stock" id="stock" value="{{ producto.stock }}" required min="0">
+
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion" id="descripcion">{{ producto.descripcion }}</textarea>
+
+        <label for="fotografia">Fotografía:</label>
+        <input type="file" name="fotografia" id="fotografia">
+        {% if producto.fotografia %}
+            <img src="{{ producto.fotografia.url }}" alt="Imagen actual del producto" width="100">
+        {% endif %}
+        <label for="categoria">Categoría:</label>
+        <select name="categoria" id="categoria">
+            {% for categoria in categorias %}
+            <option value="{{ categoria.id }}" {% if categoria.id == producto.categoria.id %}selected{% endif %}>
+                {{ categoria.nombre }}
+            </option>
+            {% endfor %}
+        </select>
+        <div style="justify-content: space-between;">
+            <button type="submit" style="margin-right: 200px; padding: 10px 15px; border-radius: 5px;"><i class="fas fa-edit"></i>Actualizar Producto</button>
+            <a href="javascript:history.back()" class="cancel-button" style="text-decoration: none; text-align: center; padding: 10px 15px;">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

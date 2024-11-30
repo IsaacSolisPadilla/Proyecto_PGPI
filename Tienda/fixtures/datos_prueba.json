@@ -1,0 +1,403 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "username": "juanperez",
+            "first_name": "Juan",
+            "last_name": "Perez",
+            "email": "juan.perez@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "last_login": "2024-11-10T12:34:56Z",
+            "date_joined": "2024-01-01T09:00:00Z",
+            "password": "pbkdf2_sha256$390000$ZqfjT7WmSI7X$8H+YO3J9zmVQvzmO2Xb3dP9mrUzRE0R9cK8k0Gn9f4Y="
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "username": "mariagomez",
+            "first_name": "Maria",
+            "last_name": "Gomez",
+            "email": "maria.gomez@example.com",
+            "is_staff": true,
+            "is_active": true,
+            "is_superuser": true,
+            "last_login": "2024-11-11T15:30:00Z",
+            "date_joined": "2023-12-20T10:00:00Z",
+            "password": "pbkdf2_sha256$260000$abcdef$..."
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 3,
+        "fields": {
+            "username": "lucia_hernandez",
+            "first_name": "Lucía",
+            "last_name": "Hernandez",
+            "email": "lucia.hernandez@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "last_login": "2024-11-12T10:00:00Z",
+            "date_joined": "2024-02-01T12:00:00Z",
+            "password": "pbkdf2_sha256$260000$abcdef$..."
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 4,
+        "fields": {
+            "username": "carlos_ramos",
+            "first_name": "Carlos",
+            "last_name": "Ramos",
+            "email": "carlos.ramos@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "last_login": "2024-10-05T18:00:00Z",
+            "date_joined": "2024-03-12T10:30:00Z",
+            "password": "pbkdf2_sha256$260000$abcdef$..."
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 5,
+        "fields": {
+            "username": "fernando_diaz",
+            "first_name": "Fernando",
+            "last_name": "Díaz",
+            "email": "fernando.diaz@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "last_login": "2024-11-01T08:30:00Z",
+            "date_joined": "2024-04-10T16:30:00Z",
+            "password": "pbkdf2_sha256$260000$abcdef$..."
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "direccion": "Avenida de la Magia, 88",
+            "metodo_de_pago": "Pasarela"
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "direccion": "Avenida Siempreviva 742, Ciudad Espiritual",
+            "metodo_de_pago": "Contrareembolso"
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 3,
+        "fields": {
+            "user": 3,
+            "direccion": "Calle Falsa 123, Ciudad Esotérica",
+            "metodo_de_pago": "Pasarela"
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 4,
+        "fields": {
+            "user": 4,
+            "direccion": "Calle Sanación, 67",
+            "metodo_de_pago": "Contrareembolso"
+        }
+    },
+    {
+        "model": "Tienda.datos",
+        "pk": 5,
+        "fields": {
+            "user": 5,
+            "direccion": "Calle Sanación, 67",
+            "metodo_de_pago": "Pasarela"
+        }
+    },
+    {
+        "model": "Tienda.datosempresa",
+        "pk": 1,
+        "fields": {
+            "nombre": "Tienda Esotérica A",
+            "direccion": "Calle de los Misterios, 45",
+            "telefono": "+34 600 123 456",
+            "email": "contacto@tiendaA.com"
+        }
+    },
+    {
+        "model": "Tienda.datosempresa",
+        "pk": 2,
+        "fields": {
+            "nombre": "Tienda Esotérica B",
+            "direccion": "Avenida de la Magia, 88",
+            "telefono": "+34 600 789 012",
+            "email": "contacto@tiendaB.com"
+        }
+    },
+    {
+        "model": "Tienda.datosempresa",
+        "pk": 3,
+        "fields": {
+            "nombre": "Tienda Esotérica C",
+            "direccion": "Calle Sanación, 67",
+            "telefono": "+34 600 345 678",
+            "email": "contacto@tiendaC.com"
+        }
+    },
+    {
+        "model": "Tienda.categoriaproducto",
+        "pk": 1,
+        "fields": {
+            "nombre": "Velas",
+            "descripcion": "Velas aromáticas para meditación y relajación"
+        }
+    },
+    {
+        "model": "Tienda.categoriaproducto",
+        "pk": 2,
+        "fields": {
+            "nombre": "Cristales",
+            "descripcion": "Cristales y piedras para energía y sanación"
+        }
+    },
+    {
+        "model": "Tienda.categoriaproducto",
+        "pk": 3,
+        "fields": {
+            "nombre": "Inciensos",
+            "descripcion": "Inciensos para purificación y meditación"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 1,
+        "fields": {
+            "nombre": "Vela de Lavanda",
+            "categoria": 1,
+            "precio": "5.99",
+            "stock": 0,
+            "descripcion": "Vela de lavanda para calmar el espíritu",
+            "fotografia": "productos/Vela_Lavanda.webp"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 2,
+        "fields": {
+            "nombre": "Cristal de Cuarzo",
+            "categoria": 2,
+            "precio": "15.99",
+            "stock": 50,
+            "descripcion": "Cristal de cuarzo para sanación espiritual",
+            "fotografia": "productos/Cristal_Cuarzo.webp"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 3,
+        "fields": {
+            "nombre": "Incienso de Sándalo",
+            "categoria": 3,
+            "precio": "3.99",
+            "stock": 75,
+            "descripcion": "Incienso de sándalo para relajación y paz",
+            "fotografia": "productos/Incienso_Sandalo.webp"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 4,
+        "fields": {
+            "nombre": "Vela de Eucalipto",
+            "categoria": 1,
+            "precio": "7.99",
+            "stock": 120,
+            "descripcion": "Vela de eucalipto para energizar el ambiente",
+            "fotografia": "productos/Vela_Eucalipto.webp"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 5,
+        "fields": {
+            "nombre": "Cristal de Amatista",
+            "categoria": 2,
+            "precio": "25.99",
+            "stock": 30,
+            "descripcion": "Cristal de amatista para meditación profunda",
+            "fotografia": "productos/Cristal_Amatista.webp"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 6,
+        "fields": {
+            "nombre": "Incienso de Rosa Mosqueta",
+            "categoria": 3,
+            "precio": "4.49",
+            "stock": 80,
+            "descripcion": "Incienso de rosa mosqueta para equilibrio emocional",
+            "fotografia": "productos/Incienso_Rosa.webp"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 7,
+        "fields": {
+            "nombre": "Vela de Citronela",
+            "categoria": 1,
+            "precio": "6.49",
+            "stock": 150,
+            "descripcion": "Vela de citronela para repeler insectos y aromatizar el ambiente",
+            "fotografia": "productos/Vela_Citronela.webp"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 8,
+        "fields": {
+            "nombre": "Cristal de Selenita",
+            "categoria": 2,
+            "precio": "12.99",
+            "stock": 40,
+            "descripcion": "Cristal de selenita para limpieza energética",
+            "fotografia": "productos/Crista_Selenita.webp"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 9,
+        "fields": {
+            "nombre": "Incienso de Lavanda",
+            "categoria": 3,
+            "precio": "3.79",
+            "stock": 60,
+            "descripcion": "Incienso de lavanda para relajación y sueño profundo",
+            "fotografia": "productos/Incienso_Lavanda.webp"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 10,
+        "fields": {
+            "nombre": "Vela de Jazmín",
+            "categoria": 1,
+            "precio": "8.99",
+            "stock": 200,
+            "descripcion": "Vela de jazmín para crear un ambiente relajante y floral",
+            "fotografia": "productos/Vela_Jazmin.webp"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 11,
+        "fields": {
+            "nombre": "Cristal de Turmalina",
+            "categoria": 2,
+            "precio": "18.49",
+            "stock": 25,
+            "descripcion": "Cristal de turmalina para protección energética",
+            "fotografia": "productos/Cristal_Turmalina.webp"
+        }
+    },
+    {
+        "model": "Tienda.producto",
+        "pk": 12,
+        "fields": {
+            "nombre": "Incienso de Mirra",
+            "categoria": 3,
+            "precio": "5.49",
+            "stock": 90,
+            "descripcion": "Incienso de mirra para meditación profunda y protección",
+            "fotografia": "productos/Incienso_Mirra.webp"
+        }
+    },
+    {
+        "model": "Tienda.factura",
+        "pk": 1,
+        "fields": {
+            "usuario": 1,
+            "numero_factura": "ORD12345",
+            "fecha_pedido": "2024-11-10T10:00:00Z",
+            "fecha_salida": null,
+            "fecha_entrega": null,
+            "direccion": "Calle Falsa 123, Ciudad Esotérica",
+            "estado": "Pendiente",
+            "metodo_de_pago": "Pasarela",
+            "nombre": "Daniel",
+            "apellidos": "Cancio Trigo",
+            "is_draft_mode": "False",
+            "email": "fernando.diaz@example.com",
+            "forma_entrega": "Envío"
+        }
+    },
+    {
+        "model": "Tienda.factura",
+        "pk": 2,
+        "fields": {
+            "usuario": 2,
+            "numero_factura": "ORD12346",
+            "fecha_pedido": "2024-11-11T11:00:00Z",
+            "fecha_salida": "2024-11-13T10:00:00Z",
+            "fecha_entrega": "2024-11-16T10:00:00Z",
+            "direccion": "Avenida Siempreviva 742, Ciudad Espiritual",
+            "estado": "Enviado",
+            "metodo_de_pago": "Contrareembolso",
+            "nombre": "Pepe",
+            "apellidos": "Gonzalez",
+            "is_draft_mode": "False",
+            "email": "carlos.ramos@example.com"
+        },
+        "forma_entrega": "Presencialmente"
+    },
+    {
+        "model": "Tienda.lineafactura",
+        "pk": 1,
+        "fields": {
+            "factura": 1,
+            "producto": 1,
+            "cantidad": 3,
+            "precio_unitario": "5.99"
+        }
+    },
+    {
+        "model": "Tienda.lineafactura",
+        "pk": 2,
+        "fields": {
+            "factura": 1,
+            "producto": 2,
+            "cantidad": 2,
+            "precio_unitario": "4.99"
+        }
+    },
+    {
+        "model": "Tienda.lineafactura",
+        "pk": 3,
+        "fields": {
+            "factura": 2,
+            "producto": 1,
+            "cantidad": 1,
+            "precio_unitario": "7.99"
+        }
+    },
+    {
+        "model": "Tienda.lineafactura",
+        "pk": 4,
+        "fields": {
+            "factura": 2,
+            "producto": 3,
+            "cantidad": 5,
+            "precio_unitario": "10.99"
+        }
+    }
+]

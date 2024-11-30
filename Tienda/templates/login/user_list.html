@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Usuarios{% endblock %}
+
+{% block content %}
+<section class="main-content3 featured-products" id="usuarios">
+    <h1 style="text-align: center; font-family: Arial, sans-serif; color: white;">Lista de Usuarios</h1>
+    {% if user.is_authenticated and user.is_staff %}
+    <div class="create-button-container">
+        <a href="{% url 'crear_usuario' %}" class="create-button">
+            Registrar Usuario
+        </a>
+    </div>
+    {% endif %}
+    <div class="usuarios-container">
+        <ul class="usuarios-list">
+            {% for user in users %}
+            {% if user.id != request.user.id %}
+            <li class="usuario-item-{% if user.is_staff %}Admin{% else %}Cliente{% endif %}" 
+                onclick="window.location.href = '/editar-usuario/' + '{{user.id}}'">
+                <span class="usuario-nombre">{{ user.username }}</span>
+                <span class="usuario-email">{{ user.email }}</span>
+                <span class="usuario-rol">Rol: {% if user.is_staff %}Administrador{% else %}Cliente{% endif %}</span>
+                <a href="{% url 'delete_user' user.id %}" class="delete-button" onclick="return confirm('¿Estás seguro de que quieres eliminar este usuario?')">Eliminar</a>
+            </li>
+            {% endif %}
+            {% if user.id == request.user.id %}
+            <li class="usuario-item-{% if user.is_staff %}Admin{% else %}Cliente{% endif %}" >
+                <span class="usuario-nombre">{{ user.username }}</span>
+                <span class="usuario-email">{{ user.email }}</span>
+                <span class="usuario-rol">Rol: {% if user.is_staff %}Administrador{% else %}Cliente{% endif %}</span>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+
+<style>
+.usuarios-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #1e824c; /* Verde oscuro */
+    border-radius: 8px;
+    background-color: #eafaf1; /* Verde muy claro */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.usuarios-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Usuario con Rol Administrador (Verde) */
+.usuario-item-Admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #1e824c; /* Verde oscuro */
+    border-radius: 6px;
+    background-color: #d9f2e6; /* Verde claro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.usuario-item-Admin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #a5d6a7; /* Verde más vibrante al pasar el mouse */
+}
+
+/* Usuario con Rol Cliente (Azul) */
+.usuario-item-Cliente {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #42a5f5; /* Azul oscuro */
+    border-radius: 6px;
+    background-color: #e3f2fd; /* Azul claro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.usuario-item-Cliente:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #90caf9; /* Azul más vibrante al pasar el mouse */
+}
+
+/* Estilo para el nombre de usuario */
+.usuario-nombre {
+    font-weight: bold;
+    color: #145a32; /* Verde muy oscuro */
+}
+
+/* Estilo para el correo electrónico */
+.usuario-email {
+    font-style: italic;
+    color: #2d7623; /* Verde intermedio */
+}
+
+/* Estilo para el rol del usuario */
+.usuario-rol {
+    font-size: 0.9em;
+    color: #555;
+    
+}
+.delete-button {
+    color: #ff0000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.delete-button:hover {
+    color: #cc0000;
+    text-decoration: underline;
+}
+</style>
+
+{% endblock %}

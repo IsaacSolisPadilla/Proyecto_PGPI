@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Actualizar Categoria{% endblock %}
+
+{% block content %}
+
+
+<div class="form-section main-content2">
+    <h2>Formulario de Actualización</h2>
+    <form method="POST" action="{% url 'actualizar_categoria' categoria.id %}" class="form-container">
+        {% csrf_token %}
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" value="{{ categoria.nombre }}" required>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion" id="descripcion" required>{{ categoria.descripcion }}</textarea>
+
+        <div style="justify-content: space-between;">
+            <button type="submit" class="submit-button" style="margin-right: 200px; padding: 10px 15px; border-radius: 5px;">
+                <i class="fas fa-edit"></i> Actualizar
+            </button>
+            <a href="javascript:history.back()" class="cancel-button" style="text-decoration: none; text-align: center; padding: 10px 15px; margin-left: 70px;">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

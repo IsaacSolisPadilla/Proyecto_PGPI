@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Facturas{% endblock %}
+
+{% block content %}
+<section class="main-content3 featured-products" id="productos">
+    <h1 style="text-align: center; font-family: Arial, sans-serif; color: white;">Lista de Facturas</h1>
+    <div class="facturas-container">
+        <ul class="facturas-list">
+            {% for factura in facturas %}
+            <li class="factura-item-{{factura.estado}}" onclick="window.location.href = '/factura/' + '{{factura.id}}'">
+                <span class="factura-num">Nº {{ factura.numero_factura }}</span>
+                <span class="factura-estado">Estado: {{ factura.estado }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</section>
+
+<script>
+    function verFactura(factura_id){ 
+        
+    }
+
+</script>
+
+<style>
+.facturas-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #1e824c; /* Verde oscuro */
+    border-radius: 8px;
+    background-color: #eafaf1; /* Verde muy claro */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.facturas-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estado: Pendiente (Amarillo) */
+.factura-item-Pendiente {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #f5c542; /* Amarillo oscuro */
+    border-radius: 6px;
+    background-color: #fff8e1; /* Amarillo claro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.factura-item-Pendiente:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffe59d; /* Amarillo más vibrante al pasar el mouse */
+}
+
+/* Estado: Enviado (Azul) */
+.factura-item-Enviado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #42a5f5; /* Azul oscuro */
+    border-radius: 6px;
+    background-color: #e3f2fd; /* Azul claro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.factura-item-Enviado:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #90caf9; /* Azul más vibrante al pasar el mouse */
+}
+
+/* Estado: Entregado (Verde) */
+.factura-item-Entregado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #1e824c; /* Verde oscuro */
+    border-radius: 6px;
+    background-color: #d9f2e6; /* Verde claro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.factura-item-Entregado:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #a5d6a7; /* Verde más vibrante al pasar el mouse */
+}
+
+
+.factura-num {
+    font-weight: bold;
+    color: #145a32; /* Verde muy oscuro */
+}
+
+.factura-estado {
+    font-style: italic;
+    color: #2d7623; /* Verde intermedio */
+}
+
+
+</style>
+{% endblock %}
